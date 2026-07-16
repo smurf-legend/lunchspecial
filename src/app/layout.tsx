@@ -2,6 +2,7 @@ import "./globals.css";
 import Link from "next/link";
 import Providers from "./providers";
 import NavAuth from "@/components/NavAuth";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata = {
   title: "LunchSpecial — Sydney lunch specials, crowdsourced",
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </footer>
         </Providers>
       </body>
+      {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
     </html>
   );
 }
