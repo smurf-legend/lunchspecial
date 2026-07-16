@@ -7,8 +7,8 @@ export default function UnsubscribedPage() {
       <p className="text-gray-600 text-sm">
         You won't get any more deals emails from us. Changed your mind? You can turn them back on
         anytime from your{" "}
-        <Link href="/account" className="text-orange-600 underline">
-          account settings
+        <Link href="/profile" className="text-orange-600 underline">
+          profile
         </Link>
         .
       </p>

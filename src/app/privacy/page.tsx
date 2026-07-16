@@ -60,7 +60,7 @@ export default function PrivacyPolicyPage() {
       <section>
         <h2 className="font-bold text-gray-900 mb-1.5">Your choices and rights</h2>
         <ul className="list-disc list-inside flex flex-col gap-1">
-          <li>Update your nickname or marketing preference anytime in your account settings.</li>
+          <li>Update your nickname or marketing preference anytime in your profile.</li>
           <li>Unsubscribe from marketing emails instantly via the link in every email — no login needed.</li>
           <li>Request a copy of your data, or ask us to correct or delete it, by contacting us below.</li>
         </ul>

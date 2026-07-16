@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ identifier: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -16,14 +16,14 @@ export default function LoginPage() {
     setError(null);
 
     const res = await signIn("credentials", {
-      email: form.email,
+      identifier: form.identifier,
       password: form.password,
       redirect: false,
     });
 
     setLoading(false);
     if (res?.ok) router.push("/");
-    else setError("Invalid email or password");
+    else setError("Invalid login or password");
   }
 
   return (
@@ -31,12 +31,12 @@ export default function LoginPage() {
       <h1 className="text-xl font-bold mb-4">Log in</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
-          type="email"
-          placeholder="Email"
+          type="text"
+          placeholder="Email or nickname"
           required
           className="border rounded px-3 py-2"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          value={form.identifier}
+          onChange={(e) => setForm({ ...form, identifier: e.target.value })}
         />
         <input
           type="password"
@@ -55,12 +55,16 @@ export default function LoginPage() {
         </button>
       </form>
       <p className="text-sm text-gray-500 mt-4">
+        <Link href="/forgot-password" className="text-orange-600 underline">
+          Forgot your password?
+        </Link>
+      </p>
+      <p className="text-sm text-gray-500 mt-2">
         No account yet?{" "}
         <Link href="/register" className="text-orange-600 underline">
           Sign up
         </Link>
       </p>
-      <p className="text-xs text-gray-400 mt-2">Demo login: demo@lunchspecial.com.au / password123</p>
     </div>
   );
 }

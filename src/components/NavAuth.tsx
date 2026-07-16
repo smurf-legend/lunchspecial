@@ -18,7 +18,7 @@ export default function NavAuth() {
           </Link>
         )}
         <NotificationBell />
-        <Link href="/account" className="text-sm">
+        <Link href="/profile" className="text-sm">
           Hi, {session.user.name}
         </Link>
         <button onClick={() => signOut({ callbackUrl: "/" })} className="text-sm underline">

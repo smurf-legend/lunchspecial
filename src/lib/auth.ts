@@ -10,14 +10,16 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        identifier: { label: "Email or nickname", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        if (!credentials?.identifier || !credentials?.password) return null;
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+        // Login accepts either the account email or the public nickname —
+        // both are unique columns, so this is unambiguous.
+        const user = await prisma.user.findFirst({
+          where: { OR: [{ email: credentials.identifier }, { name: credentials.identifier }] },
         });
         if (!user || !user.passwordHash) return null;
 

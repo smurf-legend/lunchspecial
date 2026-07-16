@@ -27,7 +27,7 @@ export default async function AccountPage() {
 
   return (
     <div className="max-w-sm mx-auto bg-white p-6 rounded-lg border">
-      <h1 className="text-xl font-bold mb-4">Account settings</h1>
+      <h1 className="text-xl font-bold mb-4">Profile</h1>
       <AccountForm initialName={user.name} email={user.email} initialMarketingOptIn={user.marketingOptIn} />
     </div>
   );

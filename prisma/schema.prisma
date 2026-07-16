@@ -29,6 +29,11 @@ model User {
   marketingOptIn   Boolean @default(false)
   unsubscribeToken String  @unique @default(cuid())
 
+  // Forgot-password flow: set when a reset is requested, cleared once used
+  // or expired. Null the rest of the time.
+  resetToken          String?   @unique
+  resetTokenExpiresAt DateTime?
+
   specials      Special[]
   votes         Vote[]
   comments      Comment[]
