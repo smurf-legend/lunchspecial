@@ -1,0 +1,321 @@
+// Prisma schema for LunchSpecial (OzBargain-style lunch deals site)
+// Run `npx prisma migrate dev` after setting DATABASE_URL in .env
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // switch to "sqlite" for quick local testing
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  // Public display nickname — what other users see next to posts/comments/
+  // votes, not necessarily a real name. Unique so people can't impersonate
+  // each other.
+  name          String    @unique
+  email         String    @unique
+  passwordHash  String?
+  image         String?
+  role          String    @default("user") // "user" or "admin"
+  createdAt     DateTime  @default(now())
+
+  // Explicit opt-in for the deals digest email — defaults to false and is
+  // never pre-ticked at signup (Spam Act 2003 requires opt-in consent, not
+  // opt-out). unsubscribeToken powers a one-click unsubscribe link in every
+  // marketing email that works without logging in.
+  marketingOptIn   Boolean @default(false)
+  unsubscribeToken String  @unique @default(cuid())
+
+  specials      Special[]
+  votes         Vote[]
+  comments      Comment[]
+  commentReactions CommentReaction[]
+
+  notifications         Notification[] @relation("NotificationRecipient")
+  notificationsTriggered Notification[] @relation("NotificationActor")
+
+  blogPosts            BlogPost[]
+  blogVotes            BlogVote[]
+  blogComments         BlogComment[]
+  blogCommentReactions BlogCommentReaction[]
+}
+
+// Cuisine / meal-type tags, e.g. "Asian", "Cafe", "Vegan", "Pub Food"
+model Category {
+  id       String @id @default(cuid())
+  name     String @unique
+  slug     String @unique
+
+  specials SpecialCategory[]
+}
+
+// Suburbs are seeded up front (Sydney to start). Structured as its own
+// table rather than a free-text field so filtering/scaling to new cities
+// later is just inserting rows, not a schema change.
+model Suburb {
+  id       String @id @default(cuid())
+  name     String
+  postcode String
+  state    String @default("NSW")
+  region   String @default("Central") // "Central" | "North" | "East" | "South" | "West"
+  slug     String @unique // e.g. "surry-hills"
+
+  specials SpecialSuburb[]
+
+  @@index([state])
+  @@index([region])
+}
+
+model Special {
+  id           String    @id @default(cuid())
+  title        String    // e.g. "$12 banh mi + drink combo"
+  description  String
+  venueName    String    // restaurant/cafe name
+  address      String?   // street address, optional
+  url          String?   // link to menu/website/social post, optional
+  imageUrl     String?   // cover photo — either the first uploaded file or a pasted URL
+  // Extra gallery photos beyond the cover. Only populated via multi-file
+  // upload — pasting an image URL still only ever sets one (imageUrl).
+  extraImageUrls String[] @default([])
+  couponCode   String?   // vendor-provided coupon/deal code, optional
+
+  usualPrice   Float?    // optional "normally $X" comparison
+  specialPrice Float     // the lunch special price — always required
+
+  // Recurrence: which days the special runs. Stored as comma-separated
+  // day codes (Mon,Tue,Wed,Thu,Fri,Sat,Sun) for simplicity — avoids a
+  // separate join table for something this small.
+  availableDays String   @default("Mon,Tue,Wed,Thu,Fri")
+  startTime     String?  // e.g. "11:30"
+  endTime       String?  // e.g. "14:00"
+
+  // Only set for limited-time offers (e.g. "until end of July"). Null means
+  // an ongoing/recurring special with no end date. Current vs. expired is
+  // never stored — it's derived by comparing this to now() wherever a
+  // special is displayed or queried, so status never needs a background
+  // job to stay correct.
+  expiresAt    DateTime?
+
+  createdAt    DateTime  @default(now())
+
+  // Admin moderation: hidden specials are excluded from all public listings
+  // and the detail page 404s for non-admins, but the row is kept (not
+  // deleted) so an admin can review and unhide it.
+  hidden       Boolean   @default(false)
+
+  authorId     String
+  author       User      @relation(fields: [authorId], references: [id])
+
+  // Many-to-many so a chain deal (e.g. McDonald's) can belong to many
+  // suburbs without duplicating the row per suburb. Most specials
+  // (independent local venues) still just belong to one.
+  suburbs      SpecialSuburb[]
+
+  // For nationwide/near-universal chains where listing every suburb is
+  // impractical to maintain. When true, suburbs is empty and the special
+  // matches every suburb/location search instead of specific ones.
+  chainWide    Boolean   @default(false)
+
+  // Self-tagged by the poster: exceptional value for the price, independent
+  // of whether it's a discounted "special" (usualPrice may be unset). Kept
+  // separate from Category since it judges value, not cuisine. Displayed to
+  // users as "Everyday Value" — field name predates that label.
+  greatValue   Boolean   @default(false)
+
+  votes        Vote[]
+  comments     Comment[]
+  categories   SpecialCategory[]
+  notifications Notification[]
+
+  // denormalized score for fast sorting; kept in sync on vote create/delete
+  score        Int       @default(0)
+  // Separate up/down counts for display (score alone can't tell 3 vs 30-27
+  // apart) — kept in sync alongside score in the same vote transaction.
+  upvoteCount   Int       @default(0)
+  downvoteCount Int       @default(0)
+
+  @@index([createdAt])
+  @@index([score])
+  @@index([expiresAt])
+}
+
+// Many-to-many between Special and Suburb. Most specials (independent
+// local venues) belong to exactly one suburb; nationwide chain deals
+// (McDonald's, KFC, etc.) can belong to many without duplicating the row.
+model SpecialSuburb {
+  specialId String
+  suburbId  String
+  special   Special @relation(fields: [specialId], references: [id], onDelete: Cascade)
+  suburb    Suburb  @relation(fields: [suburbId], references: [id], onDelete: Cascade)
+
+  @@id([specialId, suburbId])
+  @@index([suburbId])
+}
+
+model SpecialCategory {
+  specialId  String
+  categoryId String
+  special    Special  @relation(fields: [specialId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([specialId, categoryId])
+}
+
+model Vote {
+  id        String  @id @default(cuid())
+  value     Int     // 1 = up, -1 = down
+  userId    String
+  specialId String
+  user      User    @relation(fields: [userId], references: [id])
+  special   Special @relation(fields: [specialId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, specialId]) // one vote per user per special
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  body      String
+  createdAt DateTime @default(now())
+
+  // Admin moderation: hidden comments show "[Comment removed by moderator]"
+  // in place of the body on public pages, but stay in the tree so replies
+  // underneath aren't orphaned. The real body is preserved (not erased) so
+  // an admin can review or unhide it from the admin comments page.
+  hidden    Boolean  @default(false)
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  specialId String
+  special   Special  @relation(fields: [specialId], references: [id], onDelete: Cascade)
+
+  parentId  String?
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("CommentReplies")
+
+  notifications Notification[]
+
+  reactions   CommentReaction[]
+  // Denormalized counts, kept in sync on reaction create/update/delete —
+  // same pattern as Special.score, but tracked as two separate counters
+  // instead of a net score since likes/dislikes are shown individually.
+  likeCount    Int @default(0)
+  dislikeCount Int @default(0)
+}
+
+// One reaction per user per comment — 1 = like (yummy), -1 = dislike (yuck).
+// Posting the same value again removes it; posting the other value switches
+// it. Mirrors the Vote model's toggle behavior for specials.
+model CommentReaction {
+  id        String  @id @default(cuid())
+  value     Int
+  userId    String
+  commentId String
+  user      User    @relation(fields: [userId], references: [id])
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, commentId])
+}
+
+// Created when someone comments on your post, or replies to your comment.
+// Delivered in-app now (bell + dropdown); email delivery is a planned
+// follow-up once an email-sending service is set up — this model doesn't
+// need to change for that, just a new consumer of the same rows.
+model Notification {
+  id        String   @id @default(cuid())
+  type      String   // "comment_on_post" | "reply_to_comment"
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  userId    String // recipient
+  user      User     @relation("NotificationRecipient", fields: [userId], references: [id], onDelete: Cascade)
+
+  actorId   String // who commented/replied
+  actor     User     @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
+
+  specialId String
+  special   Special  @relation(fields: [specialId], references: [id], onDelete: Cascade)
+
+  commentId String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@index([userId, createdAt])
+}
+
+// Admin-authored editorial articles — separate from user-submitted Special
+// posts. Mirrors Special/Comment's voting and moderation patterns via its
+// own parallel models rather than a shared polymorphic relation, since
+// Prisma has no clean way to express "commentable/votable" across two
+// different parent tables.
+model BlogPost {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  excerpt   String?  // short summary shown in the list view
+  body      String   // full article text, rendered as paragraphs
+  imageUrl  String?
+
+  hidden    Boolean  @default(false)
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  votes    BlogVote[]
+  comments BlogComment[]
+
+  score         Int @default(0)
+  upvoteCount   Int @default(0)
+  downvoteCount Int @default(0)
+
+  @@index([createdAt])
+}
+
+model BlogVote {
+  id         String   @id @default(cuid())
+  value      Int      // 1 = up, -1 = down
+  userId     String
+  blogPostId String
+  user       User     @relation(fields: [userId], references: [id])
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, blogPostId])
+}
+
+model BlogComment {
+  id        String   @id @default(cuid())
+  body      String
+  createdAt DateTime @default(now())
+  hidden    Boolean  @default(false)
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  blogPostId String
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+
+  parentId String?
+  parent   BlogComment?  @relation("BlogCommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies  BlogComment[] @relation("BlogCommentReplies")
+
+  reactions    BlogCommentReaction[]
+  likeCount    Int @default(0)
+  dislikeCount Int @default(0)
+}
+
+model BlogCommentReaction {
+  id            String      @id @default(cuid())
+  value         Int
+  userId        String
+  blogCommentId String
+  user          User        @relation(fields: [userId], references: [id])
+  blogComment   BlogComment @relation(fields: [blogCommentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, blogCommentId])
+}

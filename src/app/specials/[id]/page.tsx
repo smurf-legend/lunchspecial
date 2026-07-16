@@ -1,0 +1,247 @@
+import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import VoteButtons from "@/components/VoteButtons";
+import CommentThread from "@/components/CommentThread";
+import Link from "next/link";
+import { isExpired, formatExpiry } from "@/lib/dealStatus";
+import { googleMapsUrl, isMapsLink } from "@/lib/mapsLink";
+import ContributorBadge from "@/components/ContributorBadge";
+import SpecialImage from "@/components/SpecialImage";
+import { buildCommentTree } from "@/lib/commentTree";
+
+const authorSelect = {
+  select: {
+    name: true,
+    _count: { select: { specials: true, comments: true } },
+  },
+};
+
+export default async function SpecialDetailPage({ params }: { params: { id: string } }) {
+  const session = await getServerSession(authOptions);
+  const isAdmin = (session?.user as any)?.role === "admin";
+
+  const [special, flatComments] = await Promise.all([
+    prisma.special.findUnique({
+      where: { id: params.id },
+      include: {
+        author: authorSelect,
+        suburbs: { include: { suburb: true } },
+        categories: { include: { category: true } },
+      },
+    }),
+    // Fetched flat (not nested) since replies can nest to any depth — the
+    // tree is assembled in commentTree.ts instead of a fixed-depth include.
+    prisma.comment.findMany({
+      where: { specialId: params.id },
+      include: { author: authorSelect },
+      orderBy: { createdAt: "asc" },
+    }),
+  ]);
+
+  if (!special) notFound();
+  // Hidden specials 404 for everyone except admins, who see a banner below
+  // instead — the row still exists so it can be reviewed/unhidden.
+  if (special.hidden && !isAdmin) notFound();
+
+  const commentTree = buildCommentTree(flatComments);
+
+  const discount =
+    special.usualPrice && special.usualPrice > special.specialPrice
+      ? Math.round(100 - (special.specialPrice / special.usualPrice) * 100)
+      : null;
+  const expired = isExpired(special.expiresAt);
+  const suburbList = special.suburbs.map((s) => s.suburb);
+  const primarySuburb = suburbList[0];
+  const chainWide = special.chainWide;
+
+  return (
+    <div className="flex flex-col gap-6">
+      {special.hidden && isAdmin && (
+        <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
+          This special is hidden — only admins can see it.{" "}
+          <Link href={`/admin/specials/${special.id}/edit`} className="underline">
+            Manage
+          </Link>
+        </div>
+      )}
+
+      {expired && (
+        <div className="bg-gray-100 border border-gray-300 text-gray-700 rounded-lg px-4 py-3 text-sm font-medium">
+          This deal expired on {formatExpiry(special.expiresAt!)} — it may no longer be available.
+        </div>
+      )}
+
+      <div className={`bg-white rounded-lg border p-6 flex gap-5 ${expired ? "opacity-70" : ""}`}>
+        <VoteButtons voteEndpoint={`/api/specials/${special.id}/vote`} initialScore={special.score} />
+
+        <div className="flex-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h1 className="text-2xl font-bold">{special.title}</h1>
+            {special.greatValue && (
+              <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">
+                💎 Everyday Value
+              </span>
+            )}
+            {expired ? (
+              <span className="bg-gray-200 text-gray-600 px-2 py-0.5 rounded text-xs font-medium">
+                Expired
+              </span>
+            ) : (
+              special.expiresAt && (
+                <span className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-xs font-medium">
+                  Ends {formatExpiry(special.expiresAt)}
+                </span>
+              )
+            )}
+          </div>
+          <p className="text-sm text-gray-500 mt-1 flex items-center gap-1.5 flex-wrap">
+            Posted by {special.author.name}
+            <ContributorBadge
+              specials={special.author._count.specials}
+              comments={special.author._count.comments}
+            />
+            <span>· {new Date(special.createdAt).toLocaleDateString()}</span>
+          </p>
+
+          <SpecialImage
+            src={special.imageUrl}
+            alt={special.title}
+            className="mt-4 h-64 w-full object-cover rounded-lg border"
+            iconClassName="text-5xl"
+          />
+
+          {special.extraImageUrls.length > 0 && (
+            <div className="flex gap-2 mt-2 overflow-x-auto">
+              {special.extraImageUrls.map((url, i) => (
+                <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={url}
+                    alt={`${special.title} photo ${i + 2}`}
+                    className="h-20 w-20 object-cover rounded border hover:opacity-80"
+                  />
+                </a>
+              ))}
+            </div>
+          )}
+
+          <p className="mt-4 text-gray-800">{special.description}</p>
+
+          <div className="flex items-center gap-3 mt-4 text-sm flex-wrap">
+            <span className="font-medium">{special.venueName}</span>
+            {chainWide ? (
+              <span className="text-gray-600">📍 All Sydney locations</span>
+            ) : (
+              <>
+                <a
+                  href={googleMapsUrl(special.venueName, special.address, primarySuburb.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`Open ${special.venueName} in Google Maps`}
+                  className="text-gray-600 hover:text-orange-600"
+                >
+                  📍
+                </a>
+                <Link
+                  href={`/?suburb=${primarySuburb.slug}`}
+                  className="text-gray-600 hover:text-orange-600"
+                >
+                  {primarySuburb.name}
+                </Link>
+              </>
+            )}
+            {special.address && !isMapsLink(special.address) && (
+              <span className="text-gray-500">{special.address}</span>
+            )}
+          </div>
+
+          {chainWide && (
+            <p className="text-sm text-gray-500 mt-2">
+              Available at most {special.venueName} locations across Sydney — participation may vary by store.
+            </p>
+          )}
+
+          {!chainWide && suburbList.length > 1 && (
+            <p className="text-sm text-gray-500 mt-2">
+              Available in {suburbList.length} suburbs:{" "}
+              {suburbList.slice(0, 12).map((s, i) => (
+                <span key={s.slug}>
+                  <Link href={`/suburbs/${s.slug}`} className="text-gray-600 hover:text-orange-600 underline">
+                    {s.name}
+                  </Link>
+                  {i < Math.min(suburbList.length, 12) - 1 ? ", " : ""}
+                </span>
+              ))}
+              {suburbList.length > 12 && (
+                <span className="text-gray-400"> and {suburbList.length - 12} more</span>
+              )}
+            </p>
+          )}
+
+          <div className="flex items-center gap-3 mt-3 text-sm">
+            <span className="font-semibold text-green-700 text-lg">
+              ${special.specialPrice.toFixed(2)}
+            </span>
+            {special.usualPrice != null && (
+              <span className="line-through text-gray-400">
+                ${special.usualPrice.toFixed(2)}
+              </span>
+            )}
+            {discount != null && (
+              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-medium">
+                {discount}% off
+              </span>
+            )}
+          </div>
+
+          {special.couponCode && (
+            <p className="text-sm mt-2">
+              Code:{" "}
+              <span className="bg-gray-100 px-2 py-0.5 rounded font-mono font-medium text-gray-800">
+                {special.couponCode}
+              </span>
+            </p>
+          )}
+
+          <p className="text-sm text-gray-500 mt-2">
+            Available {special.availableDays}
+            {special.startTime && special.endTime && ` · ${special.startTime}–${special.endTime}`}
+          </p>
+
+          <div className="flex gap-2 mt-3">
+            {special.categories.map((c) => (
+              <Link
+                key={c.category.slug}
+                href={`/?category=${c.category.slug}`}
+                className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600 hover:bg-gray-200"
+              >
+                {c.category.name}
+              </Link>
+            ))}
+          </div>
+
+          {special.url && (
+            <a
+              href={special.url}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              className="inline-block mt-5 bg-orange-600 text-white px-5 py-2 rounded font-medium"
+            >
+              View menu / link →
+            </a>
+          )}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg border p-6">
+        <CommentThread
+          commentsEndpoint={`/api/specials/${special.id}/comments`}
+          reactEndpointBase="/api/comments"
+          comments={commentTree as any}
+        />
+      </div>
+    </div>
+  );
+}
