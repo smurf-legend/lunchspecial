@@ -37,9 +37,13 @@ export const authOptions: NextAuthOptions = {
         token.role = (user as any).role ?? "user";
       }
       // Lets the client force a session refresh after changing the nickname
-      // (see AccountForm) so the nav updates without requiring a re-login.
+      // or email (see AccountForm / ChangeEmailForm) so the session reflects
+      // the change without requiring a re-login.
       if (trigger === "update" && session?.name) {
         token.name = session.name;
+      }
+      if (trigger === "update" && session?.email) {
+        token.email = session.email;
       }
       return token;
     },

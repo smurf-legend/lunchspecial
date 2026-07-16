@@ -15,9 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-gray-50 text-gray-900">
         <Providers>
           <header className="bg-orange-600 text-white sticky top-0 z-10 shadow">
-            <div className="max-w-5xl mx-auto flex items-center justify-between px-4 py-3">
+            <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3">
               <Link href="/" className="text-xl font-bold">LunchSpecial</Link>
-              <nav className="flex gap-4 text-sm font-medium items-center">
+              <nav className="flex flex-wrap gap-x-3 gap-y-1.5 text-sm font-medium items-center">
                 <Link href="/table-talk">Table Talk</Link>
                 <Link href="/specials/new">Post a Special</Link>
                 <NavAuth />

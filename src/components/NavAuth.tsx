@@ -11,7 +11,7 @@ export default function NavAuth() {
   if (session?.user) {
     const role = (session.user as any).role;
     return (
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         {role === "admin" && (
           <Link href="/admin" className="text-sm underline">
             Admin

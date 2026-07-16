@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import AdminSpecialRow from "@/components/AdminSpecialRow";
 import AdminAddSuburb from "@/components/AdminAddSuburb";
+import AdminSuburbList from "@/components/AdminSuburbList";
 import AdminSearch from "@/components/AdminSearch";
 import AdminCategories from "@/components/AdminCategories";
 
@@ -168,13 +169,7 @@ export default async function AdminPage({
       <section>
         <h2 className="font-bold text-lg mb-3">Suburbs</h2>
         <div className="bg-white rounded-lg border p-4">
-          <div className="flex flex-wrap gap-2 mb-4">
-            {suburbs.map((s) => (
-              <span key={s.slug} className="text-xs bg-gray-100 px-2 py-1 rounded">
-                {s.name} ({s.postcode}) · {s.region}
-              </span>
-            ))}
-          </div>
+          <AdminSuburbList suburbs={suburbs} />
           <AdminAddSuburb />
         </div>
       </section>

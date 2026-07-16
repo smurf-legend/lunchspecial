@@ -70,7 +70,7 @@ export default function SpecialCard({
         iconClassName="text-2xl"
       />
 
-      <div className="flex-1">
+      <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
           <Link href={`/specials/${special.id}`} className="font-semibold text-lg hover:text-orange-600">
             {special.title}

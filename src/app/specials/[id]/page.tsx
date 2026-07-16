@@ -76,7 +76,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
       <div className={`bg-white rounded-lg border p-6 flex gap-5 ${expired ? "opacity-70" : ""}`}>
         <VoteButtons voteEndpoint={`/api/specials/${special.id}/vote`} initialScore={special.score} />
 
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-bold">{special.title}</h1>
             {special.greatValue && (

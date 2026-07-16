@@ -50,7 +50,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       <div className="bg-white rounded-lg border p-6 flex gap-5">
         <VoteButtons voteEndpoint={`/api/blog/${post.id}/vote`} initialScore={post.score} />
 
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <h1 className="text-2xl font-bold">{post.title}</h1>
           <p className="text-sm text-gray-500 mt-1">
             By {post.author.name} · {new Date(post.createdAt).toLocaleDateString()}

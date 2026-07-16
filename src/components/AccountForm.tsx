@@ -5,11 +5,9 @@ import { useRouter } from "next/navigation";
 
 export default function AccountForm({
   initialName,
-  email,
   initialMarketingOptIn,
 }: {
   initialName: string;
-  email: string;
   initialMarketingOptIn: boolean;
 }) {
   const { update } = useSession();
@@ -62,16 +60,6 @@ export default function AccountForm({
         <p className="text-xs text-gray-400 mt-1">
           The name other people see next to your posts and comments — must be unique.
         </p>
-      </div>
-
-      <div>
-        <label className="text-sm font-medium mb-1 block">Email</label>
-        <input
-          type="email"
-          disabled
-          className="border rounded px-3 py-2 w-full bg-gray-50 text-gray-500"
-          value={email}
-        />
       </div>
 
       <label className="flex items-start gap-2 text-sm text-gray-600">

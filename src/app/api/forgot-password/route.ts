@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendPasswordResetEmail } from "@/lib/mail";
 import crypto from "crypto";
 import { z } from "zod";
 
@@ -29,11 +30,7 @@ export async function POST(req: NextRequest) {
 
     const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken}`;
 
-    // TODO: no email provider connected yet — this is where the actual
-    // "reset your password" email gets sent once one is (see project notes
-    // on the paused deals-digest email feature for the same dependency).
-    // Logged here in the meantime so it's still usable for testing/support.
-    console.log(`[forgot-password] Reset link for ${user.email}: ${resetUrl}`);
+    await sendPasswordResetEmail(user.email, resetUrl);
   }
 
   return NextResponse.json({ success: true });

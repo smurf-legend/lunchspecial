@@ -3,6 +3,8 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import AccountForm from "@/components/AccountForm";
+import ChangeEmailForm from "@/components/ChangeEmailForm";
+import ChangePasswordForm from "@/components/ChangePasswordForm";
 
 export default async function AccountPage() {
   const session = await getServerSession(authOptions);
@@ -26,9 +28,19 @@ export default async function AccountPage() {
   if (!user) return null;
 
   return (
-    <div className="max-w-sm mx-auto bg-white p-6 rounded-lg border">
-      <h1 className="text-xl font-bold mb-4">Profile</h1>
-      <AccountForm initialName={user.name} email={user.email} initialMarketingOptIn={user.marketingOptIn} />
+    <div className="max-w-sm mx-auto flex flex-col gap-6">
+      <div className="bg-white p-6 rounded-lg border">
+        <h1 className="text-xl font-bold mb-4">Profile</h1>
+        <AccountForm initialName={user.name} initialMarketingOptIn={user.marketingOptIn} />
+      </div>
+      <div className="bg-white p-6 rounded-lg border">
+        <h2 className="text-lg font-bold mb-4">Email address</h2>
+        <ChangeEmailForm currentEmail={user.email} />
+      </div>
+      <div className="bg-white p-6 rounded-lg border">
+        <h2 className="text-lg font-bold mb-4">Password</h2>
+        <ChangePasswordForm />
+      </div>
     </div>
   );
 }

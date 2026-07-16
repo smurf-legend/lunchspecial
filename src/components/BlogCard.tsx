@@ -36,7 +36,7 @@ export default function BlogCard({ post }: { post: BlogPostCardType }) {
         iconClassName="text-2xl"
       />
 
-      <div className="flex-1">
+      <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
           <Link href={`/table-talk/${post.slug}`} className="font-semibold text-lg hover:text-orange-600">
             {post.title}
