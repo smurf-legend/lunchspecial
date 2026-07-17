@@ -237,7 +237,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
             {special.startTime && special.endTime && ` · ${special.startTime}–${special.endTime}`}
           </p>
 
-          <div className="flex gap-2 mt-3">
+          <div className="flex gap-2 mt-3 flex-wrap">
             {special.categories.map((c) => (
               <Link
                 key={c.category.slug}
