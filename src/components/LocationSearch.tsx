@@ -18,12 +18,12 @@ export default function LocationSearch() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
+    <form onSubmit={handleSubmit} className="flex flex-wrap gap-2 mb-4">
       <input
         type="text"
         maxLength={40}
         placeholder="Suburb or postcode (e.g. Newtown or 2042)"
-        className="border rounded px-3 py-2 flex-1"
+        className="border rounded px-3 py-2 flex-1 min-w-0"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
       />
