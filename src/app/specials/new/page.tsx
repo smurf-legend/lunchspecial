@@ -290,13 +290,21 @@ export default function NewSpecialPage() {
           value={form.venueName}
           onChange={(e) => setForm({ ...form, venueName: e.target.value })}
         />
-        <input
-          type="text"
-          placeholder="Address, or paste a Google Maps link (optional)"
-          className="border rounded px-3 py-2"
-          value={form.address}
-          onChange={(e) => setForm({ ...form, address: e.target.value })}
-        />
+        <div>
+          <input
+            type="text"
+            placeholder="Address, or paste a Google Maps link (optional)"
+            className="border rounded px-3 py-2 w-full"
+            value={form.address}
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+          />
+          {locationMode === "chain" && (
+            <p className="text-xs text-gray-400 mt-1">
+              Only shown for single-location specials — with multiple suburbs selected, this
+              won't be displayed since it can only point to one of them.
+            </p>
+          )}
+        </div>
         <input
           type="text"
           placeholder="Coupon/deal code, if the vendor provides one (optional)"

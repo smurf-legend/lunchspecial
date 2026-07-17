@@ -150,6 +150,13 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
             <span className="font-medium">{special.venueName}</span>
             {chainWide ? (
               <span className="text-gray-600">📍 All Sydney locations</span>
+            ) : suburbList.length > 1 ? (
+              // Multiple branches but only one address/map link was captured
+              // — a single pin next to one suburb name implied it was the
+              // only (or "the") location, which was misleading. The full
+              // suburb list is already shown below, so just flag there's
+              // more than one here rather than repeating it.
+              <span className="text-gray-600">📍 Multiple locations ({suburbList.length})</span>
             ) : (
               <>
                 <a
@@ -169,7 +176,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
                 </Link>
               </>
             )}
-            {special.address && !isMapsLink(special.address) && (
+            {suburbList.length <= 1 && special.address && !isMapsLink(special.address) && (
               <span className="text-gray-500">{special.address}</span>
             )}
           </div>

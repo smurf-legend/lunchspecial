@@ -47,7 +47,6 @@ export default function SpecialCard({
   const expired = isExpired(special.expiresAt ?? null);
   const suburbList = special.suburbs.map((s) => s.suburb);
   const displaySuburb = suburbList.find((s) => s.slug === contextSuburbSlug) ?? suburbList[0];
-  const extraSuburbCount = suburbList.length - 1;
   const chainWide = special.chainWide ?? false;
 
   return (
@@ -107,6 +106,13 @@ export default function SpecialCard({
           <span className="text-gray-700 font-medium">{special.venueName}</span>
           {chainWide ? (
             <span className="text-gray-500">📍 All Sydney locations</span>
+          ) : suburbList.length > 1 ? (
+            // Multiple specific branches but only one address/map link was
+            // captured — showing that single pin next to one suburb name
+            // implied it was the only (or "the" representative) location,
+            // which was misleading. Generic label instead, same idea as
+            // chainWide's, until/unless we support one address per suburb.
+            <span className="text-gray-500">📍 Multiple locations ({suburbList.length})</span>
           ) : (
             <>
               <a
@@ -125,9 +131,6 @@ export default function SpecialCard({
               >
                 {displaySuburb.name}
               </Link>
-              {extraSuburbCount > 0 && (
-                <span className="text-xs text-gray-400">+{extraSuburbCount} more locations</span>
-              )}
             </>
           )}
           <span className="font-semibold text-green-700">${special.specialPrice.toFixed(2)}</span>
