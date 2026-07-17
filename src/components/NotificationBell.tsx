@@ -61,7 +61,7 @@ export default function NotificationBell() {
   return (
     <div className="relative" ref={containerRef}>
       <button onClick={handleOpen} className="relative text-sm" aria-label="Notifications">
-        🔔
+        <span className="inline-block grayscale brightness-0 invert">🔔</span>
         {unreadCount > 0 && (
           <span className="absolute -top-1.5 -right-2 bg-white text-orange-600 text-[10px] font-bold rounded-full px-1 min-w-[16px] text-center leading-4">
             {unreadCount > 9 ? "9+" : unreadCount}

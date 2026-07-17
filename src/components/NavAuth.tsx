@@ -19,7 +19,7 @@ export default function NavAuth() {
         )}
         <NotificationBell />
         <Link href="/profile" className="text-sm underline" title="Edit your profile">
-          👤 Hi, {session.user.name}
+          <span className="inline-block grayscale brightness-0 invert">👤</span> Hi, {session.user.name}
         </Link>
         <button onClick={() => signOut({ callbackUrl: "/" })} className="text-sm underline">
           Log out
