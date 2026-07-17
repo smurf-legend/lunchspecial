@@ -52,7 +52,7 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
   return (
     <div className="flex items-center justify-between p-3 text-sm">
       <div>
-        <Link href={`/specials/${specialSlug(special)}`} className="font-medium hover:text-orange-600">
+        <Link href={`/specials/${specialSlug(special)}`} prefetch={false} className="font-medium hover:text-orange-600">
           {special.title}
         </Link>
         {special.hidden && (
@@ -79,6 +79,7 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
       <div className="flex gap-2 shrink-0">
         <Link
           href={`/kitchen/specials/${special.id}/edit`}
+          prefetch={false}
           className="text-gray-700 text-xs font-medium border rounded px-3 py-1.5 hover:bg-gray-50"
         >
           Edit

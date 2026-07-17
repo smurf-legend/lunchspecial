@@ -47,7 +47,7 @@ export default function AdminBlogRow({ post }: { post: BlogPostRow }) {
   return (
     <div className="flex items-center justify-between p-3 text-sm">
       <div>
-        <Link href={`/table-talk/${post.slug}`} className="font-medium hover:text-orange-600">
+        <Link href={`/table-talk/${post.slug}`} prefetch={false} className="font-medium hover:text-orange-600">
           {post.title}
         </Link>
         {post.hidden && (
@@ -61,6 +61,7 @@ export default function AdminBlogRow({ post }: { post: BlogPostRow }) {
       <div className="flex gap-2 shrink-0">
         <Link
           href={`/kitchen/table-talk/${post.id}/edit`}
+          prefetch={false}
           className="text-gray-700 text-xs font-medium border rounded px-3 py-1.5 hover:bg-gray-50"
         >
           Edit

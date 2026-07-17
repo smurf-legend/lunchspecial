@@ -73,7 +73,11 @@ export default function SpecialCard({
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <Link href={`/specials/${specialSlug(special)}`} className="font-semibold text-lg hover:text-orange-600">
+          <Link
+            href={`/specials/${specialSlug(special)}`}
+            prefetch={false}
+            className="font-semibold text-lg hover:text-orange-600"
+          >
             {special.title}
           </Link>
           {special.greatValue && (
@@ -112,6 +116,7 @@ export default function SpecialCard({
               </a>
               <Link
                 href={`/suburbs/${displaySuburb.slug}`}
+                prefetch={false}
                 className="text-gray-500 hover:text-orange-600"
               >
                 {displaySuburb.name}
