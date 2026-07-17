@@ -185,6 +185,25 @@ export default async function HomePage({
         ))}
       </div>
 
+      <div className="flex gap-2 mb-4 mt-1">
+        <Link
+          href={buildLink({ sort: "hot" })}
+          className={`px-3 py-1 rounded-full text-sm font-medium ${
+            sort === "hot" ? "bg-orange-600 text-white" : "bg-white border"
+          }`}
+        >
+          🔥 Most Popular
+        </Link>
+        <Link
+          href={buildLink({ sort: "new" })}
+          className={`px-3 py-1 rounded-full text-sm font-medium ${
+            sort === "new" ? "bg-orange-600 text-white" : "bg-white border"
+          }`}
+        >
+          🆕 Newest
+        </Link>
+      </div>
+
       <div className="flex flex-col gap-3">
         {specials.map((special) => (
           <SpecialCard
