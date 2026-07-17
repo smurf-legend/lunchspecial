@@ -137,7 +137,7 @@ export default function SpecialCard({
           <span className="text-gray-400">💬 {special._count?.comments ?? 0}</span>
         </div>
 
-        <div className="flex items-center gap-2 mt-2">
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
           <span className="text-xs text-gray-500">{special.availableDays}</span>
           {special.categories?.map((c) => (
             <Link

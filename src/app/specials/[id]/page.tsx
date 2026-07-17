@@ -180,7 +180,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
             </p>
           )}
 
-          <div className="flex items-center gap-3 mt-3 text-sm">
+          <div className="flex items-center gap-3 mt-3 text-sm flex-wrap">
             <span className="font-semibold text-green-700 text-lg">
               ${special.specialPrice.toFixed(2)}
             </span>
