@@ -177,34 +177,6 @@ export default async function HomePage({
         </Link>
       </div>
 
-      <div className="flex gap-2 mb-4 mt-1">
-        <Link
-          href={buildLink({ sort: "hot" })}
-          className={`px-3 py-1 rounded-full text-sm font-medium ${
-            sort === "hot" ? "bg-orange-600 text-white" : "bg-white border"
-          }`}
-        >
-          🔥 Hot
-        </Link>
-        <Link
-          href={buildLink({ sort: "new" })}
-          className={`px-3 py-1 rounded-full text-sm font-medium ${
-            sort === "new" ? "bg-orange-600 text-white" : "bg-white border"
-          }`}
-        >
-          🆕 New
-        </Link>
-        <Link
-          href={buildLink({ sort: "oldie" })}
-          title="Posted 30+ days ago, sorted by score — proven recurring deals"
-          className={`px-3 py-1 rounded-full text-sm font-medium ${
-            sort === "oldie" ? "bg-orange-600 text-white" : "bg-white border"
-          }`}
-        >
-          ⭐ Oldie but goodie
-        </Link>
-      </div>
-
       <div className="flex flex-col gap-3">
         {specials.map((special) => (
           <SpecialCard
