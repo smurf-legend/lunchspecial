@@ -18,8 +18,8 @@ export default function NavAuth() {
           </Link>
         )}
         <NotificationBell />
-        <Link href="/profile" className="text-sm">
-          Hi, {session.user.name}
+        <Link href="/profile" className="text-sm underline" title="Edit your profile">
+          👤 Hi, {session.user.name}
         </Link>
         <button onClick={() => signOut({ callbackUrl: "/" })} className="text-sm underline">
           Log out
