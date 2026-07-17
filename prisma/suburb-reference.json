@@ -1,0 +1,5090 @@
+[
+  {
+    "slug": "abbotsbury",
+    "name": "Abbotsbury",
+    "postcode": "2176",
+    "region": "South"
+  },
+  {
+    "slug": "abbotsford",
+    "name": "Abbotsford",
+    "postcode": "2046",
+    "region": "Central"
+  },
+  {
+    "slug": "acacia-gardens",
+    "name": "Acacia Gardens",
+    "postcode": "2763",
+    "region": "West"
+  },
+  {
+    "slug": "agnes-banks",
+    "name": "Agnes Banks",
+    "postcode": "2753",
+    "region": "West"
+  },
+  {
+    "slug": "airds",
+    "name": "Airds",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "akuna-bay",
+    "name": "Akuna Bay",
+    "postcode": "2084",
+    "region": "North"
+  },
+  {
+    "slug": "alexandria",
+    "name": "Alexandria",
+    "postcode": "2015",
+    "region": "Central"
+  },
+  {
+    "slug": "alfords-point",
+    "name": "Alfords Point",
+    "postcode": "2234",
+    "region": "South"
+  },
+  {
+    "slug": "allambie",
+    "name": "Allambie",
+    "postcode": "2100",
+    "region": "North"
+  },
+  {
+    "slug": "allambie-heights",
+    "name": "Allambie Heights",
+    "postcode": "2100",
+    "region": "North"
+  },
+  {
+    "slug": "allawah",
+    "name": "Allawah",
+    "postcode": "2218",
+    "region": "South"
+  },
+  {
+    "slug": "ambarvale",
+    "name": "Ambarvale",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "angus",
+    "name": "Angus",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "annandale",
+    "name": "Annandale",
+    "postcode": "2038",
+    "region": "Central"
+  },
+  {
+    "slug": "annangrove",
+    "name": "Annangrove",
+    "postcode": "2156",
+    "region": "West"
+  },
+  {
+    "slug": "appin",
+    "name": "Appin",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "arcadia",
+    "name": "Arcadia",
+    "postcode": "2159",
+    "region": "West"
+  },
+  {
+    "slug": "arncliffe",
+    "name": "Arncliffe",
+    "postcode": "2205",
+    "region": "South"
+  },
+  {
+    "slug": "arndell-park",
+    "name": "Arndell Park",
+    "postcode": "2148",
+    "region": "West"
+  },
+  {
+    "slug": "artarmon",
+    "name": "Artarmon",
+    "postcode": "2064",
+    "region": "North"
+  },
+  {
+    "slug": "ashbury",
+    "name": "Ashbury",
+    "postcode": "2193",
+    "region": "Central"
+  },
+  {
+    "slug": "ashcroft",
+    "name": "Ashcroft",
+    "postcode": "2168",
+    "region": "West"
+  },
+  {
+    "slug": "ashfield",
+    "name": "Ashfield",
+    "postcode": "2131",
+    "region": "Central"
+  },
+  {
+    "slug": "asquith",
+    "name": "Asquith",
+    "postcode": "2077",
+    "region": "North"
+  },
+  {
+    "slug": "auburn",
+    "name": "Auburn",
+    "postcode": "2144",
+    "region": "West"
+  },
+  {
+    "slug": "auburn-south",
+    "name": "Auburn South",
+    "postcode": "2144",
+    "region": "West"
+  },
+  {
+    "slug": "audley",
+    "name": "Audley",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "austral",
+    "name": "Austral",
+    "postcode": "2179",
+    "region": "South"
+  },
+  {
+    "slug": "avalon",
+    "name": "Avalon",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "avalon-beach",
+    "name": "Avalon Beach",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "avon",
+    "name": "Avon",
+    "postcode": "2574",
+    "region": "West"
+  },
+  {
+    "slug": "badgerys-creek",
+    "name": "Badgerys Creek",
+    "postcode": "2555",
+    "region": "West"
+  },
+  {
+    "slug": "balgowlah",
+    "name": "Balgowlah",
+    "postcode": "2093",
+    "region": "North"
+  },
+  {
+    "slug": "balgowlah-heights",
+    "name": "Balgowlah Heights",
+    "postcode": "2093",
+    "region": "North"
+  },
+  {
+    "slug": "balmain",
+    "name": "Balmain",
+    "postcode": "2041",
+    "region": "Central"
+  },
+  {
+    "slug": "balmain-east",
+    "name": "Balmain East",
+    "postcode": "2041",
+    "region": "Central"
+  },
+  {
+    "slug": "balmoral",
+    "name": "Balmoral",
+    "postcode": "2571",
+    "region": "West"
+  },
+  {
+    "slug": "balmoral-village",
+    "name": "Balmoral Village",
+    "postcode": "2571",
+    "region": "West"
+  },
+  {
+    "slug": "bangor",
+    "name": "Bangor",
+    "postcode": "2234",
+    "region": "South"
+  },
+  {
+    "slug": "banksia",
+    "name": "Banksia",
+    "postcode": "2216",
+    "region": "South"
+  },
+  {
+    "slug": "banksmeadow",
+    "name": "Banksmeadow",
+    "postcode": "2019",
+    "region": "Central"
+  },
+  {
+    "slug": "bankstown",
+    "name": "Bankstown",
+    "postcode": "2200",
+    "region": "South"
+  },
+  {
+    "slug": "bankstown-aerodrome",
+    "name": "Bankstown Aerodrome",
+    "postcode": "2200",
+    "region": "Central"
+  },
+  {
+    "slug": "bankstown-airport",
+    "name": "Bankstown Airport",
+    "postcode": "2200",
+    "region": "Central"
+  },
+  {
+    "slug": "bankstown-north",
+    "name": "Bankstown North",
+    "postcode": "2200",
+    "region": "Central"
+  },
+  {
+    "slug": "bankstown-square",
+    "name": "Bankstown Square",
+    "postcode": "2200",
+    "region": "Central"
+  },
+  {
+    "slug": "bar-point",
+    "name": "Bar Point",
+    "postcode": "2083",
+    "region": "North"
+  },
+  {
+    "slug": "barangaroo",
+    "name": "Barangaroo",
+    "postcode": "2000",
+    "region": "Central"
+  },
+  {
+    "slug": "barden-ridge",
+    "name": "Barden Ridge",
+    "postcode": "2234",
+    "region": "South"
+  },
+  {
+    "slug": "bardia",
+    "name": "Bardia",
+    "postcode": "2565",
+    "region": "West"
+  },
+  {
+    "slug": "bardwell-park",
+    "name": "Bardwell Park",
+    "postcode": "2207",
+    "region": "South"
+  },
+  {
+    "slug": "bardwell-valley",
+    "name": "Bardwell Valley",
+    "postcode": "2207",
+    "region": "South"
+  },
+  {
+    "slug": "bargo",
+    "name": "Bargo",
+    "postcode": "2574",
+    "region": "West"
+  },
+  {
+    "slug": "bass-hill",
+    "name": "Bass Hill",
+    "postcode": "2197",
+    "region": "Central"
+  },
+  {
+    "slug": "baulkham-hills",
+    "name": "Baulkham Hills",
+    "postcode": "2153",
+    "region": "West"
+  },
+  {
+    "slug": "bayview",
+    "name": "Bayview",
+    "postcode": "2104",
+    "region": "North"
+  },
+  {
+    "slug": "beacon-hill",
+    "name": "Beacon Hill",
+    "postcode": "2100",
+    "region": "North"
+  },
+  {
+    "slug": "beaconsfield",
+    "name": "Beaconsfield",
+    "postcode": "2015",
+    "region": "Central"
+  },
+  {
+    "slug": "beaumont-hills",
+    "name": "Beaumont Hills",
+    "postcode": "2155",
+    "region": "West"
+  },
+  {
+    "slug": "beecroft",
+    "name": "Beecroft",
+    "postcode": "2119",
+    "region": "North"
+  },
+  {
+    "slug": "belfield",
+    "name": "Belfield",
+    "postcode": "2191",
+    "region": "South"
+  },
+  {
+    "slug": "belimbla-park",
+    "name": "Belimbla Park",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "bella-vista",
+    "name": "Bella Vista",
+    "postcode": "2153",
+    "region": "West"
+  },
+  {
+    "slug": "bellevue-hill",
+    "name": "Bellevue Hill",
+    "postcode": "2023",
+    "region": "East"
+  },
+  {
+    "slug": "belmore",
+    "name": "Belmore",
+    "postcode": "2192",
+    "region": "Central"
+  },
+  {
+    "slug": "belrose",
+    "name": "Belrose",
+    "postcode": "2085",
+    "region": "North"
+  },
+  {
+    "slug": "belrose-west",
+    "name": "Belrose West",
+    "postcode": "2085",
+    "region": "North"
+  },
+  {
+    "slug": "ben-buckler",
+    "name": "Ben Buckler",
+    "postcode": "2026",
+    "region": "East"
+  },
+  {
+    "slug": "berala",
+    "name": "Berala",
+    "postcode": "2141",
+    "region": "Central"
+  },
+  {
+    "slug": "berambing",
+    "name": "Berambing",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "berkshire-park",
+    "name": "Berkshire Park",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "berowra",
+    "name": "Berowra",
+    "postcode": "2081",
+    "region": "North"
+  },
+  {
+    "slug": "berowra-creek",
+    "name": "Berowra Creek",
+    "postcode": "2082",
+    "region": "North"
+  },
+  {
+    "slug": "berowra-heights",
+    "name": "Berowra Heights",
+    "postcode": "2082",
+    "region": "North"
+  },
+  {
+    "slug": "berowra-waters",
+    "name": "Berowra Waters",
+    "postcode": "2082",
+    "region": "North"
+  },
+  {
+    "slug": "berrilee",
+    "name": "Berrilee",
+    "postcode": "2159",
+    "region": "West"
+  },
+  {
+    "slug": "beverley-park",
+    "name": "Beverley Park",
+    "postcode": "2217",
+    "region": "South"
+  },
+  {
+    "slug": "beverly-hills",
+    "name": "Beverly Hills",
+    "postcode": "2209",
+    "region": "South"
+  },
+  {
+    "slug": "bexley",
+    "name": "Bexley",
+    "postcode": "2207",
+    "region": "South"
+  },
+  {
+    "slug": "bexley-north",
+    "name": "Bexley North",
+    "postcode": "2207",
+    "region": "South"
+  },
+  {
+    "slug": "bexley-south",
+    "name": "Bexley South",
+    "postcode": "2207",
+    "region": "South"
+  },
+  {
+    "slug": "bickley-vale",
+    "name": "Bickley Vale",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "bidwill",
+    "name": "Bidwill",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "bilgola",
+    "name": "Bilgola",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "bilgola-beach",
+    "name": "Bilgola Beach",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "bilgola-plateau",
+    "name": "Bilgola Plateau",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "bilpin",
+    "name": "Bilpin",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "birchgrove",
+    "name": "Birchgrove",
+    "postcode": "2041",
+    "region": "Central"
+  },
+  {
+    "slug": "birrong",
+    "name": "Birrong",
+    "postcode": "2143",
+    "region": "West"
+  },
+  {
+    "slug": "blackett",
+    "name": "Blackett",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "blacktown",
+    "name": "Blacktown",
+    "postcode": "2148",
+    "region": "West"
+  },
+  {
+    "slug": "blacktown-westpoint",
+    "name": "Blacktown Westpoint",
+    "postcode": "2148",
+    "region": "West"
+  },
+  {
+    "slug": "blair-athol",
+    "name": "Blair Athol",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "blairmount",
+    "name": "Blairmount",
+    "postcode": "2559",
+    "region": "West"
+  },
+  {
+    "slug": "blakehurst",
+    "name": "Blakehurst",
+    "postcode": "2221",
+    "region": "South"
+  },
+  {
+    "slug": "blaxcell",
+    "name": "Blaxcell",
+    "postcode": "2142",
+    "region": "West"
+  },
+  {
+    "slug": "blaxlands-ridge",
+    "name": "Blaxlands Ridge",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "blenheim-road",
+    "name": "Blenheim Road",
+    "postcode": "2113",
+    "region": "North"
+  },
+  {
+    "slug": "bligh-park",
+    "name": "Bligh Park",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "bobbin-head",
+    "name": "Bobbin Head",
+    "postcode": "2074",
+    "region": "North"
+  },
+  {
+    "slug": "bondi",
+    "name": "Bondi",
+    "postcode": "2026",
+    "region": "East"
+  },
+  {
+    "slug": "bondi-beach",
+    "name": "Bondi Beach",
+    "postcode": "2026",
+    "region": "East"
+  },
+  {
+    "slug": "bondi-junction",
+    "name": "Bondi Junction",
+    "postcode": "2022",
+    "region": "East"
+  },
+  {
+    "slug": "bonnet-bay",
+    "name": "Bonnet Bay",
+    "postcode": "2226",
+    "region": "South"
+  },
+  {
+    "slug": "bonnie-vale",
+    "name": "Bonnie Vale",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "bonnyrigg",
+    "name": "Bonnyrigg",
+    "postcode": "2177",
+    "region": "South"
+  },
+  {
+    "slug": "bonnyrigg-heights",
+    "name": "Bonnyrigg Heights",
+    "postcode": "2177",
+    "region": "South"
+  },
+  {
+    "slug": "boronia-park",
+    "name": "Boronia Park",
+    "postcode": "2111",
+    "region": "North"
+  },
+  {
+    "slug": "bossley-park",
+    "name": "Bossley Park",
+    "postcode": "2176",
+    "region": "South"
+  },
+  {
+    "slug": "botany",
+    "name": "Botany",
+    "postcode": "2019",
+    "region": "Central"
+  },
+  {
+    "slug": "bow-bowing",
+    "name": "Bow Bowing",
+    "postcode": "2566",
+    "region": "West"
+  },
+  {
+    "slug": "bowen-mountain",
+    "name": "Bowen Mountain",
+    "postcode": "2753",
+    "region": "West"
+  },
+  {
+    "slug": "box-hill",
+    "name": "Box Hill",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "bradbury",
+    "name": "Bradbury",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "bradfield",
+    "name": "Bradfield",
+    "postcode": "2556",
+    "region": "West"
+  },
+  {
+    "slug": "breakfast-point",
+    "name": "Breakfast Point",
+    "postcode": "2137",
+    "region": "Central"
+  },
+  {
+    "slug": "brereton",
+    "name": "Brereton",
+    "postcode": "2752",
+    "region": "West"
+  },
+  {
+    "slug": "brighton-le-sands",
+    "name": "Brighton-Le-Sands",
+    "postcode": "2216",
+    "region": "South"
+  },
+  {
+    "slug": "bringelly",
+    "name": "Bringelly",
+    "postcode": "2556",
+    "region": "West"
+  },
+  {
+    "slug": "broadway",
+    "name": "Broadway",
+    "postcode": "2007",
+    "region": "Central"
+  },
+  {
+    "slug": "bronte",
+    "name": "Bronte",
+    "postcode": "2024",
+    "region": "East"
+  },
+  {
+    "slug": "brooklyn",
+    "name": "Brooklyn",
+    "postcode": "2083",
+    "region": "North"
+  },
+  {
+    "slug": "brookvale",
+    "name": "Brookvale",
+    "postcode": "2100",
+    "region": "North"
+  },
+  {
+    "slug": "brownlow-hill",
+    "name": "Brownlow Hill",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "bundeena",
+    "name": "Bundeena",
+    "postcode": "2230",
+    "region": "South"
+  },
+  {
+    "slug": "bungarribee",
+    "name": "Bungarribee",
+    "postcode": "2767",
+    "region": "West"
+  },
+  {
+    "slug": "burragorang-valley",
+    "name": "Burragorang Valley",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "burraneer",
+    "name": "Burraneer",
+    "postcode": "2230",
+    "region": "South"
+  },
+  {
+    "slug": "burwood",
+    "name": "Burwood",
+    "postcode": "2134",
+    "region": "Central"
+  },
+  {
+    "slug": "burwood-heights",
+    "name": "Burwood Heights",
+    "postcode": "2136",
+    "region": "Central"
+  },
+  {
+    "slug": "burwood-north",
+    "name": "Burwood North",
+    "postcode": "2134",
+    "region": "Central"
+  },
+  {
+    "slug": "busby",
+    "name": "Busby",
+    "postcode": "2168",
+    "region": "West"
+  },
+  {
+    "slug": "buxton",
+    "name": "Buxton",
+    "postcode": "2571",
+    "region": "West"
+  },
+  {
+    "slug": "cbd",
+    "name": "CBD",
+    "postcode": "2000",
+    "region": "Central"
+  },
+  {
+    "slug": "cabarita",
+    "name": "Cabarita",
+    "postcode": "2137",
+    "region": "Central"
+  },
+  {
+    "slug": "cabramatta",
+    "name": "Cabramatta",
+    "postcode": "2166",
+    "region": "West"
+  },
+  {
+    "slug": "cabramatta-west",
+    "name": "Cabramatta West",
+    "postcode": "2166",
+    "region": "West"
+  },
+  {
+    "slug": "caddens",
+    "name": "Caddens",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "cambridge-gardens",
+    "name": "Cambridge Gardens",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "cambridge-park",
+    "name": "Cambridge Park",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "camden",
+    "name": "Camden",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "camden-park",
+    "name": "Camden Park",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "camden-south",
+    "name": "Camden South",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "camellia",
+    "name": "Camellia",
+    "postcode": "2142",
+    "region": "West"
+  },
+  {
+    "slug": "cammeray",
+    "name": "Cammeray",
+    "postcode": "2062",
+    "region": "North"
+  },
+  {
+    "slug": "campbelltown",
+    "name": "Campbelltown",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "campbelltown-north",
+    "name": "Campbelltown North",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "camperdown",
+    "name": "Camperdown",
+    "postcode": "2050",
+    "region": "Central"
+  },
+  {
+    "slug": "campsie",
+    "name": "Campsie",
+    "postcode": "2194",
+    "region": "Central"
+  },
+  {
+    "slug": "canada-bay",
+    "name": "Canada Bay",
+    "postcode": "2046",
+    "region": "Central"
+  },
+  {
+    "slug": "canley-heights",
+    "name": "Canley Heights",
+    "postcode": "2166",
+    "region": "West"
+  },
+  {
+    "slug": "canley-vale",
+    "name": "Canley Vale",
+    "postcode": "2166",
+    "region": "West"
+  },
+  {
+    "slug": "canoelands",
+    "name": "Canoelands",
+    "postcode": "2157",
+    "region": "West"
+  },
+  {
+    "slug": "canterbury",
+    "name": "Canterbury",
+    "postcode": "2193",
+    "region": "Central"
+  },
+  {
+    "slug": "caravan-head",
+    "name": "Caravan Head",
+    "postcode": "2225",
+    "region": "South"
+  },
+  {
+    "slug": "careel-bay",
+    "name": "Careel Bay",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "caringbah",
+    "name": "Caringbah",
+    "postcode": "2229",
+    "region": "South"
+  },
+  {
+    "slug": "caringbah-south",
+    "name": "Caringbah South",
+    "postcode": "2229",
+    "region": "South"
+  },
+  {
+    "slug": "carlingford",
+    "name": "Carlingford",
+    "postcode": "2118",
+    "region": "West"
+  },
+  {
+    "slug": "carlingford-court",
+    "name": "Carlingford Court",
+    "postcode": "2118",
+    "region": "North"
+  },
+  {
+    "slug": "carlingford-north",
+    "name": "Carlingford North",
+    "postcode": "2118",
+    "region": "North"
+  },
+  {
+    "slug": "carlton",
+    "name": "Carlton",
+    "postcode": "2218",
+    "region": "South"
+  },
+  {
+    "slug": "carnes-hill",
+    "name": "Carnes Hill",
+    "postcode": "2171",
+    "region": "South"
+  },
+  {
+    "slug": "carramar",
+    "name": "Carramar",
+    "postcode": "2163",
+    "region": "West"
+  },
+  {
+    "slug": "carss-park",
+    "name": "Carss Park",
+    "postcode": "2221",
+    "region": "South"
+  },
+  {
+    "slug": "cartwright",
+    "name": "Cartwright",
+    "postcode": "2168",
+    "region": "West"
+  },
+  {
+    "slug": "castle-cove",
+    "name": "Castle Cove",
+    "postcode": "2069",
+    "region": "North"
+  },
+  {
+    "slug": "castle-hill",
+    "name": "Castle Hill",
+    "postcode": "2154",
+    "region": "West"
+  },
+  {
+    "slug": "castlecrag",
+    "name": "Castlecrag",
+    "postcode": "2068",
+    "region": "North"
+  },
+  {
+    "slug": "castlereagh",
+    "name": "Castlereagh",
+    "postcode": "2749",
+    "region": "West"
+  },
+  {
+    "slug": "casula",
+    "name": "Casula",
+    "postcode": "2170",
+    "region": "West"
+  },
+  {
+    "slug": "cataract",
+    "name": "Cataract",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "catherine-field",
+    "name": "Catherine Field",
+    "postcode": "2557",
+    "region": "West"
+  },
+  {
+    "slug": "cattai",
+    "name": "Cattai",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "cawdor",
+    "name": "Cawdor",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "cecil-hills",
+    "name": "Cecil Hills",
+    "postcode": "2171",
+    "region": "South"
+  },
+  {
+    "slug": "cecil-park",
+    "name": "Cecil Park",
+    "postcode": "2178",
+    "region": "South"
+  },
+  {
+    "slug": "centennial-park",
+    "name": "Centennial Park",
+    "postcode": "2021",
+    "region": "East"
+  },
+  {
+    "slug": "central-colo",
+    "name": "Central Colo",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "charing-cross",
+    "name": "Charing Cross",
+    "postcode": "2024",
+    "region": "East"
+  },
+  {
+    "slug": "chatswood",
+    "name": "Chatswood",
+    "postcode": "2067",
+    "region": "North"
+  },
+  {
+    "slug": "chatswood-west",
+    "name": "Chatswood West",
+    "postcode": "2067",
+    "region": "North"
+  },
+  {
+    "slug": "cheero-point",
+    "name": "Cheero Point",
+    "postcode": "2083",
+    "region": "North"
+  },
+  {
+    "slug": "cheltenham",
+    "name": "Cheltenham",
+    "postcode": "2119",
+    "region": "North"
+  },
+  {
+    "slug": "cherrybrook",
+    "name": "Cherrybrook",
+    "postcode": "2126",
+    "region": "North"
+  },
+  {
+    "slug": "chester-hill",
+    "name": "Chester Hill",
+    "postcode": "2162",
+    "region": "West"
+  },
+  {
+    "slug": "chifley",
+    "name": "Chifley",
+    "postcode": "2036",
+    "region": "East"
+  },
+  {
+    "slug": "chippendale",
+    "name": "Chippendale",
+    "postcode": "2008",
+    "region": "Central"
+  },
+  {
+    "slug": "chipping-norton",
+    "name": "Chipping Norton",
+    "postcode": "2170",
+    "region": "South"
+  },
+  {
+    "slug": "chiswick",
+    "name": "Chiswick",
+    "postcode": "2046",
+    "region": "Central"
+  },
+  {
+    "slug": "chullora",
+    "name": "Chullora",
+    "postcode": "2190",
+    "region": "South"
+  },
+  {
+    "slug": "church-point",
+    "name": "Church Point",
+    "postcode": "2105",
+    "region": "North"
+  },
+  {
+    "slug": "claremont-meadows",
+    "name": "Claremont Meadows",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "clarendon",
+    "name": "Clarendon",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "clareville",
+    "name": "Clareville",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "claymore",
+    "name": "Claymore",
+    "postcode": "2559",
+    "region": "West"
+  },
+  {
+    "slug": "clemton-park",
+    "name": "Clemton Park",
+    "postcode": "2206",
+    "region": "South"
+  },
+  {
+    "slug": "clontarf",
+    "name": "Clontarf",
+    "postcode": "2093",
+    "region": "North"
+  },
+  {
+    "slug": "clovelly",
+    "name": "Clovelly",
+    "postcode": "2031",
+    "region": "East"
+  },
+  {
+    "slug": "clovelly-west",
+    "name": "Clovelly West",
+    "postcode": "2031",
+    "region": "East"
+  },
+  {
+    "slug": "clyde",
+    "name": "Clyde",
+    "postcode": "2142",
+    "region": "West"
+  },
+  {
+    "slug": "coasters-retreat",
+    "name": "Coasters Retreat",
+    "postcode": "2108",
+    "region": "North"
+  },
+  {
+    "slug": "cobbitty",
+    "name": "Cobbitty",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "cogra-bay",
+    "name": "Cogra Bay",
+    "postcode": "2083",
+    "region": "North"
+  },
+  {
+    "slug": "colebee",
+    "name": "Colebee",
+    "postcode": "2761",
+    "region": "West"
+  },
+  {
+    "slug": "collaroy",
+    "name": "Collaroy",
+    "postcode": "2097",
+    "region": "North"
+  },
+  {
+    "slug": "collaroy-beach",
+    "name": "Collaroy Beach",
+    "postcode": "2097",
+    "region": "North"
+  },
+  {
+    "slug": "collaroy-plateau",
+    "name": "Collaroy Plateau",
+    "postcode": "2097",
+    "region": "North"
+  },
+  {
+    "slug": "collaroy-plateau-west",
+    "name": "Collaroy Plateau West",
+    "postcode": "2097",
+    "region": "North"
+  },
+  {
+    "slug": "colo",
+    "name": "Colo",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "colo-heights",
+    "name": "Colo Heights",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "colyton",
+    "name": "Colyton",
+    "postcode": "2760",
+    "region": "West"
+  },
+  {
+    "slug": "como",
+    "name": "Como",
+    "postcode": "2226",
+    "region": "South"
+  },
+  {
+    "slug": "concord",
+    "name": "Concord",
+    "postcode": "2137",
+    "region": "Central"
+  },
+  {
+    "slug": "concord-west",
+    "name": "Concord West",
+    "postcode": "2138",
+    "region": "Central"
+  },
+  {
+    "slug": "condell-park",
+    "name": "Condell Park",
+    "postcode": "2200",
+    "region": "Central"
+  },
+  {
+    "slug": "connells-point",
+    "name": "Connells Point",
+    "postcode": "2221",
+    "region": "South"
+  },
+  {
+    "slug": "constitution-hill",
+    "name": "Constitution Hill",
+    "postcode": "2145",
+    "region": "West"
+  },
+  {
+    "slug": "coogee",
+    "name": "Coogee",
+    "postcode": "2034",
+    "region": "East"
+  },
+  {
+    "slug": "cornwallis",
+    "name": "Cornwallis",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "cottage-point",
+    "name": "Cottage Point",
+    "postcode": "2084",
+    "region": "North"
+  },
+  {
+    "slug": "couridjah",
+    "name": "Couridjah",
+    "postcode": "2571",
+    "region": "West"
+  },
+  {
+    "slug": "cowan",
+    "name": "Cowan",
+    "postcode": "2081",
+    "region": "North"
+  },
+  {
+    "slug": "cranebrook",
+    "name": "Cranebrook",
+    "postcode": "2749",
+    "region": "West"
+  },
+  {
+    "slug": "cremorne",
+    "name": "Cremorne",
+    "postcode": "2090",
+    "region": "North"
+  },
+  {
+    "slug": "cremorne-junction",
+    "name": "Cremorne Junction",
+    "postcode": "2090",
+    "region": "North"
+  },
+  {
+    "slug": "cremorne-point",
+    "name": "Cremorne Point",
+    "postcode": "2090",
+    "region": "North"
+  },
+  {
+    "slug": "crestwood",
+    "name": "Crestwood",
+    "postcode": "2153",
+    "region": "West"
+  },
+  {
+    "slug": "cromer",
+    "name": "Cromer",
+    "postcode": "2099",
+    "region": "North"
+  },
+  {
+    "slug": "cromer-heights",
+    "name": "Cromer Heights",
+    "postcode": "2099",
+    "region": "North"
+  },
+  {
+    "slug": "cronulla",
+    "name": "Cronulla",
+    "postcode": "2230",
+    "region": "South"
+  },
+  {
+    "slug": "crows-nest",
+    "name": "Crows Nest",
+    "postcode": "2065",
+    "region": "North"
+  },
+  {
+    "slug": "croydon",
+    "name": "Croydon",
+    "postcode": "2132",
+    "region": "Central"
+  },
+  {
+    "slug": "croydon-park",
+    "name": "Croydon Park",
+    "postcode": "2133",
+    "region": "Central"
+  },
+  {
+    "slug": "cumberland-reach",
+    "name": "Cumberland Reach",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "curl-curl",
+    "name": "Curl Curl",
+    "postcode": "2096",
+    "region": "North"
+  },
+  {
+    "slug": "currans-hill",
+    "name": "Currans Hill",
+    "postcode": "2567",
+    "region": "West"
+  },
+  {
+    "slug": "currawong-beach",
+    "name": "Currawong Beach",
+    "postcode": "2108",
+    "region": "North"
+  },
+  {
+    "slug": "daceyville",
+    "name": "Daceyville",
+    "postcode": "2032",
+    "region": "East"
+  },
+  {
+    "slug": "dangar-island",
+    "name": "Dangar Island",
+    "postcode": "2083",
+    "region": "North"
+  },
+  {
+    "slug": "darling-harbour",
+    "name": "Darling Harbour",
+    "postcode": "2000",
+    "region": "Central"
+  },
+  {
+    "slug": "darling-point",
+    "name": "Darling Point",
+    "postcode": "2027",
+    "region": "East"
+  },
+  {
+    "slug": "darlinghurst",
+    "name": "Darlinghurst",
+    "postcode": "2010",
+    "region": "Central"
+  },
+  {
+    "slug": "darlington",
+    "name": "Darlington",
+    "postcode": "2008",
+    "region": "Central"
+  },
+  {
+    "slug": "davidson",
+    "name": "Davidson",
+    "postcode": "2085",
+    "region": "North"
+  },
+  {
+    "slug": "dawes-point",
+    "name": "Dawes Point",
+    "postcode": "2000",
+    "region": "Central"
+  },
+  {
+    "slug": "dean-park",
+    "name": "Dean Park",
+    "postcode": "2761",
+    "region": "West"
+  },
+  {
+    "slug": "dee-why",
+    "name": "Dee Why",
+    "postcode": "2099",
+    "region": "North"
+  },
+  {
+    "slug": "dee-why-beach",
+    "name": "Dee Why Beach",
+    "postcode": "2099",
+    "region": "North"
+  },
+  {
+    "slug": "denham-court",
+    "name": "Denham Court",
+    "postcode": "2565",
+    "region": "West"
+  },
+  {
+    "slug": "denistone",
+    "name": "Denistone",
+    "postcode": "2114",
+    "region": "North"
+  },
+  {
+    "slug": "denistone-east",
+    "name": "Denistone East",
+    "postcode": "2112",
+    "region": "West"
+  },
+  {
+    "slug": "denistone-west",
+    "name": "Denistone West",
+    "postcode": "2114",
+    "region": "North"
+  },
+  {
+    "slug": "dharruk",
+    "name": "Dharruk",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "diamond-bay",
+    "name": "Diamond Bay",
+    "postcode": "2030",
+    "region": "East"
+  },
+  {
+    "slug": "dolans-bay",
+    "name": "Dolans Bay",
+    "postcode": "2229",
+    "region": "South"
+  },
+  {
+    "slug": "dolls-point",
+    "name": "Dolls Point",
+    "postcode": "2219",
+    "region": "South"
+  },
+  {
+    "slug": "doonside",
+    "name": "Doonside",
+    "postcode": "2767",
+    "region": "West"
+  },
+  {
+    "slug": "double-bay",
+    "name": "Double Bay",
+    "postcode": "2028",
+    "region": "East"
+  },
+  {
+    "slug": "douglas-park",
+    "name": "Douglas Park",
+    "postcode": "2569",
+    "region": "West"
+  },
+  {
+    "slug": "dover-heights",
+    "name": "Dover Heights",
+    "postcode": "2030",
+    "region": "East"
+  },
+  {
+    "slug": "drummoyne",
+    "name": "Drummoyne",
+    "postcode": "2047",
+    "region": "Central"
+  },
+  {
+    "slug": "duffys-forest",
+    "name": "Duffys Forest",
+    "postcode": "2084",
+    "region": "North"
+  },
+  {
+    "slug": "dulwich-hill",
+    "name": "Dulwich Hill",
+    "postcode": "2203",
+    "region": "Central"
+  },
+  {
+    "slug": "dundas",
+    "name": "Dundas",
+    "postcode": "2117",
+    "region": "North"
+  },
+  {
+    "slug": "dundas-valley",
+    "name": "Dundas Valley",
+    "postcode": "2117",
+    "region": "North"
+  },
+  {
+    "slug": "dural",
+    "name": "Dural",
+    "postcode": "2158",
+    "region": "West"
+  },
+  {
+    "slug": "eagle-vale",
+    "name": "Eagle Vale",
+    "postcode": "2558",
+    "region": "West"
+  },
+  {
+    "slug": "earlwood",
+    "name": "Earlwood",
+    "postcode": "2206",
+    "region": "South"
+  },
+  {
+    "slug": "east-hills",
+    "name": "East Hills",
+    "postcode": "2213",
+    "region": "South"
+  },
+  {
+    "slug": "east-killara",
+    "name": "East Killara",
+    "postcode": "2071",
+    "region": "North"
+  },
+  {
+    "slug": "east-kurrajong",
+    "name": "East Kurrajong",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "east-lindfield",
+    "name": "East Lindfield",
+    "postcode": "2070",
+    "region": "North"
+  },
+  {
+    "slug": "east-ryde",
+    "name": "East Ryde",
+    "postcode": "2113",
+    "region": "North"
+  },
+  {
+    "slug": "eastern-creek",
+    "name": "Eastern Creek",
+    "postcode": "2766",
+    "region": "West"
+  },
+  {
+    "slug": "eastgardens",
+    "name": "Eastgardens",
+    "postcode": "2036",
+    "region": "East"
+  },
+  {
+    "slug": "eastlakes",
+    "name": "Eastlakes",
+    "postcode": "2018",
+    "region": "Central"
+  },
+  {
+    "slug": "eastwood",
+    "name": "Eastwood",
+    "postcode": "2122",
+    "region": "West"
+  },
+  {
+    "slug": "ebenezer",
+    "name": "Ebenezer",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "edensor-park",
+    "name": "Edensor Park",
+    "postcode": "2176",
+    "region": "South"
+  },
+  {
+    "slug": "edgecliff",
+    "name": "Edgecliff",
+    "postcode": "2027",
+    "region": "East"
+  },
+  {
+    "slug": "elanora-heights",
+    "name": "Elanora Heights",
+    "postcode": "2101",
+    "region": "West"
+  },
+  {
+    "slug": "elderslie",
+    "name": "Elderslie",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "elizabeth-bay",
+    "name": "Elizabeth Bay",
+    "postcode": "2011",
+    "region": "Central"
+  },
+  {
+    "slug": "elizabeth-hills",
+    "name": "Elizabeth Hills",
+    "postcode": "2171",
+    "region": "South"
+  },
+  {
+    "slug": "ellis-lane",
+    "name": "Ellis Lane",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "elvina-bay",
+    "name": "Elvina Bay",
+    "postcode": "2105",
+    "region": "North"
+  },
+  {
+    "slug": "emerton",
+    "name": "Emerton",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "emu-heights",
+    "name": "Emu Heights",
+    "postcode": "2750",
+    "region": "West"
+  },
+  {
+    "slug": "emu-plains",
+    "name": "Emu Plains",
+    "postcode": "2750",
+    "region": "West"
+  },
+  {
+    "slug": "enfield",
+    "name": "Enfield",
+    "postcode": "2136",
+    "region": "Central"
+  },
+  {
+    "slug": "enfield-south",
+    "name": "Enfield South",
+    "postcode": "2133",
+    "region": "Central"
+  },
+  {
+    "slug": "engadine",
+    "name": "Engadine",
+    "postcode": "2233",
+    "region": "South"
+  },
+  {
+    "slug": "englorie-park",
+    "name": "Englorie Park",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "enmore",
+    "name": "Enmore",
+    "postcode": "2042",
+    "region": "Central"
+  },
+  {
+    "slug": "epping",
+    "name": "Epping",
+    "postcode": "2121",
+    "region": "West"
+  },
+  {
+    "slug": "ermington",
+    "name": "Ermington",
+    "postcode": "2115",
+    "region": "North"
+  },
+  {
+    "slug": "erskine-park",
+    "name": "Erskine Park",
+    "postcode": "2759",
+    "region": "West"
+  },
+  {
+    "slug": "erskineville",
+    "name": "Erskineville",
+    "postcode": "2043",
+    "region": "Central"
+  },
+  {
+    "slug": "eschol-park",
+    "name": "Eschol Park",
+    "postcode": "2558",
+    "region": "West"
+  },
+  {
+    "slug": "eveleigh",
+    "name": "Eveleigh",
+    "postcode": "2015",
+    "region": "Central"
+  },
+  {
+    "slug": "fairfield",
+    "name": "Fairfield",
+    "postcode": "2165",
+    "region": "West"
+  },
+  {
+    "slug": "fairfield-east",
+    "name": "Fairfield East",
+    "postcode": "2165",
+    "region": "West"
+  },
+  {
+    "slug": "fairfield-heights",
+    "name": "Fairfield Heights",
+    "postcode": "2165",
+    "region": "West"
+  },
+  {
+    "slug": "fairfield-west",
+    "name": "Fairfield West",
+    "postcode": "2165",
+    "region": "West"
+  },
+  {
+    "slug": "fairlight",
+    "name": "Fairlight",
+    "postcode": "2094",
+    "region": "North"
+  },
+  {
+    "slug": "fiddletown",
+    "name": "Fiddletown",
+    "postcode": "2159",
+    "region": "West"
+  },
+  {
+    "slug": "five-dock",
+    "name": "Five Dock",
+    "postcode": "2046",
+    "region": "Central"
+  },
+  {
+    "slug": "forest-glen",
+    "name": "Forest Glen",
+    "postcode": "2157",
+    "region": "West"
+  },
+  {
+    "slug": "forest-lodge",
+    "name": "Forest Lodge",
+    "postcode": "2037",
+    "region": "Central"
+  },
+  {
+    "slug": "forestville",
+    "name": "Forestville",
+    "postcode": "2087",
+    "region": "North"
+  },
+  {
+    "slug": "freemans-reach",
+    "name": "Freemans Reach",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "frenchs-forest",
+    "name": "Frenchs Forest",
+    "postcode": "2086",
+    "region": "North"
+  },
+  {
+    "slug": "frenchs-forest-east",
+    "name": "Frenchs Forest East",
+    "postcode": "2086",
+    "region": "North"
+  },
+  {
+    "slug": "freshwater",
+    "name": "Freshwater",
+    "postcode": "2096",
+    "region": "North"
+  },
+  {
+    "slug": "gables",
+    "name": "Gables",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "galston",
+    "name": "Galston",
+    "postcode": "2159",
+    "region": "West"
+  },
+  {
+    "slug": "garie",
+    "name": "Garie",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "georges-hall",
+    "name": "Georges Hall",
+    "postcode": "2198",
+    "region": "Central"
+  },
+  {
+    "slug": "gilead",
+    "name": "Gilead",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "girraween",
+    "name": "Girraween",
+    "postcode": "2145",
+    "region": "West"
+  },
+  {
+    "slug": "gladesville",
+    "name": "Gladesville",
+    "postcode": "2111",
+    "region": "North"
+  },
+  {
+    "slug": "glebe",
+    "name": "Glebe",
+    "postcode": "2037",
+    "region": "Central"
+  },
+  {
+    "slug": "gledswood-hills",
+    "name": "Gledswood Hills",
+    "postcode": "2557",
+    "region": "West"
+  },
+  {
+    "slug": "glen-alpine",
+    "name": "Glen Alpine",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "glendenning",
+    "name": "Glendenning",
+    "postcode": "2761",
+    "region": "West"
+  },
+  {
+    "slug": "glenfield",
+    "name": "Glenfield",
+    "postcode": "2167",
+    "region": "West"
+  },
+  {
+    "slug": "glenhaven",
+    "name": "Glenhaven",
+    "postcode": "2156",
+    "region": "West"
+  },
+  {
+    "slug": "glenmore",
+    "name": "Glenmore",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "glenmore-park",
+    "name": "Glenmore Park",
+    "postcode": "2745",
+    "region": "West"
+  },
+  {
+    "slug": "glenorie",
+    "name": "Glenorie",
+    "postcode": "2157",
+    "region": "West"
+  },
+  {
+    "slug": "glenquarie",
+    "name": "Glenquarie",
+    "postcode": "2564",
+    "region": "West"
+  },
+  {
+    "slug": "glenwood",
+    "name": "Glenwood",
+    "postcode": "2768",
+    "region": "West"
+  },
+  {
+    "slug": "glossodia",
+    "name": "Glossodia",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "goarra",
+    "name": "Goarra",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "golden-grove",
+    "name": "Golden Grove",
+    "postcode": "2008",
+    "region": "Central"
+  },
+  {
+    "slug": "gordon",
+    "name": "Gordon",
+    "postcode": "2072",
+    "region": "North"
+  },
+  {
+    "slug": "gore-hill",
+    "name": "Gore Hill",
+    "postcode": "2065",
+    "region": "North"
+  },
+  {
+    "slug": "grantham-farm",
+    "name": "Grantham Farm",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "granville",
+    "name": "Granville",
+    "postcode": "2142",
+    "region": "West"
+  },
+  {
+    "slug": "grasmere",
+    "name": "Grasmere",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "grays-point",
+    "name": "Grays Point",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "great-mackerel-beach",
+    "name": "Great Mackerel Beach",
+    "postcode": "2108",
+    "region": "North"
+  },
+  {
+    "slug": "green-valley",
+    "name": "Green Valley",
+    "postcode": "2168",
+    "region": "West"
+  },
+  {
+    "slug": "greenacre",
+    "name": "Greenacre",
+    "postcode": "2190",
+    "region": "South"
+  },
+  {
+    "slug": "greendale",
+    "name": "Greendale",
+    "postcode": "2745",
+    "region": "West"
+  },
+  {
+    "slug": "greenfield-park",
+    "name": "Greenfield Park",
+    "postcode": "2176",
+    "region": "South"
+  },
+  {
+    "slug": "greenhills-beach",
+    "name": "Greenhills Beach",
+    "postcode": "2230",
+    "region": "South"
+  },
+  {
+    "slug": "greenwich",
+    "name": "Greenwich",
+    "postcode": "2065",
+    "region": "North"
+  },
+  {
+    "slug": "gregory-hills",
+    "name": "Gregory Hills",
+    "postcode": "2557",
+    "region": "West"
+  },
+  {
+    "slug": "greystanes",
+    "name": "Greystanes",
+    "postcode": "2145",
+    "region": "West"
+  },
+  {
+    "slug": "grose-vale",
+    "name": "Grose Vale",
+    "postcode": "2753",
+    "region": "West"
+  },
+  {
+    "slug": "grose-wold",
+    "name": "Grose Wold",
+    "postcode": "2753",
+    "region": "West"
+  },
+  {
+    "slug": "guildford",
+    "name": "Guildford",
+    "postcode": "2161",
+    "region": "West"
+  },
+  {
+    "slug": "guildford-west",
+    "name": "Guildford West",
+    "postcode": "2161",
+    "region": "West"
+  },
+  {
+    "slug": "gymea",
+    "name": "Gymea",
+    "postcode": "2227",
+    "region": "South"
+  },
+  {
+    "slug": "gymea-bay",
+    "name": "Gymea Bay",
+    "postcode": "2227",
+    "region": "South"
+  },
+  {
+    "slug": "haberfield",
+    "name": "Haberfield",
+    "postcode": "2045",
+    "region": "Central"
+  },
+  {
+    "slug": "hammondville",
+    "name": "Hammondville",
+    "postcode": "2170",
+    "region": "South"
+  },
+  {
+    "slug": "harbord",
+    "name": "Harbord",
+    "postcode": "2096",
+    "region": "North"
+  },
+  {
+    "slug": "harrington-park",
+    "name": "Harrington Park",
+    "postcode": "2567",
+    "region": "West"
+  },
+  {
+    "slug": "harris-park",
+    "name": "Harris Park",
+    "postcode": "2150",
+    "region": "West"
+  },
+  {
+    "slug": "hassall-grove",
+    "name": "Hassall Grove",
+    "postcode": "2761",
+    "region": "West"
+  },
+  {
+    "slug": "haymarket",
+    "name": "Haymarket",
+    "postcode": "2000",
+    "region": "Central"
+  },
+  {
+    "slug": "heathcote",
+    "name": "Heathcote",
+    "postcode": "2233",
+    "region": "South"
+  },
+  {
+    "slug": "hebersham",
+    "name": "Hebersham",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "heckenberg",
+    "name": "Heckenberg",
+    "postcode": "2168",
+    "region": "West"
+  },
+  {
+    "slug": "henley",
+    "name": "Henley",
+    "postcode": "2111",
+    "region": "North"
+  },
+  {
+    "slug": "hillsdale",
+    "name": "Hillsdale",
+    "postcode": "2036",
+    "region": "East"
+  },
+  {
+    "slug": "hillside",
+    "name": "Hillside",
+    "postcode": "2157",
+    "region": "West"
+  },
+  {
+    "slug": "hinchinbrook",
+    "name": "Hinchinbrook",
+    "postcode": "2168",
+    "region": "West"
+  },
+  {
+    "slug": "hobartville",
+    "name": "Hobartville",
+    "postcode": "2753",
+    "region": "West"
+  },
+  {
+    "slug": "holroyd",
+    "name": "Holroyd",
+    "postcode": "2142",
+    "region": "West"
+  },
+  {
+    "slug": "holsworthy",
+    "name": "Holsworthy",
+    "postcode": "2173",
+    "region": "South"
+  },
+  {
+    "slug": "homebush",
+    "name": "Homebush",
+    "postcode": "2140",
+    "region": "Central"
+  },
+  {
+    "slug": "homebush-bay",
+    "name": "Homebush Bay",
+    "postcode": "2127",
+    "region": "West"
+  },
+  {
+    "slug": "homebush-south",
+    "name": "Homebush South",
+    "postcode": "2140",
+    "region": "Central"
+  },
+  {
+    "slug": "homebush-west",
+    "name": "Homebush West",
+    "postcode": "2140",
+    "region": "Central"
+  },
+  {
+    "slug": "horningsea-park",
+    "name": "Horningsea Park",
+    "postcode": "2171",
+    "region": "South"
+  },
+  {
+    "slug": "hornsby",
+    "name": "Hornsby",
+    "postcode": "2077",
+    "region": "North"
+  },
+  {
+    "slug": "hornsby-heights",
+    "name": "Hornsby Heights",
+    "postcode": "2077",
+    "region": "North"
+  },
+  {
+    "slug": "horsley-park",
+    "name": "Horsley Park",
+    "postcode": "2175",
+    "region": "South"
+  },
+  {
+    "slug": "hoxton-park",
+    "name": "Hoxton Park",
+    "postcode": "2171",
+    "region": "South"
+  },
+  {
+    "slug": "hunters-hill",
+    "name": "Hunters Hill",
+    "postcode": "2110",
+    "region": "North"
+  },
+  {
+    "slug": "hunters-hill-west",
+    "name": "Hunters Hill West",
+    "postcode": "2110",
+    "region": "North"
+  },
+  {
+    "slug": "huntingwood",
+    "name": "Huntingwood",
+    "postcode": "2148",
+    "region": "West"
+  },
+  {
+    "slug": "huntleys-cove",
+    "name": "Huntleys Cove",
+    "postcode": "2111",
+    "region": "North"
+  },
+  {
+    "slug": "huntleys-point",
+    "name": "Huntleys Point",
+    "postcode": "2111",
+    "region": "North"
+  },
+  {
+    "slug": "hurlstone-park",
+    "name": "Hurlstone Park",
+    "postcode": "2193",
+    "region": "Central"
+  },
+  {
+    "slug": "hurstville",
+    "name": "Hurstville",
+    "postcode": "2220",
+    "region": "South"
+  },
+  {
+    "slug": "hurstville-grove",
+    "name": "Hurstville Grove",
+    "postcode": "2220",
+    "region": "South"
+  },
+  {
+    "slug": "illawong",
+    "name": "Illawong",
+    "postcode": "2234",
+    "region": "South"
+  },
+  {
+    "slug": "ingleburn",
+    "name": "Ingleburn",
+    "postcode": "2565",
+    "region": "West"
+  },
+  {
+    "slug": "ingleside",
+    "name": "Ingleside",
+    "postcode": "2101",
+    "region": "West"
+  },
+  {
+    "slug": "jamisontown",
+    "name": "Jamisontown",
+    "postcode": "2750",
+    "region": "West"
+  },
+  {
+    "slug": "jannali",
+    "name": "Jannali",
+    "postcode": "2226",
+    "region": "South"
+  },
+  {
+    "slug": "jibbon",
+    "name": "Jibbon",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "jordan-springs",
+    "name": "Jordan Springs",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "kangaroo-point",
+    "name": "Kangaroo Point",
+    "postcode": "2224",
+    "region": "South"
+  },
+  {
+    "slug": "kareela",
+    "name": "Kareela",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "kearns",
+    "name": "Kearns",
+    "postcode": "2558",
+    "region": "West"
+  },
+  {
+    "slug": "kellyville",
+    "name": "Kellyville",
+    "postcode": "2155",
+    "region": "West"
+  },
+  {
+    "slug": "kellyville-ridge",
+    "name": "Kellyville Ridge",
+    "postcode": "2155",
+    "region": "West"
+  },
+  {
+    "slug": "kemps-creek",
+    "name": "Kemps Creek",
+    "postcode": "2178",
+    "region": "South"
+  },
+  {
+    "slug": "kensington",
+    "name": "Kensington",
+    "postcode": "2033",
+    "region": "East"
+  },
+  {
+    "slug": "kenthurst",
+    "name": "Kenthurst",
+    "postcode": "2156",
+    "region": "West"
+  },
+  {
+    "slug": "kentlyn",
+    "name": "Kentlyn",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "killara",
+    "name": "Killara",
+    "postcode": "2071",
+    "region": "North"
+  },
+  {
+    "slug": "killarney-heights",
+    "name": "Killarney Heights",
+    "postcode": "2087",
+    "region": "North"
+  },
+  {
+    "slug": "kings-cross",
+    "name": "Kings Cross",
+    "postcode": "2011",
+    "region": "Central"
+  },
+  {
+    "slug": "kings-langley",
+    "name": "Kings Langley",
+    "postcode": "2147",
+    "region": "West"
+  },
+  {
+    "slug": "kings-park",
+    "name": "Kings Park",
+    "postcode": "2148",
+    "region": "West"
+  },
+  {
+    "slug": "kingsdene",
+    "name": "Kingsdene",
+    "postcode": "2118",
+    "region": "North"
+  },
+  {
+    "slug": "kingsford",
+    "name": "Kingsford",
+    "postcode": "2032",
+    "region": "East"
+  },
+  {
+    "slug": "kingsgrove",
+    "name": "Kingsgrove",
+    "postcode": "2208",
+    "region": "South"
+  },
+  {
+    "slug": "kingsway-west",
+    "name": "Kingsway West",
+    "postcode": "2208",
+    "region": "South"
+  },
+  {
+    "slug": "kingswood",
+    "name": "Kingswood",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "kirkham",
+    "name": "Kirkham",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "kirrawee",
+    "name": "Kirrawee",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "kirribilli",
+    "name": "Kirribilli",
+    "postcode": "2061",
+    "region": "North"
+  },
+  {
+    "slug": "kogarah",
+    "name": "Kogarah",
+    "postcode": "2217",
+    "region": "South"
+  },
+  {
+    "slug": "kogarah-bay",
+    "name": "Kogarah Bay",
+    "postcode": "2217",
+    "region": "South"
+  },
+  {
+    "slug": "kurmond",
+    "name": "Kurmond",
+    "postcode": "2757",
+    "region": "West"
+  },
+  {
+    "slug": "kurnell",
+    "name": "Kurnell",
+    "postcode": "2231",
+    "region": "South"
+  },
+  {
+    "slug": "kurraba-point",
+    "name": "Kurraba Point",
+    "postcode": "2089",
+    "region": "West"
+  },
+  {
+    "slug": "kurrajong",
+    "name": "Kurrajong",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "kurrajong-heights",
+    "name": "Kurrajong Heights",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "kurrajong-hills",
+    "name": "Kurrajong Hills",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "kyeemagh",
+    "name": "Kyeemagh",
+    "postcode": "2216",
+    "region": "South"
+  },
+  {
+    "slug": "kyle-bay",
+    "name": "Kyle Bay",
+    "postcode": "2221",
+    "region": "South"
+  },
+  {
+    "slug": "la-perouse",
+    "name": "La Perouse",
+    "postcode": "2036",
+    "region": "East"
+  },
+  {
+    "slug": "lakemba",
+    "name": "Lakemba",
+    "postcode": "2195",
+    "region": "Central"
+  },
+  {
+    "slug": "lakesland",
+    "name": "Lakesland",
+    "postcode": "2572",
+    "region": "West"
+  },
+  {
+    "slug": "lalor-park",
+    "name": "Lalor Park",
+    "postcode": "2147",
+    "region": "West"
+  },
+  {
+    "slug": "lane-cove",
+    "name": "Lane Cove",
+    "postcode": "2066",
+    "region": "North"
+  },
+  {
+    "slug": "lane-cove-north",
+    "name": "Lane Cove North",
+    "postcode": "2066",
+    "region": "North"
+  },
+  {
+    "slug": "lane-cove-west",
+    "name": "Lane Cove West",
+    "postcode": "2066",
+    "region": "North"
+  },
+  {
+    "slug": "lansdowne",
+    "name": "Lansdowne",
+    "postcode": "2163",
+    "region": "West"
+  },
+  {
+    "slug": "lansvale",
+    "name": "Lansvale",
+    "postcode": "2166",
+    "region": "West"
+  },
+  {
+    "slug": "lavender-bay",
+    "name": "Lavender Bay",
+    "postcode": "2060",
+    "region": "North"
+  },
+  {
+    "slug": "leets-vale",
+    "name": "Leets Vale",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "lefevres-corner",
+    "name": "Lefevres Corner",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "leichhardt",
+    "name": "Leichhardt",
+    "postcode": "2040",
+    "region": "Central"
+  },
+  {
+    "slug": "len-waters-estate",
+    "name": "Len Waters Estate",
+    "postcode": "2171",
+    "region": "South"
+  },
+  {
+    "slug": "leonay",
+    "name": "Leonay",
+    "postcode": "2750",
+    "region": "West"
+  },
+  {
+    "slug": "leppington",
+    "name": "Leppington",
+    "postcode": "2179",
+    "region": "South"
+  },
+  {
+    "slug": "lethbridge-park",
+    "name": "Lethbridge Park",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "leumeah",
+    "name": "Leumeah",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "lewisham",
+    "name": "Lewisham",
+    "postcode": "2049",
+    "region": "Central"
+  },
+  {
+    "slug": "liberty-grove",
+    "name": "Liberty Grove",
+    "postcode": "2138",
+    "region": "Central"
+  },
+  {
+    "slug": "lidcombe",
+    "name": "Lidcombe",
+    "postcode": "2141",
+    "region": "Central"
+  },
+  {
+    "slug": "lidcombe-north",
+    "name": "Lidcombe North",
+    "postcode": "2141",
+    "region": "Central"
+  },
+  {
+    "slug": "lilli-pilli",
+    "name": "Lilli Pilli",
+    "postcode": "2229",
+    "region": "South"
+  },
+  {
+    "slug": "lilyfield",
+    "name": "Lilyfield",
+    "postcode": "2040",
+    "region": "Central"
+  },
+  {
+    "slug": "lindfield",
+    "name": "Lindfield",
+    "postcode": "2070",
+    "region": "North"
+  },
+  {
+    "slug": "lindfield-west",
+    "name": "Lindfield West",
+    "postcode": "2070",
+    "region": "North"
+  },
+  {
+    "slug": "linley-point",
+    "name": "Linley Point",
+    "postcode": "2066",
+    "region": "North"
+  },
+  {
+    "slug": "little-bay",
+    "name": "Little Bay",
+    "postcode": "2036",
+    "region": "East"
+  },
+  {
+    "slug": "liverpool",
+    "name": "Liverpool",
+    "postcode": "2170",
+    "region": "West"
+  },
+  {
+    "slug": "liverpool-south",
+    "name": "Liverpool South",
+    "postcode": "2170",
+    "region": "South"
+  },
+  {
+    "slug": "llandilo",
+    "name": "Llandilo",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "loftus",
+    "name": "Loftus",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "londonderry",
+    "name": "Londonderry",
+    "postcode": "2753",
+    "region": "West"
+  },
+  {
+    "slug": "long-point",
+    "name": "Long Point",
+    "postcode": "2564",
+    "region": "West"
+  },
+  {
+    "slug": "long-reef",
+    "name": "Long Reef",
+    "postcode": "2097",
+    "region": "North"
+  },
+  {
+    "slug": "longueville",
+    "name": "Longueville",
+    "postcode": "2066",
+    "region": "North"
+  },
+  {
+    "slug": "lovett-bay",
+    "name": "Lovett Bay",
+    "postcode": "2105",
+    "region": "North"
+  },
+  {
+    "slug": "lower-portland",
+    "name": "Lower Portland",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "lucas-heights",
+    "name": "Lucas Heights",
+    "postcode": "2234",
+    "region": "South"
+  },
+  {
+    "slug": "luddenham",
+    "name": "Luddenham",
+    "postcode": "2745",
+    "region": "West"
+  },
+  {
+    "slug": "lugarno",
+    "name": "Lugarno",
+    "postcode": "2210",
+    "region": "South"
+  },
+  {
+    "slug": "lurnea",
+    "name": "Lurnea",
+    "postcode": "2170",
+    "region": "South"
+  },
+  {
+    "slug": "macarthur-square",
+    "name": "Macarthur Square",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "macquarie-centre",
+    "name": "Macquarie Centre",
+    "postcode": "2113",
+    "region": "North"
+  },
+  {
+    "slug": "macquarie-fields",
+    "name": "Macquarie Fields",
+    "postcode": "2564",
+    "region": "West"
+  },
+  {
+    "slug": "macquarie-links",
+    "name": "Macquarie Links",
+    "postcode": "2565",
+    "region": "West"
+  },
+  {
+    "slug": "macquarie-park",
+    "name": "Macquarie Park",
+    "postcode": "2113",
+    "region": "West"
+  },
+  {
+    "slug": "maianbar",
+    "name": "Maianbar",
+    "postcode": "2230",
+    "region": "South"
+  },
+  {
+    "slug": "malabar",
+    "name": "Malabar",
+    "postcode": "2036",
+    "region": "East"
+  },
+  {
+    "slug": "maldon",
+    "name": "Maldon",
+    "postcode": "2571",
+    "region": "West"
+  },
+  {
+    "slug": "manahan",
+    "name": "Manahan",
+    "postcode": "2200",
+    "region": "Central"
+  },
+  {
+    "slug": "manly",
+    "name": "Manly",
+    "postcode": "2095",
+    "region": "North"
+  },
+  {
+    "slug": "manly-east",
+    "name": "Manly East",
+    "postcode": "2095",
+    "region": "North"
+  },
+  {
+    "slug": "manly-vale",
+    "name": "Manly Vale",
+    "postcode": "2093",
+    "region": "North"
+  },
+  {
+    "slug": "maraylya",
+    "name": "Maraylya",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "marayong",
+    "name": "Marayong",
+    "postcode": "2148",
+    "region": "West"
+  },
+  {
+    "slug": "marley",
+    "name": "Marley",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "maroota",
+    "name": "Maroota",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "maroubra",
+    "name": "Maroubra",
+    "postcode": "2035",
+    "region": "East"
+  },
+  {
+    "slug": "maroubra-south",
+    "name": "Maroubra South",
+    "postcode": "2035",
+    "region": "East"
+  },
+  {
+    "slug": "marrickville",
+    "name": "Marrickville",
+    "postcode": "2204",
+    "region": "Central"
+  },
+  {
+    "slug": "marrickville-metro",
+    "name": "Marrickville Metro",
+    "postcode": "2204",
+    "region": "Central"
+  },
+  {
+    "slug": "marrickville-south",
+    "name": "Marrickville South",
+    "postcode": "2204",
+    "region": "Central"
+  },
+  {
+    "slug": "marsden-park",
+    "name": "Marsden Park",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "marsfield",
+    "name": "Marsfield",
+    "postcode": "2122",
+    "region": "North"
+  },
+  {
+    "slug": "mascot",
+    "name": "Mascot",
+    "postcode": "2020",
+    "region": "Central"
+  },
+  {
+    "slug": "matraville",
+    "name": "Matraville",
+    "postcode": "2036",
+    "region": "East"
+  },
+  {
+    "slug": "mays-hill",
+    "name": "Mays Hill",
+    "postcode": "2145",
+    "region": "West"
+  },
+  {
+    "slug": "mccarrs-creek",
+    "name": "Mccarrs Creek",
+    "postcode": "2105",
+    "region": "North"
+  },
+  {
+    "slug": "mcgraths-hill",
+    "name": "Mcgraths Hill",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "mcmahons-point",
+    "name": "Mcmahons Point",
+    "postcode": "2060",
+    "region": "North"
+  },
+  {
+    "slug": "meadowbank",
+    "name": "Meadowbank",
+    "postcode": "2114",
+    "region": "North"
+  },
+  {
+    "slug": "mellong",
+    "name": "Mellong",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "melonba",
+    "name": "Melonba",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "melrose-park",
+    "name": "Melrose Park",
+    "postcode": "2114",
+    "region": "North"
+  },
+  {
+    "slug": "menai",
+    "name": "Menai",
+    "postcode": "2234",
+    "region": "South"
+  },
+  {
+    "slug": "menai-central",
+    "name": "Menai Central",
+    "postcode": "2234",
+    "region": "South"
+  },
+  {
+    "slug": "menangle",
+    "name": "Menangle",
+    "postcode": "2568",
+    "region": "West"
+  },
+  {
+    "slug": "menangle-park",
+    "name": "Menangle Park",
+    "postcode": "2563",
+    "region": "West"
+  },
+  {
+    "slug": "merrylands",
+    "name": "Merrylands",
+    "postcode": "2160",
+    "region": "West"
+  },
+  {
+    "slug": "merrylands-west",
+    "name": "Merrylands West",
+    "postcode": "2160",
+    "region": "West"
+  },
+  {
+    "slug": "middle-cove",
+    "name": "Middle Cove",
+    "postcode": "2068",
+    "region": "North"
+  },
+  {
+    "slug": "middle-dural",
+    "name": "Middle Dural",
+    "postcode": "2158",
+    "region": "West"
+  },
+  {
+    "slug": "middleton-grange",
+    "name": "Middleton Grange",
+    "postcode": "2171",
+    "region": "South"
+  },
+  {
+    "slug": "miller",
+    "name": "Miller",
+    "postcode": "2168",
+    "region": "West"
+  },
+  {
+    "slug": "millers-point",
+    "name": "Millers Point",
+    "postcode": "2000",
+    "region": "Central"
+  },
+  {
+    "slug": "milperra",
+    "name": "Milperra",
+    "postcode": "2214",
+    "region": "South"
+  },
+  {
+    "slug": "milsons-passage",
+    "name": "Milsons Passage",
+    "postcode": "2083",
+    "region": "North"
+  },
+  {
+    "slug": "milsons-point",
+    "name": "Milsons Point",
+    "postcode": "2061",
+    "region": "North"
+  },
+  {
+    "slug": "minchinbury",
+    "name": "Minchinbury",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "minto",
+    "name": "Minto",
+    "postcode": "2566",
+    "region": "West"
+  },
+  {
+    "slug": "minto-heights",
+    "name": "Minto Heights",
+    "postcode": "2566",
+    "region": "West"
+  },
+  {
+    "slug": "miranda",
+    "name": "Miranda",
+    "postcode": "2228",
+    "region": "South"
+  },
+  {
+    "slug": "missenden-road",
+    "name": "Missenden Road",
+    "postcode": "2050",
+    "region": "Central"
+  },
+  {
+    "slug": "mona-vale",
+    "name": "Mona Vale",
+    "postcode": "2103",
+    "region": "North"
+  },
+  {
+    "slug": "monash-park",
+    "name": "Monash Park",
+    "postcode": "2111",
+    "region": "North"
+  },
+  {
+    "slug": "monterey",
+    "name": "Monterey",
+    "postcode": "2217",
+    "region": "South"
+  },
+  {
+    "slug": "mooney-mooney",
+    "name": "Mooney Mooney",
+    "postcode": "2083",
+    "region": "North"
+  },
+  {
+    "slug": "moore-park",
+    "name": "Moore Park",
+    "postcode": "2021",
+    "region": "East"
+  },
+  {
+    "slug": "moorebank",
+    "name": "Moorebank",
+    "postcode": "2170",
+    "region": "South"
+  },
+  {
+    "slug": "morning-bay",
+    "name": "Morning Bay",
+    "postcode": "2105",
+    "region": "North"
+  },
+  {
+    "slug": "mortdale",
+    "name": "Mortdale",
+    "postcode": "2223",
+    "region": "South"
+  },
+  {
+    "slug": "mortlake",
+    "name": "Mortlake",
+    "postcode": "2137",
+    "region": "Central"
+  },
+  {
+    "slug": "mosman",
+    "name": "Mosman",
+    "postcode": "2088",
+    "region": "North"
+  },
+  {
+    "slug": "mount-annan",
+    "name": "Mount Annan",
+    "postcode": "2567",
+    "region": "West"
+  },
+  {
+    "slug": "mount-colah",
+    "name": "Mount Colah",
+    "postcode": "2079",
+    "region": "North"
+  },
+  {
+    "slug": "mount-druitt",
+    "name": "Mount Druitt",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "mount-druitt-village",
+    "name": "Mount Druitt Village",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "mount-hunter",
+    "name": "Mount Hunter",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "mount-kuring-gai",
+    "name": "Mount Kuring-gai",
+    "postcode": "2080",
+    "region": "North"
+  },
+  {
+    "slug": "mount-lewis",
+    "name": "Mount Lewis",
+    "postcode": "2190",
+    "region": "South"
+  },
+  {
+    "slug": "mount-pritchard",
+    "name": "Mount Pritchard",
+    "postcode": "2170",
+    "region": "South"
+  },
+  {
+    "slug": "mount-tomah",
+    "name": "Mount Tomah",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "mount-vernon",
+    "name": "Mount Vernon",
+    "postcode": "2178",
+    "region": "South"
+  },
+  {
+    "slug": "mountain-lagoon",
+    "name": "Mountain Lagoon",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "mowbray-park",
+    "name": "Mowbray Park",
+    "postcode": "2571",
+    "region": "West"
+  },
+  {
+    "slug": "mulgoa",
+    "name": "Mulgoa",
+    "postcode": "2745",
+    "region": "West"
+  },
+  {
+    "slug": "mulgrave",
+    "name": "Mulgrave",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "narellan",
+    "name": "Narellan",
+    "postcode": "2567",
+    "region": "West"
+  },
+  {
+    "slug": "narellan-vale",
+    "name": "Narellan Vale",
+    "postcode": "2567",
+    "region": "West"
+  },
+  {
+    "slug": "naremburn",
+    "name": "Naremburn",
+    "postcode": "2065",
+    "region": "North"
+  },
+  {
+    "slug": "narrabeen",
+    "name": "Narrabeen",
+    "postcode": "2101",
+    "region": "North"
+  },
+  {
+    "slug": "narrabeen-peninsula",
+    "name": "Narrabeen Peninsula",
+    "postcode": "2101",
+    "region": "West"
+  },
+  {
+    "slug": "narraweena",
+    "name": "Narraweena",
+    "postcode": "2099",
+    "region": "North"
+  },
+  {
+    "slug": "narwee",
+    "name": "Narwee",
+    "postcode": "2209",
+    "region": "South"
+  },
+  {
+    "slug": "nattai",
+    "name": "Nattai",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "nelson",
+    "name": "Nelson",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "neutral-bay",
+    "name": "Neutral Bay",
+    "postcode": "2089",
+    "region": "North"
+  },
+  {
+    "slug": "neutral-bay-junction",
+    "name": "Neutral Bay Junction",
+    "postcode": "2089",
+    "region": "West"
+  },
+  {
+    "slug": "newington",
+    "name": "Newington",
+    "postcode": "2127",
+    "region": "West"
+  },
+  {
+    "slug": "newport",
+    "name": "Newport",
+    "postcode": "2106",
+    "region": "North"
+  },
+  {
+    "slug": "newport-beach",
+    "name": "Newport Beach",
+    "postcode": "2106",
+    "region": "North"
+  },
+  {
+    "slug": "newtown",
+    "name": "Newtown",
+    "postcode": "2042",
+    "region": "Central"
+  },
+  {
+    "slug": "nirimba-fields",
+    "name": "Nirimba Fields",
+    "postcode": "2763",
+    "region": "West"
+  },
+  {
+    "slug": "normanhurst",
+    "name": "Normanhurst",
+    "postcode": "2076",
+    "region": "North"
+  },
+  {
+    "slug": "north-balgowlah",
+    "name": "North Balgowlah",
+    "postcode": "2093",
+    "region": "North"
+  },
+  {
+    "slug": "north-bondi",
+    "name": "North Bondi",
+    "postcode": "2026",
+    "region": "East"
+  },
+  {
+    "slug": "north-curl-curl",
+    "name": "North Curl Curl",
+    "postcode": "2099",
+    "region": "North"
+  },
+  {
+    "slug": "north-epping",
+    "name": "North Epping",
+    "postcode": "2121",
+    "region": "North"
+  },
+  {
+    "slug": "north-kellyville",
+    "name": "North Kellyville",
+    "postcode": "2155",
+    "region": "West"
+  },
+  {
+    "slug": "north-manly",
+    "name": "North Manly",
+    "postcode": "2100",
+    "region": "North"
+  },
+  {
+    "slug": "north-narrabeen",
+    "name": "North Narrabeen",
+    "postcode": "2101",
+    "region": "West"
+  },
+  {
+    "slug": "north-parramatta",
+    "name": "North Parramatta",
+    "postcode": "2151",
+    "region": "West"
+  },
+  {
+    "slug": "north-richmond",
+    "name": "North Richmond",
+    "postcode": "2754",
+    "region": "West"
+  },
+  {
+    "slug": "north-rocks",
+    "name": "North Rocks",
+    "postcode": "2151",
+    "region": "West"
+  },
+  {
+    "slug": "north-ryde",
+    "name": "North Ryde",
+    "postcode": "2113",
+    "region": "North"
+  },
+  {
+    "slug": "north-st-ives",
+    "name": "North St Ives",
+    "postcode": "2075",
+    "region": "North"
+  },
+  {
+    "slug": "north-st-marys",
+    "name": "North St Marys",
+    "postcode": "2760",
+    "region": "West"
+  },
+  {
+    "slug": "north-strathfield",
+    "name": "North Strathfield",
+    "postcode": "2137",
+    "region": "Central"
+  },
+  {
+    "slug": "north-sydney",
+    "name": "North Sydney",
+    "postcode": "2060",
+    "region": "North"
+  },
+  {
+    "slug": "north-sydney-shoppingworld",
+    "name": "North Sydney Shoppingworld",
+    "postcode": "2060",
+    "region": "North"
+  },
+  {
+    "slug": "north-turramurra",
+    "name": "North Turramurra",
+    "postcode": "2074",
+    "region": "North"
+  },
+  {
+    "slug": "north-wahroonga",
+    "name": "North Wahroonga",
+    "postcode": "2076",
+    "region": "North"
+  },
+  {
+    "slug": "north-willoughby",
+    "name": "North Willoughby",
+    "postcode": "2068",
+    "region": "North"
+  },
+  {
+    "slug": "northbridge",
+    "name": "Northbridge",
+    "postcode": "2063",
+    "region": "North"
+  },
+  {
+    "slug": "northmead",
+    "name": "Northmead",
+    "postcode": "2152",
+    "region": "West"
+  },
+  {
+    "slug": "northwood",
+    "name": "Northwood",
+    "postcode": "2066",
+    "region": "North"
+  },
+  {
+    "slug": "norwest",
+    "name": "Norwest",
+    "postcode": "2153",
+    "region": "West"
+  },
+  {
+    "slug": "oakdale",
+    "name": "Oakdale",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "oakhurst",
+    "name": "Oakhurst",
+    "postcode": "2761",
+    "region": "West"
+  },
+  {
+    "slug": "oakville",
+    "name": "Oakville",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "oatlands",
+    "name": "Oatlands",
+    "postcode": "2117",
+    "region": "North"
+  },
+  {
+    "slug": "oatley",
+    "name": "Oatley",
+    "postcode": "2223",
+    "region": "South"
+  },
+  {
+    "slug": "old-guildford",
+    "name": "Old Guildford",
+    "postcode": "2161",
+    "region": "West"
+  },
+  {
+    "slug": "old-toongabbie",
+    "name": "Old Toongabbie",
+    "postcode": "2146",
+    "region": "West"
+  },
+  {
+    "slug": "oran-park",
+    "name": "Oran Park",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "orangeville",
+    "name": "Orangeville",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "orchard-hills",
+    "name": "Orchard Hills",
+    "postcode": "2748",
+    "region": "West"
+  },
+  {
+    "slug": "osborne-park",
+    "name": "Osborne Park",
+    "postcode": "2066",
+    "region": "North"
+  },
+  {
+    "slug": "oxford-falls",
+    "name": "Oxford Falls",
+    "postcode": "2100",
+    "region": "North"
+  },
+  {
+    "slug": "oxley-park",
+    "name": "Oxley Park",
+    "postcode": "2760",
+    "region": "West"
+  },
+  {
+    "slug": "oyster-bay",
+    "name": "Oyster Bay",
+    "postcode": "2225",
+    "region": "South"
+  },
+  {
+    "slug": "paddington",
+    "name": "Paddington",
+    "postcode": "2021",
+    "region": "Central"
+  },
+  {
+    "slug": "padstow",
+    "name": "Padstow",
+    "postcode": "2211",
+    "region": "South"
+  },
+  {
+    "slug": "padstow-heights",
+    "name": "Padstow Heights",
+    "postcode": "2211",
+    "region": "South"
+  },
+  {
+    "slug": "pagewood",
+    "name": "Pagewood",
+    "postcode": "2035",
+    "region": "East"
+  },
+  {
+    "slug": "palm-beach",
+    "name": "Palm Beach",
+    "postcode": "2108",
+    "region": "North"
+  },
+  {
+    "slug": "palona",
+    "name": "Palona",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "panania",
+    "name": "Panania",
+    "postcode": "2213",
+    "region": "South"
+  },
+  {
+    "slug": "paradise-beach",
+    "name": "Paradise Beach",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "parklea",
+    "name": "Parklea",
+    "postcode": "2768",
+    "region": "West"
+  },
+  {
+    "slug": "parramatta",
+    "name": "Parramatta",
+    "postcode": "2150",
+    "region": "West"
+  },
+  {
+    "slug": "peakhurst",
+    "name": "Peakhurst",
+    "postcode": "2210",
+    "region": "South"
+  },
+  {
+    "slug": "peakhurst-heights",
+    "name": "Peakhurst Heights",
+    "postcode": "2210",
+    "region": "South"
+  },
+  {
+    "slug": "pemulwuy",
+    "name": "Pemulwuy",
+    "postcode": "2145",
+    "region": "West"
+  },
+  {
+    "slug": "pendle-hill",
+    "name": "Pendle Hill",
+    "postcode": "2145",
+    "region": "West"
+  },
+  {
+    "slug": "pennant-hills",
+    "name": "Pennant Hills",
+    "postcode": "2120",
+    "region": "North"
+  },
+  {
+    "slug": "penrith",
+    "name": "Penrith",
+    "postcode": "2750",
+    "region": "West"
+  },
+  {
+    "slug": "penrith-south",
+    "name": "Penrith South",
+    "postcode": "2750",
+    "region": "West"
+  },
+  {
+    "slug": "penshurst",
+    "name": "Penshurst",
+    "postcode": "2222",
+    "region": "South"
+  },
+  {
+    "slug": "petersham",
+    "name": "Petersham",
+    "postcode": "2049",
+    "region": "Central"
+  },
+  {
+    "slug": "petersham-north",
+    "name": "Petersham North",
+    "postcode": "2049",
+    "region": "Central"
+  },
+  {
+    "slug": "pheasants-nest",
+    "name": "Pheasants Nest",
+    "postcode": "2574",
+    "region": "West"
+  },
+  {
+    "slug": "phillip-bay",
+    "name": "Phillip Bay",
+    "postcode": "2036",
+    "region": "East"
+  },
+  {
+    "slug": "picnic-point",
+    "name": "Picnic Point",
+    "postcode": "2213",
+    "region": "South"
+  },
+  {
+    "slug": "picton",
+    "name": "Picton",
+    "postcode": "2571",
+    "region": "West"
+  },
+  {
+    "slug": "pitt-town",
+    "name": "Pitt Town",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "pitt-town-bottoms",
+    "name": "Pitt Town Bottoms",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "pleasure-point",
+    "name": "Pleasure Point",
+    "postcode": "2172",
+    "region": "South"
+  },
+  {
+    "slug": "plumpton",
+    "name": "Plumpton",
+    "postcode": "2761",
+    "region": "West"
+  },
+  {
+    "slug": "point-piper",
+    "name": "Point Piper",
+    "postcode": "2027",
+    "region": "East"
+  },
+  {
+    "slug": "port-botany",
+    "name": "Port Botany",
+    "postcode": "2036",
+    "region": "East"
+  },
+  {
+    "slug": "port-hacking",
+    "name": "Port Hacking",
+    "postcode": "2229",
+    "region": "South"
+  },
+  {
+    "slug": "potts-hill",
+    "name": "Potts Hill",
+    "postcode": "2143",
+    "region": "West"
+  },
+  {
+    "slug": "potts-point",
+    "name": "Potts Point",
+    "postcode": "2011",
+    "region": "Central"
+  },
+  {
+    "slug": "prairiewood",
+    "name": "Prairiewood",
+    "postcode": "2176",
+    "region": "South"
+  },
+  {
+    "slug": "prestons",
+    "name": "Prestons",
+    "postcode": "2170",
+    "region": "South"
+  },
+  {
+    "slug": "prospect",
+    "name": "Prospect",
+    "postcode": "2148",
+    "region": "West"
+  },
+  {
+    "slug": "punchbowl",
+    "name": "Punchbowl",
+    "postcode": "2196",
+    "region": "Central"
+  },
+  {
+    "slug": "putney",
+    "name": "Putney",
+    "postcode": "2112",
+    "region": "West"
+  },
+  {
+    "slug": "pymble",
+    "name": "Pymble",
+    "postcode": "2073",
+    "region": "North"
+  },
+  {
+    "slug": "pyrmont",
+    "name": "Pyrmont",
+    "postcode": "2009",
+    "region": "Central"
+  },
+  {
+    "slug": "quakers-hill",
+    "name": "Quakers Hill",
+    "postcode": "2763",
+    "region": "West"
+  },
+  {
+    "slug": "queens-park",
+    "name": "Queens Park",
+    "postcode": "2022",
+    "region": "East"
+  },
+  {
+    "slug": "queenscliff",
+    "name": "Queenscliff",
+    "postcode": "2096",
+    "region": "North"
+  },
+  {
+    "slug": "raby",
+    "name": "Raby",
+    "postcode": "2566",
+    "region": "West"
+  },
+  {
+    "slug": "ramsgate",
+    "name": "Ramsgate",
+    "postcode": "2217",
+    "region": "South"
+  },
+  {
+    "slug": "ramsgate-beach",
+    "name": "Ramsgate Beach",
+    "postcode": "2217",
+    "region": "South"
+  },
+  {
+    "slug": "randwick",
+    "name": "Randwick",
+    "postcode": "2031",
+    "region": "East"
+  },
+  {
+    "slug": "razorback",
+    "name": "Razorback",
+    "postcode": "2571",
+    "region": "West"
+  },
+  {
+    "slug": "redfern",
+    "name": "Redfern",
+    "postcode": "2016",
+    "region": "Central"
+  },
+  {
+    "slug": "regents-park",
+    "name": "Regents Park",
+    "postcode": "2143",
+    "region": "West"
+  },
+  {
+    "slug": "regentville",
+    "name": "Regentville",
+    "postcode": "2745",
+    "region": "West"
+  },
+  {
+    "slug": "revesby",
+    "name": "Revesby",
+    "postcode": "2212",
+    "region": "South"
+  },
+  {
+    "slug": "revesby-heights",
+    "name": "Revesby Heights",
+    "postcode": "2212",
+    "region": "South"
+  },
+  {
+    "slug": "revesby-north",
+    "name": "Revesby North",
+    "postcode": "2212",
+    "region": "South"
+  },
+  {
+    "slug": "rhodes",
+    "name": "Rhodes",
+    "postcode": "2138",
+    "region": "Central"
+  },
+  {
+    "slug": "richards",
+    "name": "Richards",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "richmond",
+    "name": "Richmond",
+    "postcode": "2753",
+    "region": "West"
+  },
+  {
+    "slug": "richmond-lowlands",
+    "name": "Richmond Lowlands",
+    "postcode": "2753",
+    "region": "West"
+  },
+  {
+    "slug": "riverstone",
+    "name": "Riverstone",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "riverview",
+    "name": "Riverview",
+    "postcode": "2066",
+    "region": "North"
+  },
+  {
+    "slug": "riverwood",
+    "name": "Riverwood",
+    "postcode": "2210",
+    "region": "South"
+  },
+  {
+    "slug": "rockdale",
+    "name": "Rockdale",
+    "postcode": "2216",
+    "region": "South"
+  },
+  {
+    "slug": "rodd-point",
+    "name": "Rodd Point",
+    "postcode": "2046",
+    "region": "Central"
+  },
+  {
+    "slug": "rookwood",
+    "name": "Rookwood",
+    "postcode": "2141",
+    "region": "Central"
+  },
+  {
+    "slug": "rooty-hill",
+    "name": "Rooty Hill",
+    "postcode": "2766",
+    "region": "West"
+  },
+  {
+    "slug": "ropes-crossing",
+    "name": "Ropes Crossing",
+    "postcode": "2760",
+    "region": "West"
+  },
+  {
+    "slug": "rose-bay",
+    "name": "Rose Bay",
+    "postcode": "2029",
+    "region": "East"
+  },
+  {
+    "slug": "rose-bay-north",
+    "name": "Rose Bay North",
+    "postcode": "2030",
+    "region": "East"
+  },
+  {
+    "slug": "rosebery",
+    "name": "Rosebery",
+    "postcode": "2018",
+    "region": "Central"
+  },
+  {
+    "slug": "rosehill",
+    "name": "Rosehill",
+    "postcode": "2142",
+    "region": "West"
+  },
+  {
+    "slug": "roselands",
+    "name": "Roselands",
+    "postcode": "2196",
+    "region": "Central"
+  },
+  {
+    "slug": "rosemeadow",
+    "name": "Rosemeadow",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "roseville",
+    "name": "Roseville",
+    "postcode": "2069",
+    "region": "North"
+  },
+  {
+    "slug": "roseville-chase",
+    "name": "Roseville Chase",
+    "postcode": "2069",
+    "region": "North"
+  },
+  {
+    "slug": "rossmore",
+    "name": "Rossmore",
+    "postcode": "2557",
+    "region": "West"
+  },
+  {
+    "slug": "round-corner",
+    "name": "Round Corner",
+    "postcode": "2158",
+    "region": "West"
+  },
+  {
+    "slug": "rouse-hill",
+    "name": "Rouse Hill",
+    "postcode": "2155",
+    "region": "West"
+  },
+  {
+    "slug": "royal-north-shore-hospital",
+    "name": "Royal North Shore Hospital",
+    "postcode": "2065",
+    "region": "North"
+  },
+  {
+    "slug": "rozelle",
+    "name": "Rozelle",
+    "postcode": "2039",
+    "region": "Central"
+  },
+  {
+    "slug": "ruse",
+    "name": "Ruse",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "rushcutters-bay",
+    "name": "Rushcutters Bay",
+    "postcode": "2011",
+    "region": "Central"
+  },
+  {
+    "slug": "russell-lea",
+    "name": "Russell Lea",
+    "postcode": "2046",
+    "region": "Central"
+  },
+  {
+    "slug": "rydalmere",
+    "name": "Rydalmere",
+    "postcode": "2116",
+    "region": "North"
+  },
+  {
+    "slug": "ryde",
+    "name": "Ryde",
+    "postcode": "2112",
+    "region": "West"
+  },
+  {
+    "slug": "sackville",
+    "name": "Sackville",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "sackville-north",
+    "name": "Sackville North",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "sadleir",
+    "name": "Sadleir",
+    "postcode": "2168",
+    "region": "West"
+  },
+  {
+    "slug": "sandringham",
+    "name": "Sandringham",
+    "postcode": "2219",
+    "region": "South"
+  },
+  {
+    "slug": "sandy-point",
+    "name": "Sandy Point",
+    "postcode": "2172",
+    "region": "South"
+  },
+  {
+    "slug": "sans-souci",
+    "name": "Sans Souci",
+    "postcode": "2219",
+    "region": "South"
+  },
+  {
+    "slug": "scheyville",
+    "name": "Scheyville",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "schofields",
+    "name": "Schofields",
+    "postcode": "2762",
+    "region": "West"
+  },
+  {
+    "slug": "scotland-island",
+    "name": "Scotland Island",
+    "postcode": "2105",
+    "region": "North"
+  },
+  {
+    "slug": "seaforth",
+    "name": "Seaforth",
+    "postcode": "2092",
+    "region": "North"
+  },
+  {
+    "slug": "sefton",
+    "name": "Sefton",
+    "postcode": "2162",
+    "region": "West"
+  },
+  {
+    "slug": "seven-hills",
+    "name": "Seven Hills",
+    "postcode": "2147",
+    "region": "West"
+  },
+  {
+    "slug": "seven-hills-west",
+    "name": "Seven Hills West",
+    "postcode": "2147",
+    "region": "West"
+  },
+  {
+    "slug": "shalvey",
+    "name": "Shalvey",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "shane-park",
+    "name": "Shane Park",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "shanes-park",
+    "name": "Shanes Park",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "silverdale",
+    "name": "Silverdale",
+    "postcode": "2752",
+    "region": "West"
+  },
+  {
+    "slug": "silverwater",
+    "name": "Silverwater",
+    "postcode": "2128",
+    "region": "West"
+  },
+  {
+    "slug": "smeaton-grange",
+    "name": "Smeaton Grange",
+    "postcode": "2567",
+    "region": "West"
+  },
+  {
+    "slug": "smithfield",
+    "name": "Smithfield",
+    "postcode": "2164",
+    "region": "West"
+  },
+  {
+    "slug": "smithfield-west",
+    "name": "Smithfield West",
+    "postcode": "2164",
+    "region": "West"
+  },
+  {
+    "slug": "south-coogee",
+    "name": "South Coogee",
+    "postcode": "2034",
+    "region": "East"
+  },
+  {
+    "slug": "south-granville",
+    "name": "South Granville",
+    "postcode": "2142",
+    "region": "West"
+  },
+  {
+    "slug": "south-hurstville",
+    "name": "South Hurstville",
+    "postcode": "2221",
+    "region": "South"
+  },
+  {
+    "slug": "south-maroota",
+    "name": "South Maroota",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "south-penrith",
+    "name": "South Penrith",
+    "postcode": "2750",
+    "region": "West"
+  },
+  {
+    "slug": "south-turramurra",
+    "name": "South Turramurra",
+    "postcode": "2074",
+    "region": "North"
+  },
+  {
+    "slug": "south-wentworthville",
+    "name": "South Wentworthville",
+    "postcode": "2145",
+    "region": "West"
+  },
+  {
+    "slug": "south-windsor",
+    "name": "South Windsor",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "spit-junction",
+    "name": "Spit Junction",
+    "postcode": "2088",
+    "region": "North"
+  },
+  {
+    "slug": "spring-farm",
+    "name": "Spring Farm",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "st-andrews",
+    "name": "St Andrews",
+    "postcode": "2566",
+    "region": "West"
+  },
+  {
+    "slug": "st-clair",
+    "name": "St Clair",
+    "postcode": "2759",
+    "region": "West"
+  },
+  {
+    "slug": "st-helens-park",
+    "name": "St Helens Park",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "st-ives",
+    "name": "St Ives",
+    "postcode": "2075",
+    "region": "North"
+  },
+  {
+    "slug": "st-ives-chase",
+    "name": "St Ives Chase",
+    "postcode": "2075",
+    "region": "North"
+  },
+  {
+    "slug": "st-johns-park",
+    "name": "St Johns Park",
+    "postcode": "2176",
+    "region": "South"
+  },
+  {
+    "slug": "st-leonards",
+    "name": "St Leonards",
+    "postcode": "2065",
+    "region": "North"
+  },
+  {
+    "slug": "st-marys",
+    "name": "St Marys",
+    "postcode": "2760",
+    "region": "West"
+  },
+  {
+    "slug": "st-marys-east",
+    "name": "St Marys East",
+    "postcode": "2760",
+    "region": "West"
+  },
+  {
+    "slug": "st-marys-south",
+    "name": "St Marys South",
+    "postcode": "2760",
+    "region": "West"
+  },
+  {
+    "slug": "st-pauls",
+    "name": "St Pauls",
+    "postcode": "2031",
+    "region": "East"
+  },
+  {
+    "slug": "st-peters",
+    "name": "St Peters",
+    "postcode": "2044",
+    "region": "Central"
+  },
+  {
+    "slug": "stanhope-gardens",
+    "name": "Stanhope Gardens",
+    "postcode": "2768",
+    "region": "West"
+  },
+  {
+    "slug": "stanmore",
+    "name": "Stanmore",
+    "postcode": "2048",
+    "region": "Central"
+  },
+  {
+    "slug": "strathfield",
+    "name": "Strathfield",
+    "postcode": "2135",
+    "region": "Central"
+  },
+  {
+    "slug": "strathfield-south",
+    "name": "Strathfield South",
+    "postcode": "2136",
+    "region": "Central"
+  },
+  {
+    "slug": "summer-hill",
+    "name": "Summer Hill",
+    "postcode": "2130",
+    "region": "Central"
+  },
+  {
+    "slug": "surry-hills",
+    "name": "Surry Hills",
+    "postcode": "2010",
+    "region": "Central"
+  },
+  {
+    "slug": "sutherland",
+    "name": "Sutherland",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "sydenham",
+    "name": "Sydenham",
+    "postcode": "2044",
+    "region": "Central"
+  },
+  {
+    "slug": "sydney",
+    "name": "Sydney",
+    "postcode": "2000",
+    "region": "Central"
+  },
+  {
+    "slug": "sydney-domestic-airport",
+    "name": "Sydney Domestic Airport",
+    "postcode": "2020",
+    "region": "Central"
+  },
+  {
+    "slug": "sydney-international-airport",
+    "name": "Sydney International Airport",
+    "postcode": "2020",
+    "region": "Central"
+  },
+  {
+    "slug": "sydney-olympic-park",
+    "name": "Sydney Olympic Park",
+    "postcode": "2127",
+    "region": "West"
+  },
+  {
+    "slug": "sylvania",
+    "name": "Sylvania",
+    "postcode": "2224",
+    "region": "South"
+  },
+  {
+    "slug": "sylvania-southgate",
+    "name": "Sylvania Southgate",
+    "postcode": "2224",
+    "region": "South"
+  },
+  {
+    "slug": "sylvania-waters",
+    "name": "Sylvania Waters",
+    "postcode": "2224",
+    "region": "South"
+  },
+  {
+    "slug": "tahmoor",
+    "name": "Tahmoor",
+    "postcode": "2573",
+    "region": "West"
+  },
+  {
+    "slug": "tallawong",
+    "name": "Tallawong",
+    "postcode": "2762",
+    "region": "West"
+  },
+  {
+    "slug": "tamarama",
+    "name": "Tamarama",
+    "postcode": "2026",
+    "region": "East"
+  },
+  {
+    "slug": "taren-point",
+    "name": "Taren Point",
+    "postcode": "2229",
+    "region": "South"
+  },
+  {
+    "slug": "taylor-square",
+    "name": "Taylor Square",
+    "postcode": "2010",
+    "region": "Central"
+  },
+  {
+    "slug": "taylors-point",
+    "name": "Taylors Point",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "telopea",
+    "name": "Telopea",
+    "postcode": "2117",
+    "region": "North"
+  },
+  {
+    "slug": "tempe",
+    "name": "Tempe",
+    "postcode": "2044",
+    "region": "Central"
+  },
+  {
+    "slug": "tennyson",
+    "name": "Tennyson",
+    "postcode": "2754",
+    "region": "West"
+  },
+  {
+    "slug": "tennyson-point",
+    "name": "Tennyson Point",
+    "postcode": "2111",
+    "region": "North"
+  },
+  {
+    "slug": "terrey-hills",
+    "name": "Terrey Hills",
+    "postcode": "2084",
+    "region": "North"
+  },
+  {
+    "slug": "the-basin",
+    "name": "The Basin",
+    "postcode": "2108",
+    "region": "North"
+  },
+  {
+    "slug": "the-devils-wilderness",
+    "name": "The Devils Wilderness",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "the-oaks",
+    "name": "The Oaks",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "the-ponds",
+    "name": "The Ponds",
+    "postcode": "2769",
+    "region": "West"
+  },
+  {
+    "slug": "the-rocks",
+    "name": "The Rocks",
+    "postcode": "2000",
+    "region": "Central"
+  },
+  {
+    "slug": "the-slopes",
+    "name": "The Slopes",
+    "postcode": "2754",
+    "region": "West"
+  },
+  {
+    "slug": "theresa-park",
+    "name": "Theresa Park",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "thirlmere",
+    "name": "Thirlmere",
+    "postcode": "2572",
+    "region": "West"
+  },
+  {
+    "slug": "thornleigh",
+    "name": "Thornleigh",
+    "postcode": "2120",
+    "region": "North"
+  },
+  {
+    "slug": "toongabbie",
+    "name": "Toongabbie",
+    "postcode": "2146",
+    "region": "West"
+  },
+  {
+    "slug": "toongabbie-east",
+    "name": "Toongabbie East",
+    "postcode": "2146",
+    "region": "West"
+  },
+  {
+    "slug": "tregear",
+    "name": "Tregear",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "turramurra",
+    "name": "Turramurra",
+    "postcode": "2074",
+    "region": "North"
+  },
+  {
+    "slug": "turrella",
+    "name": "Turrella",
+    "postcode": "2205",
+    "region": "South"
+  },
+  {
+    "slug": "uloola",
+    "name": "Uloola",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "ultimo",
+    "name": "Ultimo",
+    "postcode": "2007",
+    "region": "Central"
+  },
+  {
+    "slug": "undercliffe",
+    "name": "Undercliffe",
+    "postcode": "2206",
+    "region": "South"
+  },
+  {
+    "slug": "upper-colo",
+    "name": "Upper Colo",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "varroville",
+    "name": "Varroville",
+    "postcode": "2566",
+    "region": "West"
+  },
+  {
+    "slug": "vaucluse",
+    "name": "Vaucluse",
+    "postcode": "2030",
+    "region": "East"
+  },
+  {
+    "slug": "villawood",
+    "name": "Villawood",
+    "postcode": "2163",
+    "region": "West"
+  },
+  {
+    "slug": "vineyard",
+    "name": "Vineyard",
+    "postcode": "2765",
+    "region": "West"
+  },
+  {
+    "slug": "voyager-point",
+    "name": "Voyager Point",
+    "postcode": "2172",
+    "region": "South"
+  },
+  {
+    "slug": "wahroonga",
+    "name": "Wahroonga",
+    "postcode": "2076",
+    "region": "North"
+  },
+  {
+    "slug": "waitara",
+    "name": "Waitara",
+    "postcode": "2077",
+    "region": "North"
+  },
+  {
+    "slug": "wakeley",
+    "name": "Wakeley",
+    "postcode": "2176",
+    "region": "South"
+  },
+  {
+    "slug": "wallacia",
+    "name": "Wallacia",
+    "postcode": "2745",
+    "region": "West"
+  },
+  {
+    "slug": "wareemba",
+    "name": "Wareemba",
+    "postcode": "2046",
+    "region": "Central"
+  },
+  {
+    "slug": "warragamba",
+    "name": "Warragamba",
+    "postcode": "2752",
+    "region": "West"
+  },
+  {
+    "slug": "warrawee",
+    "name": "Warrawee",
+    "postcode": "2074",
+    "region": "North"
+  },
+  {
+    "slug": "warriewood",
+    "name": "Warriewood",
+    "postcode": "2102",
+    "region": "North"
+  },
+  {
+    "slug": "warriewood-shopping-square",
+    "name": "Warriewood Shopping Square",
+    "postcode": "2102",
+    "region": "North"
+  },
+  {
+    "slug": "warumbul",
+    "name": "Warumbul",
+    "postcode": "2229",
+    "region": "South"
+  },
+  {
+    "slug": "warwick-farm",
+    "name": "Warwick Farm",
+    "postcode": "2170",
+    "region": "South"
+  },
+  {
+    "slug": "waterfall",
+    "name": "Waterfall",
+    "postcode": "2233",
+    "region": "South"
+  },
+  {
+    "slug": "waterloo",
+    "name": "Waterloo",
+    "postcode": "2017",
+    "region": "Central"
+  },
+  {
+    "slug": "watsons-bay",
+    "name": "Watsons Bay",
+    "postcode": "2030",
+    "region": "East"
+  },
+  {
+    "slug": "wattamolla",
+    "name": "Wattamolla",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "wattle-grove",
+    "name": "Wattle Grove",
+    "postcode": "2173",
+    "region": "South"
+  },
+  {
+    "slug": "waverley",
+    "name": "Waverley",
+    "postcode": "2024",
+    "region": "East"
+  },
+  {
+    "slug": "waverton",
+    "name": "Waverton",
+    "postcode": "2060",
+    "region": "North"
+  },
+  {
+    "slug": "wedderburn",
+    "name": "Wedderburn",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "wentworth-point",
+    "name": "Wentworth Point",
+    "postcode": "2127",
+    "region": "West"
+  },
+  {
+    "slug": "wentworth-port",
+    "name": "Wentworth Port",
+    "postcode": "2177",
+    "region": "South"
+  },
+  {
+    "slug": "wentworthville",
+    "name": "Wentworthville",
+    "postcode": "2145",
+    "region": "West"
+  },
+  {
+    "slug": "werombi",
+    "name": "Werombi",
+    "postcode": "2570",
+    "region": "West"
+  },
+  {
+    "slug": "werrington",
+    "name": "Werrington",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "werrington-county",
+    "name": "Werrington County",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "werrington-downs",
+    "name": "Werrington Downs",
+    "postcode": "2747",
+    "region": "West"
+  },
+  {
+    "slug": "west-hoxton",
+    "name": "West Hoxton",
+    "postcode": "2171",
+    "region": "South"
+  },
+  {
+    "slug": "west-pennant-hills",
+    "name": "West Pennant Hills",
+    "postcode": "2125",
+    "region": "North"
+  },
+  {
+    "slug": "west-pymble",
+    "name": "West Pymble",
+    "postcode": "2073",
+    "region": "North"
+  },
+  {
+    "slug": "west-ryde",
+    "name": "West Ryde",
+    "postcode": "2114",
+    "region": "North"
+  },
+  {
+    "slug": "westgate",
+    "name": "Westgate",
+    "postcode": "2048",
+    "region": "Central"
+  },
+  {
+    "slug": "westleigh",
+    "name": "Westleigh",
+    "postcode": "2120",
+    "region": "North"
+  },
+  {
+    "slug": "westmead",
+    "name": "Westmead",
+    "postcode": "2145",
+    "region": "West"
+  },
+  {
+    "slug": "wetherill-park",
+    "name": "Wetherill Park",
+    "postcode": "2164",
+    "region": "West"
+  },
+  {
+    "slug": "whalan",
+    "name": "Whalan",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "whale-beach",
+    "name": "Whale Beach",
+    "postcode": "2107",
+    "region": "North"
+  },
+  {
+    "slug": "wheeler-heights",
+    "name": "Wheeler Heights",
+    "postcode": "2097",
+    "region": "North"
+  },
+  {
+    "slug": "wheeny-creek",
+    "name": "Wheeny Creek",
+    "postcode": "2758",
+    "region": "West"
+  },
+  {
+    "slug": "wilberforce",
+    "name": "Wilberforce",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "wiley-park",
+    "name": "Wiley Park",
+    "postcode": "2195",
+    "region": "Central"
+  },
+  {
+    "slug": "willmot",
+    "name": "Willmot",
+    "postcode": "2770",
+    "region": "West"
+  },
+  {
+    "slug": "willoughby",
+    "name": "Willoughby",
+    "postcode": "2068",
+    "region": "North"
+  },
+  {
+    "slug": "willoughby-east",
+    "name": "Willoughby East",
+    "postcode": "2068",
+    "region": "North"
+  },
+  {
+    "slug": "willoughby-north",
+    "name": "Willoughby North",
+    "postcode": "2068",
+    "region": "North"
+  },
+  {
+    "slug": "wilton",
+    "name": "Wilton",
+    "postcode": "2571",
+    "region": "West"
+  },
+  {
+    "slug": "windsor",
+    "name": "Windsor",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "windsor-downs",
+    "name": "Windsor Downs",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "wingala",
+    "name": "Wingala",
+    "postcode": "2099",
+    "region": "North"
+  },
+  {
+    "slug": "winston-hills",
+    "name": "Winston Hills",
+    "postcode": "2153",
+    "region": "West"
+  },
+  {
+    "slug": "wolli-creek",
+    "name": "Wolli Creek",
+    "postcode": "2205",
+    "region": "South"
+  },
+  {
+    "slug": "wollstonecraft",
+    "name": "Wollstonecraft",
+    "postcode": "2065",
+    "region": "North"
+  },
+  {
+    "slug": "womerah",
+    "name": "Womerah",
+    "postcode": "2756",
+    "region": "West"
+  },
+  {
+    "slug": "woodbine",
+    "name": "Woodbine",
+    "postcode": "2560",
+    "region": "West"
+  },
+  {
+    "slug": "woodcroft",
+    "name": "Woodcroft",
+    "postcode": "2767",
+    "region": "West"
+  },
+  {
+    "slug": "woodpark",
+    "name": "Woodpark",
+    "postcode": "2164",
+    "region": "West"
+  },
+  {
+    "slug": "woollahra",
+    "name": "Woollahra",
+    "postcode": "2025",
+    "region": "East"
+  },
+  {
+    "slug": "woolloomooloo",
+    "name": "Woolloomooloo",
+    "postcode": "2011",
+    "region": "Central"
+  },
+  {
+    "slug": "woolooware",
+    "name": "Woolooware",
+    "postcode": "2230",
+    "region": "South"
+  },
+  {
+    "slug": "woolwich",
+    "name": "Woolwich",
+    "postcode": "2110",
+    "region": "North"
+  },
+  {
+    "slug": "woronora",
+    "name": "Woronora",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "woronora-heights",
+    "name": "Woronora Heights",
+    "postcode": "2233",
+    "region": "South"
+  },
+  {
+    "slug": "yagoona",
+    "name": "Yagoona",
+    "postcode": "2199",
+    "region": "Central"
+  },
+  {
+    "slug": "yagoona-west",
+    "name": "Yagoona West",
+    "postcode": "2199",
+    "region": "Central"
+  },
+  {
+    "slug": "yanderra",
+    "name": "Yanderra",
+    "postcode": "2574",
+    "region": "West"
+  },
+  {
+    "slug": "yarramundi",
+    "name": "Yarramundi",
+    "postcode": "2753",
+    "region": "West"
+  },
+  {
+    "slug": "yarrawarrah",
+    "name": "Yarrawarrah",
+    "postcode": "2233",
+    "region": "South"
+  },
+  {
+    "slug": "yenabilli",
+    "name": "Yenabilli",
+    "postcode": "2232",
+    "region": "South"
+  },
+  {
+    "slug": "yennora",
+    "name": "Yennora",
+    "postcode": "2161",
+    "region": "West"
+  },
+  {
+    "slug": "yowie-bay",
+    "name": "Yowie Bay",
+    "postcode": "2228",
+    "region": "South"
+  },
+  {
+    "slug": "zetland",
+    "name": "Zetland",
+    "postcode": "2017",
+    "region": "Central"
+  }
+]
