@@ -1,10 +1,14 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const FROM = "LunchSpecial <team@lunchspecial.com.au>";
 
 export async function sendPasswordResetEmail(to: string, resetUrl: string) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[mail] RESEND_API_KEY is not set — skipping password reset email");
+    return;
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const { error } = await resend.emails.send({
     from: FROM,
     to,
