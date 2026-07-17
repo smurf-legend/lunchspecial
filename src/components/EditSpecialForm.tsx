@@ -49,6 +49,7 @@ export default function EditSpecialForm({
     special.chainWide ? "chainWide" : special.suburbs.length > 1 ? "chain" : "single"
   );
   const [greatValue, setGreatValue] = useState(special.greatValue);
+  const [anyTime, setAnyTime] = useState(!special.startTime && !special.endTime);
   const [form, setForm] = useState({
     title: special.title,
     description: special.description,
@@ -60,8 +61,8 @@ export default function EditSpecialForm({
     usualPrice: special.usualPrice?.toString() ?? "",
     specialPrice: special.specialPrice.toString(),
     availableDays: special.availableDays.split(",").filter(Boolean),
-    startTime: special.startTime ?? "",
-    endTime: special.endTime ?? "",
+    startTime: special.startTime ?? "11:30",
+    endTime: special.endTime ?? "14:00",
     categorySlugs: special.categories.map((c) => c.category.slug),
     expiresAt: special.expiresAt ? new Date(special.expiresAt).toISOString().split("T")[0] : "",
   });
@@ -203,8 +204,8 @@ export default function EditSpecialForm({
       usualPrice: form.usualPrice ? parseFloat(form.usualPrice) : undefined,
       specialPrice: parseFloat(form.specialPrice),
       availableDays: form.availableDays.join(","),
-      startTime: form.startTime || undefined,
-      endTime: form.endTime || undefined,
+      startTime: anyTime ? null : form.startTime || undefined,
+      endTime: anyTime ? null : form.endTime || undefined,
       categorySlugs: form.categorySlugs,
       imageUrl: allImages[0] ?? null,
       extraImageUrls: allImages.slice(1),
@@ -383,19 +384,28 @@ export default function EditSpecialForm({
           </div>
         </div>
 
-        <div className="flex gap-3">
-          <input
-            type="time"
-            className="border rounded px-3 py-2 flex-1"
-            value={form.startTime}
-            onChange={(e) => setForm({ ...form, startTime: e.target.value })}
-          />
-          <input
-            type="time"
-            className="border rounded px-3 py-2 flex-1"
-            value={form.endTime}
-            onChange={(e) => setForm({ ...form, endTime: e.target.value })}
-          />
+        <div>
+          <label className="text-sm font-medium mb-1 block">Time window</label>
+          <div className="flex gap-3">
+            <input
+              type="time"
+              disabled={anyTime}
+              className="border rounded px-3 py-2 flex-1 disabled:opacity-50 disabled:bg-gray-50"
+              value={form.startTime}
+              onChange={(e) => setForm({ ...form, startTime: e.target.value })}
+            />
+            <input
+              type="time"
+              disabled={anyTime}
+              className="border rounded px-3 py-2 flex-1 disabled:opacity-50 disabled:bg-gray-50"
+              value={form.endTime}
+              onChange={(e) => setForm({ ...form, endTime: e.target.value })}
+            />
+          </div>
+          <label className="flex items-center gap-2 text-sm text-gray-600 mt-1.5">
+            <input type="checkbox" checked={anyTime} onChange={(e) => setAnyTime(e.target.checked)} />
+            Any time — not tied to specific hours
+          </label>
         </div>
 
         <div>

@@ -19,6 +19,7 @@ export default function NewSpecialPage() {
   const [categories, setCategories] = useState<Option[]>([]);
   const [locationMode, setLocationMode] = useState<"single" | "chain" | "chainWide">("single");
   const [greatValue, setGreatValue] = useState(false);
+  const [anyTime, setAnyTime] = useState(false);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -194,8 +195,8 @@ export default function NewSpecialPage() {
       usualPrice: form.usualPrice ? parseFloat(form.usualPrice) : undefined,
       specialPrice: parseFloat(form.specialPrice),
       availableDays: form.availableDays.join(","),
-      startTime: form.startTime || undefined,
-      endTime: form.endTime || undefined,
+      startTime: anyTime ? undefined : form.startTime || undefined,
+      endTime: anyTime ? undefined : form.endTime || undefined,
       categorySlugs: form.categorySlugs,
       imageUrl: imageUrls[0],
       extraImageUrls: imageUrls.slice(1),
@@ -406,19 +407,28 @@ export default function NewSpecialPage() {
           </div>
         </div>
 
-        <div className="flex gap-3">
-          <input
-            type="time"
-            className="border rounded px-3 py-2 flex-1"
-            value={form.startTime}
-            onChange={(e) => setForm({ ...form, startTime: e.target.value })}
-          />
-          <input
-            type="time"
-            className="border rounded px-3 py-2 flex-1"
-            value={form.endTime}
-            onChange={(e) => setForm({ ...form, endTime: e.target.value })}
-          />
+        <div>
+          <label className="text-sm font-medium mb-1 block">Time window</label>
+          <div className="flex gap-3">
+            <input
+              type="time"
+              disabled={anyTime}
+              className="border rounded px-3 py-2 flex-1 disabled:opacity-50 disabled:bg-gray-50"
+              value={form.startTime}
+              onChange={(e) => setForm({ ...form, startTime: e.target.value })}
+            />
+            <input
+              type="time"
+              disabled={anyTime}
+              className="border rounded px-3 py-2 flex-1 disabled:opacity-50 disabled:bg-gray-50"
+              value={form.endTime}
+              onChange={(e) => setForm({ ...form, endTime: e.target.value })}
+            />
+          </div>
+          <label className="flex items-center gap-2 text-sm text-gray-600 mt-1.5">
+            <input type="checkbox" checked={anyTime} onChange={(e) => setAnyTime(e.target.checked)} />
+            Any time — not tied to specific hours
+          </label>
         </div>
 
         <div>
