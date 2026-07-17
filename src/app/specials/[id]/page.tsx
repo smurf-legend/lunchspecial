@@ -105,10 +105,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
       )}
 
       <div className={`bg-white rounded-lg border p-6 flex gap-5 ${expired ? "opacity-70" : ""}`}>
-        <div className="flex flex-col items-center gap-2">
-          <VoteButtons voteEndpoint={`/api/specials/${special.id}/vote`} initialScore={special.score} />
-          <FavoriteButton specialId={special.id} initialFavorited={!!favorite} size="text-2xl" />
-        </div>
+        <VoteButtons voteEndpoint={`/api/specials/${special.id}/vote`} initialScore={special.score} />
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
@@ -129,6 +126,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
                 </span>
               )
             )}
+            <FavoriteButton specialId={special.id} initialFavorited={!!favorite} />
           </div>
           <p className="text-sm text-gray-500 mt-1 flex items-center gap-1.5 flex-wrap">
             Posted by {special.author.name}

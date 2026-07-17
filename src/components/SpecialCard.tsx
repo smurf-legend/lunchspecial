@@ -64,7 +64,6 @@ export default function SpecialCard({
           <span aria-hidden="true">🤢</span>
           <span className="font-bold text-red-600">{special.downvoteCount ?? 0}</span>
         </span>
-        <FavoriteButton specialId={special.id} initialFavorited={isFavorited} size="text-lg" />
       </div>
 
       <SpecialImage
@@ -161,6 +160,7 @@ export default function SpecialCard({
               {c.category.name}
             </Link>
           ))}
+          <FavoriteButton specialId={special.id} initialFavorited={isFavorited} />
         </div>
       </div>
     </div>

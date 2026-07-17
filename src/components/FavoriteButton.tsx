@@ -6,11 +6,9 @@ import { useRouter } from "next/navigation";
 export default function FavoriteButton({
   specialId,
   initialFavorited,
-  size = "text-xl",
 }: {
   specialId: string;
   initialFavorited: boolean;
-  size?: string;
 }) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -37,13 +35,11 @@ export default function FavoriteButton({
     <button
       disabled={loading}
       onClick={toggle}
-      className={`${size} hover:scale-110 transition-transform disabled:opacity-50 ${
-        favorited ? "" : "grayscale opacity-40"
+      className={`text-xs px-2 py-1 rounded-full font-medium border shrink-0 disabled:opacity-50 ${
+        favorited ? "bg-orange-600 text-white border-orange-600" : "bg-white text-gray-600"
       }`}
-      aria-label={favorited ? "Remove from favourites" : "Save to favourites"}
-      title={favorited ? "Remove from favourites" : "Save to favourites"}
     >
-      🔖
+      {loading ? "Saving..." : favorited ? "Remove from favourites" : "Add to favourites"}
     </button>
   );
 }

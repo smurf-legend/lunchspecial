@@ -40,7 +40,7 @@ export default async function FavoritesPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold mb-1">🔖 Your favourites</h1>
+      <h1 className="text-xl font-bold mb-1">Your favourites</h1>
       <p className="text-sm text-gray-500 mb-4">
         Deals you've saved to come back to later.
       </p>
@@ -50,7 +50,7 @@ export default async function FavoritesPage() {
         ))}
         {specials.length === 0 && (
           <p className="text-gray-500 text-center py-12">
-            No favourites yet — tap the 🔖 on any special to save it here.
+            No favourites yet — tap "Add to favourites" on any special to save it here.
           </p>
         )}
       </div>
