@@ -133,8 +133,14 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
     setImagePreview(value || null);
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // On create, two submit buttons share this handler — which one was
+    // clicked decides whether the new article saves as a draft or goes
+    // live immediately (defaults to publish, e.g. if submitted via Enter).
+    const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const saveAsDraft = submitter?.value === "draft";
+
     setLoading(true);
     setError(null);
 
@@ -164,7 +170,7 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
       excerpt: excerpt || undefined,
       body,
       imageUrl: imageUrl || undefined,
-      ...(isEdit ? { hidden } : {}),
+      hidden: isEdit ? hidden : saveAsDraft,
     };
 
     const res = await fetch(isEdit ? `/api/admin/blog/${post!.id}` : "/api/admin/blog", {
@@ -284,7 +290,21 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
         <div className="flex gap-2">
+          {!isEdit && (
+            <button
+              type="submit"
+              name="intent"
+              value="draft"
+              disabled={loading || compressingImage}
+              className="border rounded py-2 px-4 font-medium disabled:opacity-50"
+            >
+              {loading ? "Saving..." : "Save as draft"}
+            </button>
+          )}
           <button
+            type="submit"
+            name="intent"
+            value="publish"
             disabled={loading || compressingImage}
             className="bg-orange-600 text-white rounded py-2 px-4 font-medium disabled:opacity-50"
           >

@@ -10,6 +10,7 @@ const blogPostSchema = z.object({
   excerpt: z.string().max(300).optional(),
   body: z.string().min(10),
   imageUrl: z.string().url().optional(),
+  hidden: z.boolean().optional().default(false),
 });
 
 async function requireAdmin() {
@@ -51,6 +52,7 @@ export async function POST(req: NextRequest) {
       excerpt: parsed.data.excerpt || undefined,
       body: parsed.data.body,
       imageUrl: parsed.data.imageUrl,
+      hidden: parsed.data.hidden,
       slug,
       authorId: (session.user as any).id,
     },
