@@ -18,6 +18,9 @@ export default function NavAuth() {
           </Link>
         )}
         <NotificationBell />
+        <Link href="/favorites" className="text-sm underline" title="Your saved favourites">
+          🔖 Favourites
+        </Link>
         <Link href="/profile" className="text-sm underline" title="Edit your profile">
           <span className="inline-block grayscale brightness-0 invert">👤</span> Hi, {session.user.name}
         </Link>

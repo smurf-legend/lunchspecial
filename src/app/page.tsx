@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import SearchBar from "@/components/SearchBar";
@@ -82,7 +84,10 @@ export default async function HomePage({
       })
     : [];
 
-  const [specials, categories] = await Promise.all([
+  const session = await getServerSession(authOptions);
+  const userId = (session?.user as any)?.id as string | undefined;
+
+  const [specials, categories, favorites] = await Promise.all([
     prisma.special.findMany({
       where,
       orderBy: sort === "new" ? { createdAt: "desc" } : { score: "desc" },
@@ -94,7 +99,9 @@ export default async function HomePage({
       },
     }),
     prisma.category.findMany({ orderBy: { name: "asc" } }),
+    userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
+  const favoritedIds = new Set(favorites.map((f) => f.specialId));
 
   function buildLink(overrides: Record<string, string | undefined>) {
     const params = new URLSearchParams();
@@ -183,6 +190,7 @@ export default async function HomePage({
           <SpecialCard
             key={special.id}
             special={special as any}
+            isFavorited={favoritedIds.has(special.id)}
             contextSuburbSlug={suburbSlug ?? matchedSuburbs[0]?.slug}
           />
         ))}

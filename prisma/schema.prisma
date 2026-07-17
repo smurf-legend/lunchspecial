@@ -36,6 +36,7 @@ model User {
 
   specials      Special[]
   votes         Vote[]
+  favorites     Favorite[]
   comments      Comment[]
   commentReactions CommentReaction[]
 
@@ -131,6 +132,7 @@ model Special {
   greatValue   Boolean   @default(false)
 
   votes        Vote[]
+  favorites    Favorite[]
   comments     Comment[]
   categories   SpecialCategory[]
   notifications Notification[]
@@ -178,6 +180,20 @@ model Vote {
   special   Special @relation(fields: [specialId], references: [id], onDelete: Cascade)
 
   @@unique([userId, specialId]) // one vote per user per special
+}
+
+// A user's personal saved-deals list — separate from Vote (upvote/downvote
+// is public opinion on a deal's quality; favoriting is a private "I want to
+// come back to this" list, and the two are independent of each other).
+model Favorite {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  userId    String
+  specialId String
+  user      User     @relation(fields: [userId], references: [id])
+  special   Special  @relation(fields: [specialId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, specialId]) // one favorite per user per special
 }
 
 model Comment {

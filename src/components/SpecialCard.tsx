@@ -2,6 +2,7 @@ import Link from "next/link";
 import { isExpired, formatExpiry } from "@/lib/dealStatus";
 import { googleMapsUrl } from "@/lib/mapsLink";
 import SpecialImage from "@/components/SpecialImage";
+import FavoriteButton from "@/components/FavoriteButton";
 import { specialSlug } from "@/lib/slugify";
 
 type SpecialCardType = {
@@ -29,6 +30,7 @@ type SpecialCardType = {
 export default function SpecialCard({
   special,
   contextSuburbSlug,
+  isFavorited = false,
 }: {
   special: SpecialCardType;
   // Which suburb this card is being shown "for" — e.g. the suburb page or
@@ -36,6 +38,7 @@ export default function SpecialCard({
   // without this we wouldn't know which one is relevant to the current view.
   // Falls back to the first suburb when not viewing within one suburb's context.
   contextSuburbSlug?: string;
+  isFavorited?: boolean;
 }) {
   const discount =
     special.usualPrice && special.usualPrice > special.specialPrice
@@ -62,6 +65,7 @@ export default function SpecialCard({
           <span aria-hidden="true">🤢</span>
           <span className="font-bold text-red-600">{special.downvoteCount ?? 0}</span>
         </span>
+        <FavoriteButton specialId={special.id} initialFavorited={isFavorited} size="text-lg" />
       </div>
 
       <SpecialImage

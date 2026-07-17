@@ -1,3 +1,5 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import Link from "next/link";
@@ -9,7 +11,10 @@ export default async function RegionPage({ params }: { params: { region: string 
   const region = VALID_REGIONS.find((r) => r.toLowerCase() === params.region.toLowerCase());
   if (!region) notFound();
 
-  const [specials, suburbs] = await Promise.all([
+  const session = await getServerSession(authOptions);
+  const userId = (session?.user as any)?.id as string | undefined;
+
+  const [specials, suburbs, favorites] = await Promise.all([
     prisma.special.findMany({
       where: {
         hidden: false,
@@ -24,7 +29,9 @@ export default async function RegionPage({ params }: { params: { region: string 
       },
     }),
     prisma.suburb.findMany({ where: { region }, orderBy: { name: "asc" } }),
+    userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
+  const favoritedIds = new Set(favorites.map((f) => f.specialId));
 
   return (
     <div>
@@ -49,7 +56,7 @@ export default async function RegionPage({ params }: { params: { region: string 
 
       <div className="flex flex-col gap-3">
         {specials.map((special) => (
-          <SpecialCard key={special.id} special={special as any} />
+          <SpecialCard key={special.id} special={special as any} isFavorited={favoritedIds.has(special.id)} />
         ))}
         {specials.length === 0 && (
           <p className="text-gray-500 text-center py-12">

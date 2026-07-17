@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import VoteButtons from "@/components/VoteButtons";
+import FavoriteButton from "@/components/FavoriteButton";
 import CommentThread from "@/components/CommentThread";
 import Link from "next/link";
 import { isExpired, formatExpiry } from "@/lib/dealStatus";
@@ -51,7 +52,9 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   const isAdmin = (session?.user as any)?.role === "admin";
   const id = idFromSlug(params.id);
 
-  const [special, flatComments] = await Promise.all([
+  const userId = (session?.user as any)?.id as string | undefined;
+
+  const [special, flatComments, favorite] = await Promise.all([
     getSpecial(id),
     // Fetched flat (not nested) since replies can nest to any depth — the
     // tree is assembled in commentTree.ts instead of a fixed-depth include.
@@ -60,6 +63,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
       include: { author: authorSelect },
       orderBy: { createdAt: "asc" },
     }),
+    userId ? prisma.favorite.findUnique({ where: { userId_specialId: { userId, specialId: id } } }) : null,
   ]);
 
   if (!special) notFound();
@@ -101,7 +105,10 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
       )}
 
       <div className={`bg-white rounded-lg border p-6 flex gap-5 ${expired ? "opacity-70" : ""}`}>
-        <VoteButtons voteEndpoint={`/api/specials/${special.id}/vote`} initialScore={special.score} />
+        <div className="flex flex-col items-center gap-2">
+          <VoteButtons voteEndpoint={`/api/specials/${special.id}/vote`} initialScore={special.score} />
+          <FavoriteButton specialId={special.id} initialFavorited={!!favorite} size="text-2xl" />
+        </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
