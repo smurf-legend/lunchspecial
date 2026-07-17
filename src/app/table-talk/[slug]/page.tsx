@@ -59,7 +59,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <SpecialImage
             src={post.imageUrl}
             alt={post.title}
-            className="mt-4 h-64 w-full object-cover rounded-lg border"
+            className={
+              post.imageUrl
+                ? "mt-4 w-full max-h-[500px] object-contain rounded-lg border bg-gray-50"
+                : "mt-4 h-64 w-full rounded-lg border"
+            }
             iconClassName="text-5xl"
           />
 

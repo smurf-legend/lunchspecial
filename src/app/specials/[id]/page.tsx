@@ -10,7 +10,7 @@ import Link from "next/link";
 import { isExpired, formatExpiry } from "@/lib/dealStatus";
 import { googleMapsUrl, isMapsLink } from "@/lib/mapsLink";
 import ContributorBadge from "@/components/ContributorBadge";
-import SpecialImage from "@/components/SpecialImage";
+import SpecialGallery from "@/components/SpecialGallery";
 import { buildCommentTree } from "@/lib/commentTree";
 import { idFromSlug, specialSlug } from "@/lib/slugify";
 
@@ -132,27 +132,10 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
             <span>· {new Date(special.createdAt).toLocaleDateString()}</span>
           </p>
 
-          <SpecialImage
-            src={special.imageUrl}
+          <SpecialGallery
+            images={[special.imageUrl, ...special.extraImageUrls].filter((u): u is string => !!u)}
             alt={special.title}
-            className="mt-4 h-64 w-full object-cover rounded-lg border"
-            iconClassName="text-5xl"
           />
-
-          {special.extraImageUrls.length > 0 && (
-            <div className="flex gap-2 mt-2 overflow-x-auto">
-              {special.extraImageUrls.map((url, i) => (
-                <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={url}
-                    alt={`${special.title} photo ${i + 2}`}
-                    className="h-20 w-20 object-cover rounded border hover:opacity-80"
-                  />
-                </a>
-              ))}
-            </div>
-          )}
 
           <p className="mt-4 text-gray-800">{special.description}</p>
 
