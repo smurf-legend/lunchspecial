@@ -176,7 +176,7 @@ model Vote {
   value     Int     // 1 = up, -1 = down
   userId    String
   specialId String
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   special   Special @relation(fields: [specialId], references: [id], onDelete: Cascade)
 
   @@unique([userId, specialId]) // one vote per user per special
@@ -190,7 +190,7 @@ model Favorite {
   createdAt DateTime @default(now())
   userId    String
   specialId String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   special   Special  @relation(fields: [specialId], references: [id], onDelete: Cascade)
 
   @@unique([userId, specialId]) // one favorite per user per special
@@ -235,7 +235,7 @@ model CommentReaction {
   value     Int
   userId    String
   commentId String
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@unique([userId, commentId])
@@ -303,7 +303,7 @@ model BlogVote {
   value      Int      // 1 = up, -1 = down
   userId     String
   blogPostId String
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
 
   @@unique([userId, blogPostId])
@@ -335,7 +335,7 @@ model BlogCommentReaction {
   value         Int
   userId        String
   blogCommentId String
-  user          User        @relation(fields: [userId], references: [id])
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   blogComment   BlogComment @relation(fields: [blogCommentId], references: [id], onDelete: Cascade)
 
   @@unique([userId, blogCommentId])

@@ -5,6 +5,7 @@ import Link from "next/link";
 import AccountForm from "@/components/AccountForm";
 import ChangeEmailForm from "@/components/ChangeEmailForm";
 import ChangePasswordForm from "@/components/ChangePasswordForm";
+import DeleteAccountForm from "@/components/DeleteAccountForm";
 
 export default async function AccountPage() {
   const session = await getServerSession(authOptions);
@@ -40,6 +41,10 @@ export default async function AccountPage() {
       <div className="bg-white p-6 rounded-lg border">
         <h2 className="text-lg font-bold mb-4">Password</h2>
         <ChangePasswordForm />
+      </div>
+      <div className="bg-white p-6 rounded-lg border border-red-200">
+        <h2 className="text-lg font-bold mb-4 text-red-700">Danger zone</h2>
+        <DeleteAccountForm />
       </div>
     </div>
   );
