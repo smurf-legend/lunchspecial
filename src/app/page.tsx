@@ -9,7 +9,8 @@ const PRICE_TIERS: Record<string, { label: string; where: any }> = {
   under10: { label: "Under $10", where: { lt: 10 } },
   under15: { label: "Under $15", where: { lt: 15 } },
   under20: { label: "Under $20", where: { lt: 20 } },
-  over20: { label: "Over $20", where: { gte: 20 } },
+  under25: { label: "Under $25", where: { lt: 25 } },
+  over25: { label: "Over $25", where: { gte: 25 } },
 };
 
 const OLDIE_MIN_AGE_DAYS = 30;
@@ -156,6 +157,14 @@ export default async function HomePage({
       )}
 
       <div className="flex gap-2 mb-2 mt-3 flex-wrap">
+        <Link
+          href={buildLink({ greatValue: greatValueOnly ? undefined : "1" })}
+          className={`px-3 py-1 rounded-full text-sm font-medium ${
+            greatValueOnly ? "bg-orange-600 text-white" : "bg-white border"
+          }`}
+        >
+          💎 Everyday Value
+        </Link>
         {Object.entries(PRICE_TIERS).map(([key, { label }]) => (
           <Link
             key={key}
@@ -167,14 +176,6 @@ export default async function HomePage({
             {label}
           </Link>
         ))}
-        <Link
-          href={buildLink({ greatValue: greatValueOnly ? undefined : "1" })}
-          className={`px-3 py-1 rounded-full text-sm font-medium ${
-            greatValueOnly ? "bg-orange-600 text-white" : "bg-white border"
-          }`}
-        >
-          💎 Everyday Value
-        </Link>
       </div>
 
       <div className="flex flex-col gap-3">
