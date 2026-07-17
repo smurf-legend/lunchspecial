@@ -78,7 +78,7 @@ export default async function AdminPage({
     const params = new URLSearchParams();
     if (q) params.set("q", q);
     params.set("page", String(p));
-    return `/admin?${params.toString()}`;
+    return `/kitchen?${params.toString()}`;
   }
 
   return (
@@ -87,11 +87,11 @@ export default async function AdminPage({
         <h1 className="text-2xl font-bold">Admin</h1>
         <p className="text-sm text-gray-500">
           {totalSpecials} specials · {suburbs.length} suburbs · {categories.length} categories ·{" "}
-          <Link href="/admin/comments" className="text-orange-600 hover:underline">
+          <Link href="/kitchen/comments" className="text-orange-600 hover:underline">
             {totalComments} comments
           </Link>{" "}
           ·{" "}
-          <Link href="/admin/users" className="text-orange-600 hover:underline">
+          <Link href="/kitchen/users" className="text-orange-600 hover:underline">
             {userCount} users
           </Link>
         </p>
@@ -107,13 +107,13 @@ export default async function AdminPage({
           </h2>
           <div className="flex gap-2">
             <Link
-              href="/admin/table-talk"
+              href="/kitchen/table-talk"
               className="text-gray-700 text-sm font-medium border rounded px-4 py-2 hover:bg-gray-50"
             >
               Manage articles
             </Link>
             <Link
-              href="/admin/table-talk/new"
+              href="/kitchen/table-talk/new"
               className="bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded hover:bg-orange-700"
             >
               Write a new article

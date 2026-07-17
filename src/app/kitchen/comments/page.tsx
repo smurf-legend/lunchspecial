@@ -69,13 +69,13 @@ export default async function AdminCommentsPage({
     const params = new URLSearchParams();
     if (q) params.set("q", q);
     params.set("page", String(p));
-    return `/admin/comments?${params.toString()}`;
+    return `/kitchen/comments?${params.toString()}`;
   }
 
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <Link href="/admin" className="text-sm text-gray-500 hover:text-orange-600">
+        <Link href="/kitchen" className="text-sm text-gray-500 hover:text-orange-600">
           ← Back to admin
         </Link>
         <h1 className="text-2xl font-bold mt-1">Comments</h1>
@@ -89,7 +89,7 @@ export default async function AdminCommentsPage({
             ({totalMatching} {totalMatching === 1 ? "match" : "matches"})
           </span>
         </h2>
-        <AdminSearch basePath="/admin/comments" placeholder="Search by comment, author, or special..." />
+        <AdminSearch basePath="/kitchen/comments" placeholder="Search by comment, author, or special..." />
       </div>
 
       <div className="bg-white rounded-lg border divide-y">

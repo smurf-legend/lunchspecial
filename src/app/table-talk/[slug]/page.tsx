@@ -41,7 +41,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       {post.hidden && isAdmin && (
         <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
           This article is hidden — only admins can see it.{" "}
-          <Link href={`/admin/table-talk/${post.id}/edit`} className="underline">
+          <Link href={`/kitchen/table-talk/${post.id}/edit`} className="underline">
             Manage
           </Link>
         </div>

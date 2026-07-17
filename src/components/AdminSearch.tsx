@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function AdminSearch({
-  basePath = "/admin",
+  basePath = "/kitchen",
   placeholder = "Search by title, venue, or suburb...",
 }: {
   basePath?: string;

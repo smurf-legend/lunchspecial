@@ -13,7 +13,7 @@ export default function NavAuth() {
     return (
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         {role === "admin" && (
-          <Link href="/admin" className="text-sm underline">
+          <Link href="/kitchen" className="text-sm underline">
             Admin
           </Link>
         )}

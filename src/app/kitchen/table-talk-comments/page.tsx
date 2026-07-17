@@ -69,13 +69,13 @@ export default async function AdminBlogCommentsPage({
     const params = new URLSearchParams();
     if (q) params.set("q", q);
     params.set("page", String(p));
-    return `/admin/table-talk-comments?${params.toString()}`;
+    return `/kitchen/table-talk-comments?${params.toString()}`;
   }
 
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <Link href="/admin/table-talk" className="text-sm text-gray-500 hover:text-orange-600">
+        <Link href="/kitchen/table-talk" className="text-sm text-gray-500 hover:text-orange-600">
           ← Back to Table Talk
         </Link>
         <h1 className="text-2xl font-bold mt-1">Table Talk comments</h1>
@@ -89,7 +89,7 @@ export default async function AdminBlogCommentsPage({
             ({totalMatching} {totalMatching === 1 ? "match" : "matches"})
           </span>
         </h2>
-        <AdminSearch basePath="/admin/table-talk-comments" placeholder="Search by comment, author, or article..." />
+        <AdminSearch basePath="/kitchen/table-talk-comments" placeholder="Search by comment, author, or article..." />
       </div>
 
       <div className="bg-white rounded-lg border divide-y">

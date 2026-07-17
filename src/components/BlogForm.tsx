@@ -181,7 +181,7 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
       return;
     }
 
-    router.push("/admin/table-talk");
+    router.push("/kitchen/table-talk");
     router.refresh();
   }
 

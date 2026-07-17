@@ -41,7 +41,7 @@ export default async function AdminUsersPage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <Link href="/admin" className="text-sm text-gray-500 hover:text-orange-600">
+        <Link href="/kitchen" className="text-sm text-gray-500 hover:text-orange-600">
           ← Back to admin
         </Link>
         <h1 className="text-2xl font-bold mt-1">Users</h1>

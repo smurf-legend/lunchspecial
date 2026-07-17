@@ -61,7 +61,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
       {special.hidden && isAdmin && (
         <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
           This special is hidden — only admins can see it.{" "}
-          <Link href={`/admin/specials/${special.id}/edit`} className="underline">
+          <Link href={`/kitchen/specials/${special.id}/edit`} className="underline">
             Manage
           </Link>
         </div>

@@ -38,7 +38,7 @@ export default async function AdminBlogPage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <Link href="/admin" className="text-sm text-gray-500 hover:text-orange-600">
+        <Link href="/kitchen" className="text-sm text-gray-500 hover:text-orange-600">
           ← Back to admin
         </Link>
         <div className="flex items-center justify-between mt-1 flex-wrap gap-2">
@@ -46,13 +46,13 @@ export default async function AdminBlogPage() {
             <h1 className="text-2xl font-bold">Table Talk</h1>
             <p className="text-sm text-gray-500">
               {posts.length} article{posts.length === 1 ? "" : "s"} ·{" "}
-              <Link href="/admin/table-talk-comments" className="text-orange-600 hover:underline">
+              <Link href="/kitchen/table-talk-comments" className="text-orange-600 hover:underline">
                 Table Talk comments
               </Link>
             </p>
           </div>
           <Link
-            href="/admin/table-talk/new"
+            href="/kitchen/table-talk/new"
             className="bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded hover:bg-orange-700"
           >
             Write a new article
@@ -67,7 +67,7 @@ export default async function AdminBlogPage() {
         {posts.length === 0 && (
           <p className="text-gray-400 text-sm p-4">
             No articles yet —{" "}
-            <Link href="/admin/table-talk/new" className="text-orange-600 underline">
+            <Link href="/kitchen/table-talk/new" className="text-orange-600 underline">
               write the first one
             </Link>
             .

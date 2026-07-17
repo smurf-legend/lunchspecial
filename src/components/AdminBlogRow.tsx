@@ -60,7 +60,7 @@ export default function AdminBlogRow({ post }: { post: BlogPostRow }) {
       </div>
       <div className="flex gap-2 shrink-0">
         <Link
-          href={`/admin/table-talk/${post.id}/edit`}
+          href={`/kitchen/table-talk/${post.id}/edit`}
           className="text-gray-700 text-xs font-medium border rounded px-3 py-1.5 hover:bg-gray-50"
         >
           Edit
