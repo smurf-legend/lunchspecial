@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isExpired } from "@/lib/dealStatus";
+import { specialSlug } from "@/lib/slugify";
 
 type Special = {
   id: string;
@@ -51,7 +52,7 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
   return (
     <div className="flex items-center justify-between p-3 text-sm">
       <div>
-        <Link href={`/specials/${special.id}`} className="font-medium hover:text-orange-600">
+        <Link href={`/specials/${specialSlug(special)}`} className="font-medium hover:text-orange-600">
           {special.title}
         </Link>
         {special.hidden && (

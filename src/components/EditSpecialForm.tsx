@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { compressImage } from "@/lib/compressImage";
 import SuburbPicker from "@/components/SuburbPicker";
+import { specialSlug } from "@/lib/slugify";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -224,7 +225,7 @@ export default function EditSpecialForm({
       return;
     }
 
-    router.push(`/specials/${special.id}`);
+    router.push(`/specials/${specialSlug({ id: special.id, title: form.title, venueName: form.venueName })}`);
     router.refresh();
   }
 

@@ -1,4 +1,6 @@
-import { notFound } from "next/navigation";
+import { cache } from "react";
+import { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -10,6 +12,7 @@ import { googleMapsUrl, isMapsLink } from "@/lib/mapsLink";
 import ContributorBadge from "@/components/ContributorBadge";
 import SpecialImage from "@/components/SpecialImage";
 import { buildCommentTree } from "@/lib/commentTree";
+import { idFromSlug, specialSlug } from "@/lib/slugify";
 
 const authorSelect = {
   select: {
@@ -18,23 +21,42 @@ const authorSelect = {
   },
 };
 
+// Shared between generateMetadata and the page body so the two don't issue
+// duplicate queries for the same special within one request.
+const getSpecial = cache((id: string) =>
+  prisma.special.findUnique({
+    where: { id },
+    include: {
+      author: authorSelect,
+      suburbs: { include: { suburb: true } },
+      categories: { include: { category: true } },
+    },
+  })
+);
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const special = await getSpecial(idFromSlug(params.id));
+  if (!special || special.hidden) return {};
+
+  const suburbNames = special.suburbs.map((s) => s.suburb.name).join(", ");
+  return {
+    title: `${special.title} — ${special.venueName}${suburbNames ? ` (${suburbNames})` : ""} | LunchSpecial`,
+    description: special.description.slice(0, 155),
+    alternates: { canonical: `/specials/${specialSlug(special)}` },
+  };
+}
+
 export default async function SpecialDetailPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
   const isAdmin = (session?.user as any)?.role === "admin";
+  const id = idFromSlug(params.id);
 
   const [special, flatComments] = await Promise.all([
-    prisma.special.findUnique({
-      where: { id: params.id },
-      include: {
-        author: authorSelect,
-        suburbs: { include: { suburb: true } },
-        categories: { include: { category: true } },
-      },
-    }),
+    getSpecial(id),
     // Fetched flat (not nested) since replies can nest to any depth — the
     // tree is assembled in commentTree.ts instead of a fixed-depth include.
     prisma.comment.findMany({
-      where: { specialId: params.id },
+      where: { specialId: id },
       include: { author: authorSelect },
       orderBy: { createdAt: "asc" },
     }),
@@ -44,6 +66,11 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   // Hidden specials 404 for everyone except admins, who see a banner below
   // instead — the row still exists so it can be reviewed/unhidden.
   if (special.hidden && !isAdmin) notFound();
+
+  // Send old bare-id links and stale slugs (e.g. after a title edit) to the
+  // current canonical URL, so there's only ever one indexable address per special.
+  const canonical = specialSlug(special);
+  if (params.id !== canonical) redirect(`/specials/${canonical}`);
 
   const commentTree = buildCommentTree(flatComments);
 

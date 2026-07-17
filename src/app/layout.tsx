@@ -5,6 +5,7 @@ import NavAuth from "@/components/NavAuth";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata = {
+  metadataBase: new URL("https://lunchspecial.com.au"),
   title: "LunchSpecial — Sydney lunch specials, crowdsourced",
   description: "Find and share the best lunch specials near you, posted by the community.",
 };

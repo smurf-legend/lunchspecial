@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { compressImage } from "@/lib/compressImage";
 import SuburbPicker from "@/components/SuburbPicker";
+import { specialSlug } from "@/lib/slugify";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -239,7 +240,7 @@ export default function NewSpecialPage() {
     }
 
     const { special } = await res.json();
-    router.push(`/specials/${special.id}`);
+    router.push(`/specials/${specialSlug(special)}`);
   }
 
   async function handlePostAnyway() {
@@ -255,7 +256,7 @@ export default function NewSpecialPage() {
     }
 
     const { special } = await res.json();
-    router.push(`/specials/${special.id}`);
+    router.push(`/specials/${specialSlug(special)}`);
   }
 
   return (
@@ -550,7 +551,7 @@ export default function NewSpecialPage() {
             <ul className="list-disc list-inside text-amber-800 mb-3">
               {duplicates.map((d) => (
                 <li key={d.id}>
-                  <Link href={`/specials/${d.id}`} target="_blank" className="underline hover:text-amber-900">
+                  <Link href={`/specials/${specialSlug(d)}`} target="_blank" className="underline hover:text-amber-900">
                     {d.title}
                   </Link>{" "}
                   — {d.venueName}, ${d.specialPrice.toFixed(2)} (

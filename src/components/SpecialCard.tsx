@@ -2,6 +2,7 @@ import Link from "next/link";
 import { isExpired, formatExpiry } from "@/lib/dealStatus";
 import { googleMapsUrl } from "@/lib/mapsLink";
 import SpecialImage from "@/components/SpecialImage";
+import { specialSlug } from "@/lib/slugify";
 
 type SpecialCardType = {
   id: string;
@@ -72,7 +73,7 @@ export default function SpecialCard({
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <Link href={`/specials/${special.id}`} className="font-semibold text-lg hover:text-orange-600">
+          <Link href={`/specials/${specialSlug(special)}`} className="font-semibold text-lg hover:text-orange-600">
             {special.title}
           </Link>
           {special.greatValue && (
