@@ -12,9 +12,6 @@ export default function SearchBar() {
     const params = new URLSearchParams(searchParams.toString());
     if (q) params.set("q", q);
     else params.delete("q");
-    // A keyword search is a fresh, city-wide search — drop any suburb filter
-    // left over from LocationSearch so it doesn't silently narrow results.
-    params.delete("location");
     router.push(`/?${params.toString()}`);
   }
 

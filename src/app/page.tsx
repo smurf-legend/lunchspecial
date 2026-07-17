@@ -104,6 +104,7 @@ export default async function HomePage({
       category: categorySlug,
       price: priceTier,
       greatValue: greatValueOnly ? "1" : undefined,
+      location,
       ...overrides,
     };
     Object.entries(merged).forEach(([k, v]) => {
@@ -121,14 +122,37 @@ export default async function HomePage({
         <SearchBar />
       </div>
 
-      {location && (
-        <p className="text-xs text-gray-500 mt-2">
-          {matchedSuburbs.length > 0
-            ? `Showing ${matchedSuburbs.map((s) => s.name).join(", ")}`
-            : isPostcode
-            ? `We don't have suburb data for postcode ${location} yet.`
-            : `No suburb matching "${location}" yet.`}
-        </p>
+      {(location || q) && (
+        <div className="flex flex-wrap items-center gap-2 mt-2 text-xs">
+          {location && (
+            <span className="bg-gray-100 text-gray-700 pl-2.5 pr-1.5 py-1 rounded-full flex items-center gap-1.5">
+              {matchedSuburbs.length > 0
+                ? `📍 ${matchedSuburbs.map((s) => s.name).join(", ")}`
+                : isPostcode
+                ? `No suburb data for postcode ${location} yet`
+                : `No suburb matching "${location}" yet`}
+              <Link
+                href={buildLink({ location: undefined })}
+                className="text-gray-400 hover:text-gray-900 font-bold px-1"
+                aria-label="Clear suburb filter"
+              >
+                ×
+              </Link>
+            </span>
+          )}
+          {q && (
+            <span className="bg-gray-100 text-gray-700 pl-2.5 pr-1.5 py-1 rounded-full flex items-center gap-1.5">
+              🔍 &quot;{q}&quot;
+              <Link
+                href={buildLink({ q: undefined })}
+                className="text-gray-400 hover:text-gray-900 font-bold px-1"
+                aria-label="Clear keyword filter"
+              >
+                ×
+              </Link>
+            </span>
+          )}
+        </div>
       )}
 
       <div className="flex gap-2 mb-2 mt-3 flex-wrap">

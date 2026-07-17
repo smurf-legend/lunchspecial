@@ -14,9 +14,6 @@ export default function LocationSearch() {
     const trimmed = location.trim();
     if (trimmed) params.set("location", trimmed);
     else params.delete("location");
-    // A suburb search is a fresh search too — drop any keyword filter left
-    // over from SearchBar so it doesn't silently narrow results.
-    params.delete("q");
     router.push(`/?${params.toString()}`);
   }
 
