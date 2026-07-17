@@ -23,6 +23,7 @@ You're researching **real, currently-advertised lunch specials** at real venues 
     "venueName": "The Example Hotel",
     "address": "123 Main St, Suburbtown",
     "url": "https://theexamplehotel.com.au/lunch",
+    "imageUrl": null,
     "usualPrice": 22,
     "specialPrice": 17,
     "availableDays": "Mon,Tue,Wed,Thu,Fri",
@@ -43,6 +44,7 @@ You're researching **real, currently-advertised lunch specials** at real venues 
 - `venueName` — the business name only, not the suburb.
 - `address` — optional, street address if known.
 - `url` — optional, must be a real, working URL if included.
+- `imageUrl` — optional, best-effort only. If the venue's page has a real photo of the dish or venue, include its direct image URL (must actually be an image file, not a page link). If there's no image, or you're not sure, omit the field entirely — don't guess a URL and never generate/fabricate an image.
 - `usualPrice` — optional, only if there's a genuine "normally $X" comparison.
 - `specialPrice` — required, the deal price as a number (no `$`).
 - `availableDays` — optional, comma-separated from `Mon,Tue,Wed,Thu,Fri,Sat,Sun`. Omit to default to weekdays.
