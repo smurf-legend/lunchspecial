@@ -397,7 +397,7 @@ export default function NewSpecialPage() {
               step="0.01"
               placeholder="Special price"
               required
-              className="border rounded px-3 py-2 flex-1"
+              className="border rounded px-3 py-2 flex-1 min-w-0"
               value={form.specialPrice}
               onChange={(e) => setForm({ ...form, specialPrice: e.target.value })}
             />
@@ -405,7 +405,7 @@ export default function NewSpecialPage() {
               type="number"
               step="0.01"
               placeholder="Usual price (optional)"
-              className="border rounded px-3 py-2 flex-1"
+              className="border rounded px-3 py-2 flex-1 min-w-0"
               value={form.usualPrice}
               onChange={(e) => setForm({ ...form, usualPrice: e.target.value })}
             />
