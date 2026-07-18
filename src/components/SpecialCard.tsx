@@ -11,7 +11,8 @@ type SpecialCardType = {
   description: string;
   venueName: string;
   address?: string | null;
-  specialPrice: number;
+  specialPrice: number | null;
+  discountPercent?: number | null;
   usualPrice?: number | null;
   availableDays: string;
   score: number;
@@ -41,7 +42,7 @@ export default function SpecialCard({
   isFavorited?: boolean;
 }) {
   const discount =
-    special.usualPrice && special.usualPrice > special.specialPrice
+    special.usualPrice && special.specialPrice != null && special.usualPrice > special.specialPrice
       ? Math.round(100 - (special.specialPrice / special.usualPrice) * 100)
       : null;
   const expired = isExpired(special.expiresAt ?? null);
@@ -132,7 +133,15 @@ export default function SpecialCard({
               </Link>
             </>
           )}
-          <span className="font-semibold text-green-700">${special.specialPrice.toFixed(2)}</span>
+          {special.specialPrice != null ? (
+            <span className="font-semibold text-green-700">${special.specialPrice.toFixed(2)}</span>
+          ) : (
+            special.discountPercent != null && (
+              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">
+                {special.discountPercent}% off
+              </span>
+            )
+          )}
           {special.usualPrice != null && (
             <span className="line-through text-gray-400">${special.usualPrice.toFixed(2)}</span>
           )}

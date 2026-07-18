@@ -15,7 +15,8 @@ const specialUpdateSchema = z
     extraImageUrls: z.array(z.string().url()).optional(),
     couponCode: z.string().optional().nullable(),
     usualPrice: z.number().optional().nullable(),
-    specialPrice: z.number(),
+    specialPrice: z.number().optional().nullable(),
+    discountPercent: z.number().int().min(1).max(100).optional().nullable(),
     availableDays: z.string().optional(),
     startTime: z.string().optional().nullable(),
     endTime: z.string().optional().nullable(),
@@ -32,6 +33,10 @@ const specialUpdateSchema = z
   .refine((data) => data.chainWide || data.suburbSlugs.length > 0, {
     message: "Select at least one suburb, or mark this as a nationwide chain",
     path: ["suburbSlugs"],
+  })
+  .refine((data) => data.specialPrice != null || data.discountPercent != null, {
+    message: "Enter either a special price or a percentage discount",
+    path: ["specialPrice"],
   });
 
 async function requireAdmin() {

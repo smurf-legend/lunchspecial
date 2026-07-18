@@ -79,7 +79,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   const commentTree = buildCommentTree(flatComments);
 
   const discount =
-    special.usualPrice && special.usualPrice > special.specialPrice
+    special.usualPrice && special.specialPrice != null && special.usualPrice > special.specialPrice
       ? Math.round(100 - (special.specialPrice / special.usualPrice) * 100)
       : null;
   const expired = isExpired(special.expiresAt);
@@ -211,9 +211,17 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
           )}
 
           <div className="flex items-center gap-3 mt-3 text-sm flex-wrap">
-            <span className="font-semibold text-green-700 text-lg">
-              ${special.specialPrice.toFixed(2)}
-            </span>
+            {special.specialPrice != null ? (
+              <span className="font-semibold text-green-700 text-lg">
+                ${special.specialPrice.toFixed(2)}
+              </span>
+            ) : (
+              special.discountPercent != null && (
+                <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm font-bold">
+                  {special.discountPercent}% off
+                </span>
+              )
+            )}
             {special.usualPrice != null && (
               <span className="line-through text-gray-400">
                 ${special.usualPrice.toFixed(2)}

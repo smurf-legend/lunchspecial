@@ -8,13 +8,15 @@ export async function findDuplicateSpecials({
   venueName,
   suburbSlugs,
   specialPrice,
+  discountPercent,
   title,
   chainWide,
   excludeId,
 }: {
   venueName: string;
   suburbSlugs: string[];
-  specialPrice: number;
+  specialPrice?: number | null;
+  discountPercent?: number | null;
   title: string;
   chainWide?: boolean;
   excludeId?: string;
@@ -36,6 +38,9 @@ export async function findDuplicateSpecials({
   const normalizedTitle = title.trim().toLowerCase();
 
   return candidates.filter(
-    (c) => c.specialPrice === specialPrice || c.title.trim().toLowerCase() === normalizedTitle
+    (c) =>
+      (specialPrice != null && c.specialPrice === specialPrice) ||
+      (discountPercent != null && c.discountPercent === discountPercent) ||
+      c.title.trim().toLowerCase() === normalizedTitle
   );
 }

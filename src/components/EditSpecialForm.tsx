@@ -21,7 +21,8 @@ type SpecialData = {
   extraImageUrls: string[];
   couponCode: string | null;
   usualPrice: number | null;
-  specialPrice: number;
+  specialPrice: number | null;
+  discountPercent: number | null;
   availableDays: string;
   startTime: string | null;
   endTime: string | null;
@@ -50,6 +51,9 @@ export default function EditSpecialForm({
   );
   const [greatValue, setGreatValue] = useState(special.greatValue);
   const [anyTime, setAnyTime] = useState(!special.startTime && !special.endTime);
+  const [priceMode, setPriceMode] = useState<"fixed" | "percent">(
+    special.discountPercent != null ? "percent" : "fixed"
+  );
   const [form, setForm] = useState({
     title: special.title,
     description: special.description,
@@ -59,7 +63,8 @@ export default function EditSpecialForm({
     couponCode: special.couponCode ?? "",
     suburbSlugs: special.suburbs.map((s) => s.suburb.slug),
     usualPrice: special.usualPrice?.toString() ?? "",
-    specialPrice: special.specialPrice.toString(),
+    specialPrice: special.specialPrice?.toString() ?? "",
+    discountPercent: special.discountPercent?.toString() ?? "",
     availableDays: special.availableDays.split(",").filter(Boolean),
     startTime: special.startTime ?? "11:30",
     endTime: special.endTime ?? "14:00",
@@ -201,8 +206,9 @@ export default function EditSpecialForm({
       suburbSlugs: form.suburbSlugs,
       chainWide: locationMode === "chainWide",
       greatValue,
-      usualPrice: form.usualPrice ? parseFloat(form.usualPrice) : undefined,
-      specialPrice: parseFloat(form.specialPrice),
+      usualPrice: priceMode === "fixed" && form.usualPrice ? parseFloat(form.usualPrice) : null,
+      specialPrice: priceMode === "fixed" ? parseFloat(form.specialPrice) : null,
+      discountPercent: priceMode === "percent" ? parseInt(form.discountPercent, 10) : null,
       availableDays: form.availableDays.join(","),
       startTime: anyTime ? null : form.startTime || undefined,
       endTime: anyTime ? null : form.endTime || undefined,
@@ -343,25 +349,65 @@ export default function EditSpecialForm({
           )}
         </div>
 
-        <div className="flex gap-3">
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Special price"
-            required
-            className="border rounded px-3 py-2 flex-1"
-            value={form.specialPrice}
-            onChange={(e) => setForm({ ...form, specialPrice: e.target.value })}
-          />
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Usual price (optional)"
-            className="border rounded px-3 py-2 flex-1"
-            value={form.usualPrice}
-            onChange={(e) => setForm({ ...form, usualPrice: e.target.value })}
-          />
+        <div className="flex gap-2 text-sm">
+          <button
+            type="button"
+            onClick={() => setPriceMode("fixed")}
+            className={`px-3 py-1 rounded-full font-medium ${
+              priceMode === "fixed" ? "bg-orange-600 text-white" : "bg-white border"
+            }`}
+          >
+            Fixed price
+          </button>
+          <button
+            type="button"
+            onClick={() => setPriceMode("percent")}
+            className={`px-3 py-1 rounded-full font-medium ${
+              priceMode === "percent" ? "bg-orange-600 text-white" : "bg-white border"
+            }`}
+          >
+            Percentage off
+          </button>
         </div>
+
+        {priceMode === "fixed" ? (
+          <div className="flex gap-3">
+            <input
+              type="number"
+              step="0.01"
+              placeholder="Special price"
+              required
+              className="border rounded px-3 py-2 flex-1"
+              value={form.specialPrice}
+              onChange={(e) => setForm({ ...form, specialPrice: e.target.value })}
+            />
+            <input
+              type="number"
+              step="0.01"
+              placeholder="Usual price (optional)"
+              className="border rounded px-3 py-2 flex-1"
+              value={form.usualPrice}
+              onChange={(e) => setForm({ ...form, usualPrice: e.target.value })}
+            />
+          </div>
+        ) : (
+          <div>
+            <input
+              type="number"
+              step="1"
+              min="1"
+              max="100"
+              placeholder="Discount percentage, e.g. 20"
+              required
+              className="border rounded px-3 py-2 w-full"
+              value={form.discountPercent}
+              onChange={(e) => setForm({ ...form, discountPercent: e.target.value })}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              For deals like "20% off anything on the menu" with no single fixed price.
+            </p>
+          </div>
+        )}
 
         <label className="flex items-center gap-2 text-sm text-gray-600">
           <input

@@ -16,7 +16,8 @@ const specialSchema = z
     extraImageUrls: z.array(z.string().url()).optional(),
     couponCode: z.string().optional(),
     usualPrice: z.number().optional(),
-    specialPrice: z.number(),
+    specialPrice: z.number().optional(),
+    discountPercent: z.number().int().min(1).max(100).optional(),
     availableDays: z.string().optional(),
     startTime: z.string().optional(),
     endTime: z.string().optional(),
@@ -34,6 +35,10 @@ const specialSchema = z
   .refine((data) => data.chainWide || data.suburbSlugs.length > 0, {
     message: "Select at least one suburb, or mark this as a nationwide chain",
     path: ["suburbSlugs"],
+  })
+  .refine((data) => data.specialPrice != null || data.discountPercent != null, {
+    message: "Enter either a special price or a percentage discount",
+    path: ["specialPrice"],
   });
 
 // GET /api/specials?sort=hot|new&suburb=slug&location=suburbName|postcode&category=slug&q=search&page=1
@@ -119,6 +124,7 @@ export async function POST(req: NextRequest) {
       venueName: data.venueName,
       suburbSlugs,
       specialPrice: data.specialPrice,
+      discountPercent: data.discountPercent,
       title: data.title,
       chainWide: data.chainWide,
     });
@@ -129,6 +135,7 @@ export async function POST(req: NextRequest) {
             id: d.id,
             title: d.title,
             specialPrice: d.specialPrice,
+            discountPercent: d.discountPercent,
             venueName: d.venueName,
             suburbNames: d.suburbs.map((s) => s.suburb.name),
           })),

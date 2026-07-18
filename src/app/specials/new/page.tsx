@@ -20,6 +20,7 @@ export default function NewSpecialPage() {
   const [locationMode, setLocationMode] = useState<"single" | "chain" | "chainWide">("single");
   const [greatValue, setGreatValue] = useState(false);
   const [anyTime, setAnyTime] = useState(false);
+  const [priceMode, setPriceMode] = useState<"fixed" | "percent">("fixed");
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -29,6 +30,7 @@ export default function NewSpecialPage() {
     suburbSlugs: [] as string[],
     usualPrice: "",
     specialPrice: "",
+    discountPercent: "",
     availableDays: ["Mon", "Tue", "Wed", "Thu", "Fri"] as string[],
     startTime: "11:30",
     endTime: "14:00",
@@ -43,7 +45,7 @@ export default function NewSpecialPage() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [compressingImage, setCompressingImage] = useState(false);
   const [duplicates, setDuplicates] = useState<
-    { id: string; title: string; specialPrice: number; venueName: string; suburbNames: string[] }[] | null
+    { id: string; title: string; specialPrice: number | null; discountPercent: number | null; venueName: string; suburbNames: string[] }[] | null
   >(null);
   const [pendingImageUrls, setPendingImageUrls] = useState<string[]>([]);
   const [newCategoryInput, setNewCategoryInput] = useState("");
@@ -192,8 +194,9 @@ export default function NewSpecialPage() {
       suburbSlugs: form.suburbSlugs,
       chainWide: locationMode === "chainWide",
       greatValue,
-      usualPrice: form.usualPrice ? parseFloat(form.usualPrice) : undefined,
-      specialPrice: parseFloat(form.specialPrice),
+      usualPrice: priceMode === "fixed" && form.usualPrice ? parseFloat(form.usualPrice) : undefined,
+      specialPrice: priceMode === "fixed" ? parseFloat(form.specialPrice) : undefined,
+      discountPercent: priceMode === "percent" ? parseInt(form.discountPercent, 10) : undefined,
       availableDays: form.availableDays.join(","),
       startTime: anyTime ? undefined : form.startTime || undefined,
       endTime: anyTime ? undefined : form.endTime || undefined,
@@ -366,25 +369,65 @@ export default function NewSpecialPage() {
           )}
         </div>
 
-        <div className="flex gap-3">
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Special price"
-            required
-            className="border rounded px-3 py-2 flex-1"
-            value={form.specialPrice}
-            onChange={(e) => setForm({ ...form, specialPrice: e.target.value })}
-          />
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Usual price (optional)"
-            className="border rounded px-3 py-2 flex-1"
-            value={form.usualPrice}
-            onChange={(e) => setForm({ ...form, usualPrice: e.target.value })}
-          />
+        <div className="flex gap-2 text-sm">
+          <button
+            type="button"
+            onClick={() => setPriceMode("fixed")}
+            className={`px-3 py-1 rounded-full font-medium ${
+              priceMode === "fixed" ? "bg-orange-600 text-white" : "bg-white border"
+            }`}
+          >
+            Fixed price
+          </button>
+          <button
+            type="button"
+            onClick={() => setPriceMode("percent")}
+            className={`px-3 py-1 rounded-full font-medium ${
+              priceMode === "percent" ? "bg-orange-600 text-white" : "bg-white border"
+            }`}
+          >
+            Percentage off
+          </button>
         </div>
+
+        {priceMode === "fixed" ? (
+          <div className="flex gap-3">
+            <input
+              type="number"
+              step="0.01"
+              placeholder="Special price"
+              required
+              className="border rounded px-3 py-2 flex-1"
+              value={form.specialPrice}
+              onChange={(e) => setForm({ ...form, specialPrice: e.target.value })}
+            />
+            <input
+              type="number"
+              step="0.01"
+              placeholder="Usual price (optional)"
+              className="border rounded px-3 py-2 flex-1"
+              value={form.usualPrice}
+              onChange={(e) => setForm({ ...form, usualPrice: e.target.value })}
+            />
+          </div>
+        ) : (
+          <div>
+            <input
+              type="number"
+              step="1"
+              min="1"
+              max="100"
+              placeholder="Discount percentage, e.g. 20"
+              required
+              className="border rounded px-3 py-2 w-full"
+              value={form.discountPercent}
+              onChange={(e) => setForm({ ...form, discountPercent: e.target.value })}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              For deals like "20% off anything on the menu" with no single fixed price.
+            </p>
+          </div>
+        )}
 
         <label className="flex items-center gap-2 text-sm text-gray-600">
           <input
@@ -572,7 +615,8 @@ export default function NewSpecialPage() {
                   <Link href={`/specials/${specialSlug(d)}`} target="_blank" className="underline hover:text-amber-900">
                     {d.title}
                   </Link>{" "}
-                  — {d.venueName}, ${d.specialPrice.toFixed(2)} (
+                  — {d.venueName},{" "}
+                  {d.specialPrice != null ? `$${d.specialPrice.toFixed(2)}` : `${d.discountPercent}% off`} (
                   {d.suburbNames.length > 0 ? d.suburbNames.join(", ") : "All Sydney locations"})
                 </li>
               ))}
