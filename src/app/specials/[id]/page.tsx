@@ -127,6 +127,14 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
               )
             )}
             <FavoriteButton specialId={special.id} initialFavorited={!!favorite} />
+            {isAdmin && (
+              <Link
+                href={`/kitchen/specials/${special.id}/edit`}
+                className="text-xs px-2 py-1 rounded-full font-medium border shrink-0 bg-gray-800 text-white border-gray-800"
+              >
+                ✏️ Edit
+              </Link>
+            )}
           </div>
           <p className="text-sm text-gray-500 mt-1 flex items-center gap-1.5 flex-wrap">
             Posted by {special.author.name}
