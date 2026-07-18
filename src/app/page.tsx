@@ -129,10 +129,8 @@ export default async function HomePage({
     prisma.special.findMany({
       where,
       orderBy: sort === "new" ? { createdAt: "desc" } : { score: "desc" },
-      // Grows with the page param instead of skip/take, so "Load more"
-      // appends onto the same list rather than jumping to a new window —
-      // matches the scroll-driven expectation better than classic paging.
-      take: page * PAGE_SIZE,
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
       include: {
         suburbs: { include: { suburb: true } },
         categories: { include: { category: true } },
@@ -146,6 +144,7 @@ export default async function HomePage({
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
   const stateCounts = new Map(suburbsByState.map((s) => [s.state, s._count]));
+  const totalPages = Math.max(1, Math.ceil(totalMatching / PAGE_SIZE));
 
   function buildLink(overrides: Record<string, string | undefined>) {
     const params = new URLSearchParams();
@@ -316,17 +315,29 @@ export default async function HomePage({
           </p>
         )}
         {specials.length > 0 && (
-          <div className="flex flex-col items-center gap-2 mt-2 text-sm text-gray-500">
-            <span>
-              Showing {specials.length} of {totalMatching} deal{totalMatching === 1 ? "" : "s"}
+          <div className="flex items-center justify-center gap-4 mt-2 text-sm">
+            {page > 1 ? (
+              <Link
+                href={buildLink({ page: String(page - 1) })}
+                className="bg-white border px-4 py-2 rounded font-medium hover:bg-gray-50"
+              >
+                ← Previous
+              </Link>
+            ) : (
+              <span className="px-4 py-2 text-gray-300">← Previous</span>
+            )}
+            <span className="text-gray-500">
+              Page {page} of {totalPages} · {totalMatching} deal{totalMatching === 1 ? "" : "s"}
             </span>
-            {specials.length < totalMatching && (
+            {page < totalPages ? (
               <Link
                 href={buildLink({ page: String(page + 1) })}
                 className="bg-white border px-4 py-2 rounded font-medium hover:bg-gray-50"
               >
-                Load more
+                Next →
               </Link>
+            ) : (
+              <span className="px-4 py-2 text-gray-300">Next →</span>
             )}
           </div>
         )}
