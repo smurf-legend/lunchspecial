@@ -1,3 +1,7 @@
 {
-  "regions": ["syd1"]
+  "regions": ["syd1"],
+  "crons": [
+    { "path": "/api/cron/digest?mode=friday", "schedule": "0 22 * * 4" },
+    { "path": "/api/cron/digest?mode=monday", "schedule": "0 22 * * 0" }
+  ]
 }
