@@ -33,7 +33,18 @@ export default async function HomePage({
     state?: string;
   };
 }) {
-  const sort = searchParams.sort === "new" ? "new" : searchParams.sort === "oldie" ? "oldie" : "hot";
+  // No sort param at all is a genuine neutral state (neither toggle shown as
+  // active) — distinct from "hot", which is an explicit choice that happens
+  // to use the same underlying order. Using undefined rather than a "none"
+  // string keeps a plain "/" URL free of a leftover "sort=none" param.
+  const sort =
+    searchParams.sort === "new"
+      ? "new"
+      : searchParams.sort === "oldie"
+      ? "oldie"
+      : searchParams.sort === "hot"
+      ? "hot"
+      : undefined;
   const q = searchParams.q?.trim();
   const suburbSlug = searchParams.suburb;
   const categorySlug = searchParams.category;
@@ -256,7 +267,7 @@ export default async function HomePage({
 
       <div className="flex gap-2 mb-4 mt-1">
         <Link
-          href={buildLink({ sort: "hot" })}
+          href={buildLink({ sort: sort === "hot" ? undefined : "hot" })}
           className={`px-3 py-1 rounded-full text-sm font-medium ${
             sort === "hot" ? "bg-orange-600 text-white" : "bg-white border"
           }`}
@@ -264,7 +275,7 @@ export default async function HomePage({
           🔥 Most Popular
         </Link>
         <Link
-          href={buildLink({ sort: "new" })}
+          href={buildLink({ sort: sort === "new" ? undefined : "new" })}
           className={`px-3 py-1 rounded-full text-sm font-medium ${
             sort === "new" ? "bg-orange-600 text-white" : "bg-white border"
           }`}
