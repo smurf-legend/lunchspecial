@@ -156,7 +156,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
             alt={special.title}
           />
 
-          <p className="mt-4 text-gray-800">{special.description}</p>
+          <p className="mt-4 text-gray-800 whitespace-pre-line">{special.description}</p>
 
           <div className="flex items-center gap-3 mt-4 text-sm flex-wrap">
             <span className="font-medium">{special.venueName}</span>
