@@ -31,8 +31,11 @@ export default async function HomePage({
     price?: string;
     greatValue?: string;
     state?: string;
+    page?: string;
   };
 }) {
+  const PAGE_SIZE = 20;
+  const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
   // No sort param at all is a genuine neutral state (neither toggle shown as
   // active) — distinct from "hot", which is an explicit choice that happens
   // to use the same underlying order. Using undefined rather than a "none"
@@ -122,17 +125,21 @@ export default async function HomePage({
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
 
-  const [specials, categories, favorites, suburbsByState] = await Promise.all([
+  const [specials, totalMatching, categories, favorites, suburbsByState] = await Promise.all([
     prisma.special.findMany({
       where,
       orderBy: sort === "new" ? { createdAt: "desc" } : { score: "desc" },
-      take: 20,
+      // Grows with the page param instead of skip/take, so "Load more"
+      // appends onto the same list rather than jumping to a new window —
+      // matches the scroll-driven expectation better than classic paging.
+      take: page * PAGE_SIZE,
       include: {
         suburbs: { include: { suburb: true } },
         categories: { include: { category: true } },
         _count: { select: { comments: true } },
       },
     }),
+    prisma.special.count({ where }),
     prisma.category.findMany({ orderBy: { name: "asc" } }),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
     prisma.suburb.groupBy({ by: ["state"], _count: true }),
@@ -307,6 +314,21 @@ export default async function HomePage({
               </>
             )}
           </p>
+        )}
+        {specials.length > 0 && (
+          <div className="flex flex-col items-center gap-2 mt-2 text-sm text-gray-500">
+            <span>
+              Showing {specials.length} of {totalMatching} deal{totalMatching === 1 ? "" : "s"}
+            </span>
+            {specials.length < totalMatching && (
+              <Link
+                href={buildLink({ page: String(page + 1) })}
+                className="bg-white border px-4 py-2 rounded font-medium hover:bg-gray-50"
+              >
+                Load more
+              </Link>
+            )}
+          </div>
         )}
       </div>
     </div>
