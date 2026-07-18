@@ -17,9 +17,15 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.identifier || !credentials?.password) return null;
 
         // Login accepts either the account email or the public nickname —
-        // both are unique columns, so this is unambiguous.
+        // both are unique columns, so this is unambiguous. Case-insensitive
+        // since nobody remembers the exact casing they registered with.
         const user = await prisma.user.findFirst({
-          where: { OR: [{ email: credentials.identifier }, { name: credentials.identifier }] },
+          where: {
+            OR: [
+              { email: { equals: credentials.identifier, mode: "insensitive" } },
+              { name: { equals: credentials.identifier, mode: "insensitive" } },
+            ],
+          },
         });
         if (!user || !user.passwordHash) return null;
 

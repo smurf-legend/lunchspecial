@@ -24,7 +24,11 @@ export async function PATCH(req: NextRequest) {
   }
 
   if (parsed.data.name) {
-    const existing = await prisma.user.findUnique({ where: { name: parsed.data.name } });
+    // Case-insensitive so "JohnDoe" and "johndoe" can't both be taken —
+    // findUnique can't take a mode filter, so this needs findFirst.
+    const existing = await prisma.user.findFirst({
+      where: { name: { equals: parsed.data.name, mode: "insensitive" } },
+    });
     if (existing && existing.id !== userId) {
       return NextResponse.json({ error: "That nickname is already taken" }, { status: 409 });
     }

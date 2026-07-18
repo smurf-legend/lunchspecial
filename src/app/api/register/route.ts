@@ -24,7 +24,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Email already registered" }, { status: 409 });
   }
 
-  const existingName = await prisma.user.findUnique({ where: { name } });
+  // Case-insensitive so "JohnDoe" and "johndoe" can't both be registered —
+  // findUnique can't take a mode filter, so this needs findFirst.
+  const existingName = await prisma.user.findFirst({
+    where: { name: { equals: name, mode: "insensitive" } },
+  });
   if (existingName) {
     return NextResponse.json({ error: "That nickname is already taken" }, { status: 409 });
   }
