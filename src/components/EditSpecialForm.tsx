@@ -8,7 +8,7 @@ import { specialSlug } from "@/lib/slugify";
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 type Option = { name: string; slug: string };
-type SuburbOption = { name: string; slug: string; region: string };
+type SuburbOption = { name: string; slug: string; region: string; state: string };
 
 type SpecialData = {
   id: string;
@@ -330,7 +330,7 @@ export default function EditSpecialForm({
               <option value="">Select suburb...</option>
               {suburbs.map((s) => (
                 <option key={s.slug} value={s.slug}>
-                  {s.name}
+                  {s.name} ({s.state})
                 </option>
               ))}
             </select>

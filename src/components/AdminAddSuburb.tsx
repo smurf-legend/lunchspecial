@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AU_STATES } from "@/lib/auStates";
 
 export default function AdminAddSuburb() {
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", postcode: "", state: "NSW", region: "Central" });
+  const [form, setForm] = useState({ name: "", postcode: "", state: "NSW", region: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +27,7 @@ export default function AdminAddSuburb() {
       return;
     }
 
-    setForm({ name: "", postcode: "", state: "NSW", region: "Central" });
+    setForm({ name: "", postcode: "", state: form.state, region: form.region });
     router.refresh();
   }
 
@@ -60,26 +61,31 @@ export default function AdminAddSuburb() {
           value={form.state}
           onChange={(e) => setForm({ ...form, state: e.target.value })}
         >
-          {["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"].map((s) => (
-            <option key={s} value={s}>
-              {s}
+          {AU_STATES.map(({ code }) => (
+            <option key={code} value={code}>
+              {code}
             </option>
           ))}
         </select>
       </div>
       <div>
         <label className="text-xs text-gray-500 block mb-1">Region</label>
-        <select
+        <input
+          type="text"
+          required
+          list="region-suggestions"
+          placeholder="e.g. Inner West, Central Coast..."
           className="border rounded px-2 py-1.5 text-sm"
           value={form.region}
           onChange={(e) => setForm({ ...form, region: e.target.value })}
-        >
-          {["Central", "North", "East", "South", "West"].map((r) => (
-            <option key={r} value={r}>
-              {r}
-            </option>
-          ))}
-        </select>
+        />
+        <datalist id="region-suggestions">
+          <option value="Central" />
+          <option value="North" />
+          <option value="East" />
+          <option value="South" />
+          <option value="West" />
+        </datalist>
       </div>
       <button
         disabled={loading}

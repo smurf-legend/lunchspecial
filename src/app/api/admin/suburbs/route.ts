@@ -8,7 +8,7 @@ const suburbSchema = z.object({
   name: z.string().min(1),
   postcode: z.string().min(4).max(4),
   state: z.string().min(2).max(3),
-  region: z.enum(["Central", "North", "East", "South", "West"]).default("Central"),
+  region: z.string().min(1).max(40),
 });
 
 function slugify(s: string) {
@@ -33,8 +33,17 @@ export async function POST(req: NextRequest) {
   }
 
   const { name, postcode, state, region } = parsed.data;
+
+  // Suburb names repeat across states (Richmond, Windsor, Kingston...) — the
+  // plain slug is used when free, and only suffixed with the state when a
+  // different suburb already holds it, so existing single-state slugs stay
+  // untouched.
+  const baseSlug = slugify(name);
+  const existing = await prisma.suburb.findUnique({ where: { slug: baseSlug } });
+  const slug = existing ? `${baseSlug}-${state.toLowerCase()}` : baseSlug;
+
   const suburb = await prisma.suburb.create({
-    data: { name, postcode, state, region, slug: slugify(name) },
+    data: { name, postcode, state, region, slug },
   });
 
   return NextResponse.json({ suburb }, { status: 201 });

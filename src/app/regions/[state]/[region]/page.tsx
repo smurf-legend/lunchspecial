@@ -4,12 +4,20 @@ import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { isValidStateCode, stateName } from "@/lib/auStates";
 
-const VALID_REGIONS = ["Central", "North", "East", "South", "West"];
+export default async function RegionPage({ params }: { params: { state: string; region: string } }) {
+  const stateParam = params.state.toUpperCase();
+  if (!isValidStateCode(stateParam)) notFound();
 
-export default async function RegionPage({ params }: { params: { region: string } }) {
-  const region = VALID_REGIONS.find((r) => r.toLowerCase() === params.region.toLowerCase());
-  if (!region) notFound();
+  // Region names are freeform per state (seeded per rollout), so the valid
+  // set is whatever's actually in the DB for this state, not a fixed list.
+  const regionMatch = await prisma.suburb.findFirst({
+    where: { state: stateParam, region: { equals: params.region, mode: "insensitive" } },
+    select: { region: true },
+  });
+  if (!regionMatch) notFound();
+  const region = regionMatch.region;
 
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
@@ -18,7 +26,10 @@ export default async function RegionPage({ params }: { params: { region: string 
     prisma.special.findMany({
       where: {
         hidden: false,
-        OR: [{ suburbs: { some: { suburb: { region } } } }, { chainWide: true }],
+        OR: [
+          { suburbs: { some: { suburb: { state: stateParam, region } } } },
+          { chainWide: true },
+        ],
       },
       orderBy: { score: "desc" },
       take: 20,
@@ -28,14 +39,16 @@ export default async function RegionPage({ params }: { params: { region: string 
         _count: { select: { comments: true } },
       },
     }),
-    prisma.suburb.findMany({ where: { region }, orderBy: { name: "asc" } }),
+    prisma.suburb.findMany({ where: { state: stateParam, region }, orderBy: { name: "asc" } }),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
 
   return (
     <div>
-      <h1 className="text-xl font-bold mb-1">Lunch specials — {region} Sydney</h1>
+      <h1 className="text-xl font-bold mb-1">
+        Lunch specials — {region} {stateName(stateParam)}
+      </h1>
       <p className="text-sm text-gray-500 mb-4">
         Covering {suburbs.length} suburbs including{" "}
         {suburbs.slice(0, 5).map((s) => s.name).join(", ")}
@@ -60,7 +73,7 @@ export default async function RegionPage({ params }: { params: { region: string 
         ))}
         {specials.length === 0 && (
           <p className="text-gray-500 text-center py-12">
-            No lunch specials in {region} Sydney yet — be the first to post one.
+            No lunch specials in {region} {stateName(stateParam)} yet — be the first to post one.
           </p>
         )}
       </div>

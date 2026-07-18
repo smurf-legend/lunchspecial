@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -6,6 +7,7 @@ import SpecialCard from "@/components/SpecialCard";
 import SearchBar from "@/components/SearchBar";
 import CategoryFilter from "@/components/CategoryFilter";
 import LocationSearch from "@/components/LocationSearch";
+import { AU_STATES, stateCodeFromRegionName, stateName } from "@/lib/auStates";
 
 const PRICE_TIERS: Record<string, { label: string; where: any }> = {
   under10: { label: "Under $10", where: { lt: 10 } },
@@ -28,6 +30,7 @@ export default async function HomePage({
     location?: string;
     price?: string;
     greatValue?: string;
+    state?: string;
   };
 }) {
   const sort = searchParams.sort === "new" ? "new" : searchParams.sort === "oldie" ? "oldie" : "hot";
@@ -39,9 +42,30 @@ export default async function HomePage({
   const priceTier = searchParams.price && PRICE_TIERS[searchParams.price] ? searchParams.price : undefined;
   const greatValueOnly = searchParams.greatValue === "1";
 
+  // No explicit filters at all means a fresh visit — try to default to the
+  // visitor's own state via Vercel's edge geolocation header, but only if
+  // that state actually has suburbs seeded, so nobody lands on an empty
+  // page just because we detected e.g. Queensland before it's rolled out.
+  const noExplicitFilter = !searchParams.state && !suburbSlug && !location && !q && !categorySlug;
+  let detectedState: string | null = null;
+  if (noExplicitFilter) {
+    const regionHeader = headers().get("x-vercel-ip-country-region");
+    const candidate = stateCodeFromRegionName(regionHeader);
+    if (candidate) {
+      const hasSuburbs = await prisma.suburb.count({ where: { state: candidate } });
+      if (hasSuburbs > 0) detectedState = candidate;
+    }
+  }
+  const stateFilter = (searchParams.state?.toUpperCase() && searchParams.state !== "all"
+    ? searchParams.state.toUpperCase()
+    : detectedState) as string | null;
+
   const and: any[] = [{ hidden: false }];
   if (suburbSlug) {
     and.push({ OR: [{ suburbs: { some: { suburb: { slug: suburbSlug } } } }, { chainWide: true }] });
+  }
+  if (stateFilter) {
+    and.push({ OR: [{ suburbs: { some: { suburb: { state: stateFilter } } } }, { chainWide: true }] });
   }
   if (location) {
     and.push({
@@ -87,7 +111,7 @@ export default async function HomePage({
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
 
-  const [specials, categories, favorites] = await Promise.all([
+  const [specials, categories, favorites, suburbsByState] = await Promise.all([
     prisma.special.findMany({
       where,
       orderBy: sort === "new" ? { createdAt: "desc" } : { score: "desc" },
@@ -100,8 +124,10 @@ export default async function HomePage({
     }),
     prisma.category.findMany({ orderBy: { name: "asc" } }),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
+    prisma.suburb.groupBy({ by: ["state"], _count: true }),
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
+  const stateCounts = new Map(suburbsByState.map((s) => [s.state, s._count]));
 
   function buildLink(overrides: Record<string, string | undefined>) {
     const params = new URLSearchParams();
@@ -113,6 +139,7 @@ export default async function HomePage({
       price: priceTier,
       greatValue: greatValueOnly ? "1" : undefined,
       location,
+      state: searchParams.state,
       ...overrides,
     };
     Object.entries(merged).forEach(([k, v]) => {
@@ -124,6 +151,48 @@ export default async function HomePage({
   return (
     <div>
       <LocationSearch />
+
+      {stateFilter && (
+        <div className="flex items-center gap-2 text-sm bg-orange-50 border border-orange-200 text-orange-800 rounded-lg px-3 py-2 mb-3">
+          <span>
+            📍 Showing specials in <strong>{stateName(stateFilter)}</strong>
+            {detectedState && " (near you)"}
+          </span>
+          <Link href={buildLink({ state: "all" })} className="underline hover:text-orange-900 ml-auto shrink-0">
+            View all states
+          </Link>
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-1.5 mb-3">
+        {AU_STATES.map(({ code, name }) => {
+          const count = stateCounts.get(code) ?? 0;
+          const active = stateFilter === code;
+          if (count === 0) {
+            return (
+              <span
+                key={code}
+                title={`${name} — coming soon`}
+                className="text-xs px-2.5 py-1 rounded-full bg-gray-50 text-gray-300 cursor-default"
+              >
+                {code}
+              </span>
+            );
+          }
+          return (
+            <Link
+              key={code}
+              href={buildLink({ state: active ? "all" : code })}
+              title={name}
+              className={`text-xs px-2.5 py-1 rounded-full font-medium ${
+                active ? "bg-orange-600 text-white" : "bg-white border text-gray-600 hover:bg-gray-50"
+              }`}
+            >
+              {code}
+            </Link>
+          );
+        })}
+      </div>
 
       <div className="flex gap-3 flex-wrap items-center">
         <CategoryFilter categories={categories} />
@@ -215,7 +284,7 @@ export default async function HomePage({
         ))}
         {specials.length === 0 && (
           <p className="text-gray-500 text-center py-12">
-            {q || suburbSlug || categorySlug || location || priceTier || greatValueOnly || sort === "oldie" ? (
+            {q || suburbSlug || categorySlug || location || priceTier || greatValueOnly || stateFilter || sort === "oldie" ? (
               "No lunch specials match those filters yet."
             ) : (
               <>

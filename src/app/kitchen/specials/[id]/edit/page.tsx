@@ -33,7 +33,7 @@ export default async function EditSpecialPage({ params }: { params: { id: string
       where: { id: params.id },
       include: { suburbs: { include: { suburb: true } }, categories: { include: { category: true } } },
     }),
-    prisma.suburb.findMany({ orderBy: { name: "asc" }, select: { name: true, slug: true, region: true } }),
+    prisma.suburb.findMany({ orderBy: { name: "asc" }, select: { name: true, slug: true, region: true, state: true } }),
     prisma.category.findMany({ orderBy: { name: "asc" }, select: { name: true, slug: true } }),
   ]);
 
