@@ -1,25 +1,54 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import SuburbAutocomplete from "@/components/SuburbAutocomplete";
+import CuisinePreferencePicker from "@/components/CuisinePreferencePicker";
+
+type Suburb = { name: string; slug: string; state: string };
+type Category = { name: string; slug: string };
 
 export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const [preferredSuburbSlug, setPreferredSuburbSlug] = useState<string | null>(null);
+  const [preferredCategorySlugs, setPreferredCategorySlugs] = useState<string[]>([]);
+  const [suburbs, setSuburbs] = useState<Suburb[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    fetch("/api/meta")
+      .then((r) => r.json())
+      .then((data) => {
+        setSuburbs(data.suburbs ?? []);
+        setCategories(data.categories ?? []);
+      });
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setError(null);
+
+    if (marketingOptIn && !preferredSuburbSlug) {
+      setError("Pick a suburb so we know where to send deals from.");
+      return;
+    }
+
+    setLoading(true);
 
     const res = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, marketingOptIn }),
+      body: JSON.stringify({
+        ...form,
+        marketingOptIn,
+        preferredSuburbSlug: marketingOptIn ? preferredSuburbSlug : undefined,
+        preferredCategorySlugs: marketingOptIn ? preferredCategorySlugs : undefined,
+      }),
     });
 
     if (!res.ok) {
@@ -89,6 +118,36 @@ export default function RegisterPage() {
             — we won't send anything else.
           </span>
         </label>
+
+        {marketingOptIn && (
+          <div className="flex flex-col gap-3 pl-3 border-l-2 border-orange-100">
+            <div>
+              <label className="text-sm font-medium mb-1 block">
+                Which suburb do you want lunch deals from?
+              </label>
+              <SuburbAutocomplete
+                suburbs={suburbs}
+                value={preferredSuburbSlug}
+                onChange={setPreferredSuburbSlug}
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                We'll email you the best specials near this suburb — you can change it anytime in
+                your profile.
+              </p>
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">
+                Any cuisines you especially want? (optional)
+              </label>
+              <CuisinePreferencePicker
+                categories={categories}
+                selected={preferredCategorySlugs}
+                onChange={setPreferredCategorySlugs}
+              />
+            </div>
+          </div>
+        )}
+
         {error && <p className="text-red-600 text-sm">{error}</p>}
         <button
           disabled={loading}

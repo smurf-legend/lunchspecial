@@ -29,6 +29,15 @@ model User {
   marketingOptIn   Boolean @default(false)
   unsubscribeToken String  @unique @default(cuid())
 
+  // Digest personalization — only meaningful when marketingOptIn is true,
+  // but kept independent of it so a suburb/cuisine choice isn't lost if
+  // someone unsubscribes and later opts back in. Suburb is nullable and
+  // SetNull on delete since losing the preference is harmless, unlike
+  // blocking a suburb from ever being removed.
+  preferredSuburbId String?
+  preferredSuburb   Suburb?  @relation(fields: [preferredSuburbId], references: [id], onDelete: SetNull)
+  preferredCategorySlugs String[] @default([])
+
   // Forgot-password flow: set when a reset is requested, cleared once used
   // or expired. Null the rest of the time.
   resetToken          String?   @unique
@@ -70,6 +79,7 @@ model Suburb {
   slug     String @unique // e.g. "surry-hills"
 
   specials SpecialSuburb[]
+  usersPreferring User[]
 
   @@index([state])
   @@index([region])

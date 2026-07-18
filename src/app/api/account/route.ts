@@ -8,6 +8,8 @@ import { z } from "zod";
 const accountUpdateSchema = z.object({
   name: z.string().min(1).max(100).optional(),
   marketingOptIn: z.boolean().optional(),
+  preferredSuburbSlug: z.string().nullable().optional(),
+  preferredCategorySlugs: z.array(z.string()).optional(),
 });
 
 export async function PATCH(req: NextRequest) {
@@ -34,9 +36,22 @@ export async function PATCH(req: NextRequest) {
     }
   }
 
+  const { preferredSuburbSlug, ...rest } = parsed.data;
+
+  let preferredSuburbId: string | null | undefined;
+  if (preferredSuburbSlug === null) {
+    preferredSuburbId = null;
+  } else if (preferredSuburbSlug) {
+    const suburb = await prisma.suburb.findUnique({ where: { slug: preferredSuburbSlug } });
+    if (!suburb) {
+      return NextResponse.json({ error: "Unknown suburb" }, { status: 400 });
+    }
+    preferredSuburbId = suburb.id;
+  }
+
   const user = await prisma.user.update({
     where: { id: userId },
-    data: parsed.data,
+    data: { ...rest, preferredSuburbId },
     select: { id: true, name: true, email: true, marketingOptIn: true },
   });
 

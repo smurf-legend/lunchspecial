@@ -1,33 +1,73 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import SuburbAutocomplete from "@/components/SuburbAutocomplete";
+import CuisinePreferencePicker from "@/components/CuisinePreferencePicker";
+
+type Suburb = { name: string; slug: string; state: string };
+type Category = { name: string; slug: string };
 
 export default function AccountForm({
   initialName,
   initialMarketingOptIn,
+  initialPreferredSuburbSlug,
+  initialPreferredCategorySlugs,
 }: {
   initialName: string;
   initialMarketingOptIn: boolean;
+  initialPreferredSuburbSlug: string | null;
+  initialPreferredCategorySlugs: string[];
 }) {
   const { update } = useSession();
   const router = useRouter();
   const [name, setName] = useState(initialName);
   const [marketingOptIn, setMarketingOptIn] = useState(initialMarketingOptIn);
+  const [preferredSuburbSlug, setPreferredSuburbSlug] = useState<string | null>(
+    initialPreferredSuburbSlug
+  );
+  const [preferredCategorySlugs, setPreferredCategorySlugs] = useState<string[]>(
+    initialPreferredCategorySlugs
+  );
+  const [suburbs, setSuburbs] = useState<Suburb[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (!marketingOptIn) return;
+    fetch("/api/meta")
+      .then((r) => r.json())
+      .then((data) => {
+        setSuburbs(data.suburbs ?? []);
+        setCategories(data.categories ?? []);
+      });
+  }, [marketingOptIn]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setError(null);
+
+    if (marketingOptIn && !preferredSuburbSlug) {
+      setError("Pick a suburb so we know where to send deals from.");
+      return;
+    }
+
+    setLoading(true);
     setSuccess(false);
 
     const res = await fetch("/api/account", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, marketingOptIn }),
+      body: JSON.stringify({
+        name,
+        marketingOptIn,
+        // Kept even while unchecked — so re-opting in later doesn't lose
+        // the suburb/cuisine choice someone already made.
+        preferredSuburbSlug,
+        preferredCategorySlugs,
+      }),
     });
 
     setLoading(false);
@@ -71,6 +111,31 @@ export default function AccountForm({
         />
         <span>Send me a regular email with the best lunch deals near me.</span>
       </label>
+
+      {marketingOptIn && (
+        <div className="flex flex-col gap-3 pl-3 border-l-2 border-orange-100">
+          <div>
+            <label className="text-sm font-medium mb-1 block">
+              Which suburb do you want lunch deals from?
+            </label>
+            <SuburbAutocomplete
+              suburbs={suburbs}
+              value={preferredSuburbSlug}
+              onChange={setPreferredSuburbSlug}
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1 block">
+              Any cuisines you especially want? (optional)
+            </label>
+            <CuisinePreferencePicker
+              categories={categories}
+              selected={preferredCategorySlugs}
+              onChange={setPreferredCategorySlugs}
+            />
+          </div>
+        </div>
+      )}
 
       {error && <p className="text-red-600 text-sm">{error}</p>}
       {success && <p className="text-green-700 text-sm">Saved.</p>}

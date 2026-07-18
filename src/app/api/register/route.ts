@@ -8,6 +8,8 @@ const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   marketingOptIn: z.boolean().optional().default(false),
+  preferredSuburbSlug: z.string().optional(),
+  preferredCategorySlugs: z.array(z.string()).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -17,7 +19,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const { name, email, password, marketingOptIn } = parsed.data;
+  const { name, email, password, marketingOptIn, preferredSuburbSlug, preferredCategorySlugs } = parsed.data;
 
   const existingEmail = await prisma.user.findUnique({ where: { email } });
   if (existingEmail) {
@@ -33,9 +35,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "That nickname is already taken" }, { status: 409 });
   }
 
+  let preferredSuburbId: string | undefined;
+  if (preferredSuburbSlug) {
+    const suburb = await prisma.suburb.findUnique({ where: { slug: preferredSuburbSlug } });
+    if (!suburb) {
+      return NextResponse.json({ error: "Unknown suburb" }, { status: 400 });
+    }
+    preferredSuburbId = suburb.id;
+  }
+
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
-    data: { name, email, passwordHash, marketingOptIn },
+    data: {
+      name,
+      email,
+      passwordHash,
+      marketingOptIn,
+      preferredSuburbId,
+      preferredCategorySlugs: preferredCategorySlugs ?? [],
+    },
     select: { id: true, name: true, email: true },
   });
 

@@ -23,7 +23,14 @@ export default async function AccountPage() {
 
   const user = await prisma.user.findUnique({
     where: { id: (session.user as any).id },
-    select: { name: true, email: true, marketingOptIn: true },
+    select: {
+      name: true,
+      email: true,
+      marketingOptIn: true,
+      preferredSuburbId: true,
+      preferredSuburb: { select: { slug: true } },
+      preferredCategorySlugs: true,
+    },
   });
 
   if (!user) return null;
@@ -32,7 +39,12 @@ export default async function AccountPage() {
     <div className="max-w-sm mx-auto flex flex-col gap-6">
       <div className="bg-white p-6 rounded-lg border">
         <h1 className="text-xl font-bold mb-4">Profile</h1>
-        <AccountForm initialName={user.name} initialMarketingOptIn={user.marketingOptIn} />
+        <AccountForm
+          initialName={user.name}
+          initialMarketingOptIn={user.marketingOptIn}
+          initialPreferredSuburbSlug={user.preferredSuburb?.slug ?? null}
+          initialPreferredCategorySlugs={user.preferredCategorySlugs}
+        />
       </div>
       <div className="bg-white p-6 rounded-lg border">
         <h2 className="text-lg font-bold mb-4">Email address</h2>
