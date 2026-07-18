@@ -26,6 +26,7 @@ export default function NewSpecialPage() {
     description: "",
     venueName: "",
     address: "",
+    url: "",
     couponCode: "",
     suburbSlugs: [] as string[],
     usualPrice: "",
@@ -190,6 +191,7 @@ export default function NewSpecialPage() {
       description: form.description,
       venueName: form.venueName,
       address: form.address || undefined,
+      url: form.url || undefined,
       couponCode: form.couponCode || undefined,
       suburbSlugs: form.suburbSlugs,
       chainWide: locationMode === "chainWide",
@@ -308,6 +310,13 @@ export default function NewSpecialPage() {
             </p>
           )}
         </div>
+        <input
+          type="url"
+          placeholder="Link to source (optional)"
+          className="border rounded px-3 py-2"
+          value={form.url}
+          onChange={(e) => setForm({ ...form, url: e.target.value })}
+        />
         <input
           type="text"
           placeholder="Coupon/deal code, if the vendor provides one (optional)"

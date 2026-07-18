@@ -283,7 +283,7 @@ export default function EditSpecialForm({
         </div>
         <input
           type="url"
-          placeholder="Source URL (optional)"
+          placeholder="Link to source (optional)"
           className="border rounded px-3 py-2"
           value={form.url}
           onChange={(e) => setForm({ ...form, url: e.target.value })}
