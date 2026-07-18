@@ -12,6 +12,7 @@ import { isExpired, formatExpiry } from "@/lib/dealStatus";
 import { googleMapsUrl, isMapsLink } from "@/lib/mapsLink";
 import ContributorBadge from "@/components/ContributorBadge";
 import DeleteSpecialButton from "@/components/DeleteSpecialButton";
+import DuplicateSpecialButton from "@/components/DuplicateSpecialButton";
 import SpecialGallery from "@/components/SpecialGallery";
 import { buildCommentTree } from "@/lib/commentTree";
 import { idFromSlug, specialSlug } from "@/lib/slugify";
@@ -136,6 +137,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
                 >
                   ✏️ Edit
                 </Link>
+                <DuplicateSpecialButton specialId={special.id} />
                 <DeleteSpecialButton specialId={special.id} title={special.title} />
               </>
             )}

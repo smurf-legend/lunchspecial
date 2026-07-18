@@ -22,6 +22,7 @@ type Special = {
 export default function AdminSpecialRow({ special }: { special: Special }) {
   const router = useRouter();
   const [deleting, setDeleting] = useState(false);
+  const [duplicating, setDuplicating] = useState(false);
   const [togglingHidden, setTogglingHidden] = useState(false);
   const [removed, setRemoved] = useState(false);
 
@@ -33,6 +34,16 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
     if (res.ok) {
       setRemoved(true);
       router.refresh();
+    }
+  }
+
+  async function handleDuplicate() {
+    setDuplicating(true);
+    const res = await fetch(`/api/admin/specials/${special.id}/duplicate`, { method: "POST" });
+    setDuplicating(false);
+    if (res.ok) {
+      const { special: copy } = await res.json();
+      router.push(`/kitchen/specials/${copy.id}/edit`);
     }
   }
 
@@ -90,6 +101,14 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
           className="text-gray-700 text-xs font-medium border rounded px-3 py-1.5 hover:bg-gray-50 disabled:opacity-50"
         >
           {togglingHidden ? "Saving..." : special.hidden ? "Unhide" : "Hide"}
+        </button>
+        <button
+          disabled={duplicating}
+          onClick={handleDuplicate}
+          title="Copy this special's venue/price/image into a new post — handy for same-venue, different-day specials"
+          className="text-gray-700 text-xs font-medium border rounded px-3 py-1.5 hover:bg-gray-50 disabled:opacity-50"
+        >
+          {duplicating ? "Duplicating..." : "Duplicate"}
         </button>
         <button
           disabled={deleting}
