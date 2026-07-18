@@ -11,6 +11,7 @@ import Link from "next/link";
 import { isExpired, formatExpiry } from "@/lib/dealStatus";
 import { googleMapsUrl, isMapsLink } from "@/lib/mapsLink";
 import ContributorBadge from "@/components/ContributorBadge";
+import DeleteSpecialButton from "@/components/DeleteSpecialButton";
 import SpecialGallery from "@/components/SpecialGallery";
 import { buildCommentTree } from "@/lib/commentTree";
 import { idFromSlug, specialSlug } from "@/lib/slugify";
@@ -128,12 +129,15 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
             )}
             <FavoriteButton specialId={special.id} initialFavorited={!!favorite} />
             {isAdmin && (
-              <Link
-                href={`/kitchen/specials/${special.id}/edit`}
-                className="text-xs px-2 py-1 rounded-full font-medium border shrink-0 bg-gray-800 text-white border-gray-800"
-              >
-                ✏️ Edit
-              </Link>
+              <>
+                <Link
+                  href={`/kitchen/specials/${special.id}/edit`}
+                  className="text-xs px-2 py-1 rounded-full font-medium border shrink-0 bg-gray-800 text-white border-gray-800"
+                >
+                  ✏️ Edit
+                </Link>
+                <DeleteSpecialButton specialId={special.id} title={special.title} />
+              </>
             )}
           </div>
           <p className="text-sm text-gray-500 mt-1 flex items-center gap-1.5 flex-wrap">
