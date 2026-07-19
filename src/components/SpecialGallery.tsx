@@ -7,7 +7,7 @@ export default function SpecialGallery({ images, alt }: { images: string[]; alt:
 
   if (images.length === 0) {
     return (
-      <SpecialImage src={null} alt={alt} className="mt-4 h-64 w-full rounded-lg border" iconClassName="text-5xl" />
+      <SpecialImage src={null} alt={alt} className="mt-4 aspect-video w-full rounded-lg border" iconClassName="text-5xl" />
     );
   }
 
