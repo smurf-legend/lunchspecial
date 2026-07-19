@@ -142,6 +142,31 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
               </>
             )}
           </div>
+
+          <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+            {special.specialPrice != null ? (
+              <span className="font-bold text-green-700 text-3xl">
+                ${special.specialPrice.toFixed(2)}
+              </span>
+            ) : (
+              special.discountPercent != null && (
+                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-2xl font-bold">
+                  {special.discountPercent}% off
+                </span>
+              )
+            )}
+            {special.usualPrice != null && (
+              <span className="line-through text-gray-400 text-lg">
+                ${special.usualPrice.toFixed(2)}
+              </span>
+            )}
+            {discount != null && (
+              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-medium">
+                {discount}% off
+              </span>
+            )}
+          </div>
+
           <p className="text-sm text-gray-500 mt-1 flex items-center gap-1.5 flex-wrap">
             Posted by {special.author.name}
             <ContributorBadge
@@ -215,30 +240,6 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
               )}
             </p>
           )}
-
-          <div className="flex items-center gap-3 mt-3 text-sm flex-wrap">
-            {special.specialPrice != null ? (
-              <span className="font-semibold text-green-700 text-lg">
-                ${special.specialPrice.toFixed(2)}
-              </span>
-            ) : (
-              special.discountPercent != null && (
-                <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm font-bold">
-                  {special.discountPercent}% off
-                </span>
-              )
-            )}
-            {special.usualPrice != null && (
-              <span className="line-through text-gray-400">
-                ${special.usualPrice.toFixed(2)}
-              </span>
-            )}
-            {discount != null && (
-              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-medium">
-                {discount}% off
-              </span>
-            )}
-          </div>
 
           {special.couponCode && (
             <p className="text-sm mt-2">
