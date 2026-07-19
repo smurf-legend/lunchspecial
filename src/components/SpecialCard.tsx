@@ -100,6 +100,29 @@ export default function SpecialCard({
             )
           )}
         </div>
+
+        <div className="flex items-center gap-2 mt-1 flex-wrap">
+          {special.specialPrice != null ? (
+            <span className="font-bold text-green-700 text-xl">
+              ${special.specialPrice.toFixed(2)}
+            </span>
+          ) : (
+            special.discountPercent != null && (
+              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-lg text-base font-bold">
+                {special.discountPercent}% off
+              </span>
+            )
+          )}
+          {special.usualPrice != null && (
+            <span className="line-through text-gray-400">${special.usualPrice.toFixed(2)}</span>
+          )}
+          {discount != null && (
+            <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-medium">
+              {discount}% off
+            </span>
+          )}
+        </div>
+
         <p className="text-sm text-gray-600 mt-1 line-clamp-2">{special.description}</p>
 
         <div className="flex items-center gap-3 mt-2 text-sm flex-wrap">
@@ -132,23 +155,6 @@ export default function SpecialCard({
                 {displaySuburb.name}
               </Link>
             </>
-          )}
-          {special.specialPrice != null ? (
-            <span className="font-semibold text-green-700">${special.specialPrice.toFixed(2)}</span>
-          ) : (
-            special.discountPercent != null && (
-              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">
-                {special.discountPercent}% off
-              </span>
-            )
-          )}
-          {special.usualPrice != null && (
-            <span className="line-through text-gray-400">${special.usualPrice.toFixed(2)}</span>
-          )}
-          {discount != null && (
-            <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-medium">
-              {discount}% off
-            </span>
           )}
           {special.couponCode && (
             <span className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs font-mono font-medium">
