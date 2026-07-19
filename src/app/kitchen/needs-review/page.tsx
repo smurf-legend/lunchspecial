@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import ClearReviewButton from "@/components/ClearReviewButton";
 
 export default async function NeedsReviewPage() {
   const session = await getServerSession(authOptions);
@@ -38,7 +39,8 @@ export default async function NeedsReviewPage() {
         <h1 className="text-2xl font-bold">Needs review</h1>
         <p className="text-sm text-gray-500">
           Specials that couldn't be confirmed automatically — no reliable source found online, or the
-          claimed deal couldn't be verified. Click a title to edit it directly.
+          claimed deal couldn't be verified. Click a title to edit it directly, then "Mark resolved"
+          once you're done to clear it from this list.
         </p>
       </div>
 
@@ -59,12 +61,15 @@ export default async function NeedsReviewPage() {
                 <p className="text-amber-700 text-xs mt-1">{special.needsReviewNote}</p>
               )}
             </div>
-            <Link
-              href={`/kitchen/specials/${special.id}/edit`}
-              className="bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded hover:bg-orange-700 shrink-0"
-            >
-              Edit
-            </Link>
+            <div className="flex gap-2 shrink-0">
+              <Link
+                href={`/kitchen/specials/${special.id}/edit`}
+                className="bg-orange-600 text-white text-xs font-medium px-3 py-1.5 rounded hover:bg-orange-700 shrink-0"
+              >
+                Edit
+              </Link>
+              <ClearReviewButton specialId={special.id} />
+            </div>
           </div>
         ))}
         {specials.length === 0 && (
