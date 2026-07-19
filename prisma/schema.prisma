@@ -126,6 +126,13 @@ model Special {
   // deleted) so an admin can review and unhide it.
   hidden       Boolean   @default(false)
 
+  // Flagged when a special's accuracy couldn't be confirmed automatically
+  // (e.g. no reliable source found online) and needs a human to look into
+  // it directly — surfaced on /kitchen/needs-review with needsReviewNote
+  // explaining what's uncertain.
+  needsReview     Boolean  @default(false)
+  needsReviewNote String?
+
   authorId     String
   author       User      @relation(fields: [authorId], references: [id])
 

@@ -13,6 +13,7 @@ type Special = {
   createdAt: string;
   expiresAt: string | Date | null;
   hidden: boolean;
+  needsReview: boolean;
   author: { name: string | null; email: string };
   suburbs: { suburb: { name: string } }[];
   chainWide: boolean;
@@ -24,6 +25,7 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
   const [deleting, setDeleting] = useState(false);
   const [duplicating, setDuplicating] = useState(false);
   const [togglingHidden, setTogglingHidden] = useState(false);
+  const [togglingReview, setTogglingReview] = useState(false);
   const [removed, setRemoved] = useState(false);
 
   async function handleDelete() {
@@ -58,6 +60,21 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
     if (res.ok) router.refresh();
   }
 
+  async function toggleNeedsReview() {
+    const note = special.needsReview
+      ? undefined
+      : prompt("Why does this need review? (shown on the Needs Review page)") ?? undefined;
+    if (!special.needsReview && note === undefined) return; // cancelled the prompt
+    setTogglingReview(true);
+    const res = await fetch(`/api/admin/specials/${special.id}/needs-review`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ needsReview: !special.needsReview, needsReviewNote: note }),
+    });
+    setTogglingReview(false);
+    if (res.ok) router.refresh();
+  }
+
   if (removed) return null;
 
   return (
@@ -74,6 +91,11 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
         {isExpired(special.expiresAt) && (
           <span className="ml-2 bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded text-xs font-medium">
             Expired
+          </span>
+        )}
+        {special.needsReview && (
+          <span className="ml-2 bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-xs font-medium">
+            Needs review
           </span>
         )}
         <p className="text-gray-500 text-xs">
@@ -101,6 +123,14 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
           className="text-gray-700 text-xs font-medium border rounded px-3 py-1.5 hover:bg-gray-50 disabled:opacity-50"
         >
           {togglingHidden ? "Saving..." : special.hidden ? "Unhide" : "Hide"}
+        </button>
+        <button
+          disabled={togglingReview}
+          onClick={toggleNeedsReview}
+          title="Flag when you can't confirm this special is accurate — surfaces it on /kitchen/needs-review"
+          className="text-gray-700 text-xs font-medium border rounded px-3 py-1.5 hover:bg-gray-50 disabled:opacity-50"
+        >
+          {togglingReview ? "Saving..." : special.needsReview ? "Clear review flag" : "Flag for review"}
         </button>
         <button
           disabled={duplicating}

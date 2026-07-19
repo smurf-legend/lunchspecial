@@ -50,7 +50,7 @@ export default async function AdminPage({
       }
     : {};
 
-  const [specials, totalMatching, suburbs, categories, userCount, totalSpecials, totalComments, totalBlogPosts] =
+  const [specials, totalMatching, suburbs, categories, userCount, totalSpecials, totalComments, totalBlogPosts, needsReviewCount] =
     await Promise.all([
       prisma.special.findMany({
         where,
@@ -70,6 +70,7 @@ export default async function AdminPage({
       prisma.special.count(),
       prisma.comment.count(),
       prisma.blogPost.count(),
+      prisma.special.count({ where: { needsReview: true } }),
     ]);
 
   const totalPages = Math.max(1, Math.ceil(totalMatching / PAGE_SIZE));
@@ -93,6 +94,10 @@ export default async function AdminPage({
           ·{" "}
           <Link href="/kitchen/users" className="text-orange-600 hover:underline">
             {userCount} users
+          </Link>
+          {" · "}
+          <Link href="/kitchen/needs-review" className="text-orange-600 hover:underline">
+            {needsReviewCount} needing review
           </Link>
         </p>
       </div>
