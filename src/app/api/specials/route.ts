@@ -73,13 +73,16 @@ export async function GET(req: NextRequest) {
   }
   if (category) and.push({ categories: { some: { category: { slug: category } } } });
   if (q) {
-    and.push({
-      OR: [
-        { title: { contains: q, mode: "insensitive" } },
-        { description: { contains: q, mode: "insensitive" } },
-        { venueName: { contains: q, mode: "insensitive" } },
-      ],
-    });
+    // unaccent() so "me banh me" matches "Mê Bánh Mì" — plain `contains` is
+    // diacritic-sensitive and would miss it.
+    const pattern = `%${q}%`;
+    const matches = await prisma.$queryRaw<{ id: string }[]>`
+      SELECT id FROM "Special"
+      WHERE unaccent(title) ILIKE unaccent(${pattern})
+         OR unaccent(description) ILIKE unaccent(${pattern})
+         OR unaccent("venueName") ILIKE unaccent(${pattern})
+    `;
+    and.push({ id: { in: matches.map((m) => m.id) } });
   }
   const where: any = and.length > 0 ? { AND: and } : {};
 
