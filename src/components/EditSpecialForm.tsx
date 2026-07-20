@@ -228,7 +228,8 @@ export default function EditSpecialForm({
 
     if (!res.ok) {
       const data = await res.json();
-      setError(JSON.stringify(data.error) || "Failed to save changes");
+      const fieldError = data.error?.fieldErrors && (Object.values(data.error.fieldErrors) as string[][])[0]?.[0];
+      setError(fieldError || data.error?.formErrors?.[0] || "Failed to save changes");
       return;
     }
 

@@ -3,10 +3,16 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { deleteBlogCommentAndDescendants } from "@/lib/commentTree";
+import { noProfanity } from "@/lib/profanity";
 import { z } from "zod";
 
 const commentUpdateSchema = z.object({
-  body: z.string().min(1).max(2000).optional(),
+  body: z
+    .string()
+    .min(1)
+    .max(2000)
+    .refine(noProfanity, { message: "Comment contains language that isn't allowed" })
+    .optional(),
   hidden: z.boolean().optional(),
 });
 

@@ -3,12 +3,17 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slugify";
+import { noProfanity } from "@/lib/profanity";
 import { z } from "zod";
 
 const blogPostSchema = z.object({
-  title: z.string().min(3).max(200),
-  excerpt: z.string().max(300).optional(),
-  body: z.string().min(10),
+  title: z.string().min(3).max(200).refine(noProfanity, { message: "Title contains language that isn't allowed" }),
+  excerpt: z
+    .string()
+    .max(300)
+    .refine(noProfanity, { message: "Excerpt contains language that isn't allowed" })
+    .optional(),
+  body: z.string().min(10).refine(noProfanity, { message: "Body contains language that isn't allowed" }),
   imageUrl: z.string().url().optional(),
   hidden: z.boolean().optional().default(false),
 });

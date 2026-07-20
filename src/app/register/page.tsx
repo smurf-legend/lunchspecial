@@ -53,7 +53,13 @@ export default function RegisterPage() {
 
     if (!res.ok) {
       const data = await res.json();
-      setError(data.error?.formErrors?.[0] || data.error || "Registration failed");
+      const fieldError = data.error?.fieldErrors && (Object.values(data.error.fieldErrors) as string[][])[0]?.[0];
+      setError(
+        fieldError ||
+          data.error?.formErrors?.[0] ||
+          (typeof data.error === "string" ? data.error : null) ||
+          "Registration failed"
+      );
       setLoading(false);
       return;
     }

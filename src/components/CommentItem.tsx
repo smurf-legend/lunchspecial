@@ -34,6 +34,7 @@ export default function CommentItem({
   const [replyOpen, setReplyOpen] = useState(false);
   const [replyBody, setReplyBody] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function submitReply() {
     if (!session) {
@@ -42,6 +43,7 @@ export default function CommentItem({
     }
     if (!replyBody.trim()) return;
     setLoading(true);
+    setError(null);
     const res = await fetch(commentsEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,6 +54,10 @@ export default function CommentItem({
       router.refresh();
       setReplyBody("");
       setReplyOpen(false);
+    } else {
+      const data = await res.json();
+      const fieldError = data.error?.fieldErrors && (Object.values(data.error.fieldErrors) as string[][])[0]?.[0];
+      setError(fieldError || "Failed to post reply");
     }
   }
 
@@ -92,6 +98,7 @@ export default function CommentItem({
             onChange={(e) => setReplyBody(e.target.value)}
             placeholder="Write a reply..."
           />
+          {error && <p className="text-red-600 text-xs">{error}</p>}
           <button
             disabled={loading}
             onClick={submitReply}

@@ -183,7 +183,8 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
 
     if (!res.ok) {
       const data = await res.json();
-      setError(JSON.stringify(data.error) || "Failed to save article");
+      const fieldError = data.error?.fieldErrors && (Object.values(data.error.fieldErrors) as string[][])[0]?.[0];
+      setError(fieldError || data.error?.formErrors?.[0] || "Failed to save article");
       return;
     }
 

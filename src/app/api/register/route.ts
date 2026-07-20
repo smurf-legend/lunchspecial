@@ -2,9 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { containsProfanity } from "@/lib/profanity";
 
 const registerSchema = z.object({
-  name: z.string().min(1).max(100),
+  name: z
+    .string()
+    .min(1)
+    .max(100)
+    .refine((n) => !containsProfanity(n), { message: "That nickname isn't allowed" }),
   email: z.string().email(),
   password: z.string().min(8),
   marketingOptIn: z.boolean().optional().default(false),

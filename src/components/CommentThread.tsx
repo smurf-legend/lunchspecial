@@ -21,6 +21,7 @@ export default function CommentThread({
   const router = useRouter();
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function postTopLevel() {
     if (!session) {
@@ -29,6 +30,7 @@ export default function CommentThread({
     }
     if (!newComment.trim()) return;
     setLoading(true);
+    setError(null);
     const res = await fetch(commentsEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -38,6 +40,10 @@ export default function CommentThread({
     if (res.ok) {
       router.refresh();
       setNewComment("");
+    } else {
+      const data = await res.json();
+      const fieldError = data.error?.fieldErrors && (Object.values(data.error.fieldErrors) as string[][])[0]?.[0];
+      setError(fieldError || "Failed to post comment");
     }
   }
 
@@ -53,6 +59,7 @@ export default function CommentThread({
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
         />
+        {error && <p className="text-red-600 text-sm">{error}</p>}
         <button
           disabled={loading}
           onClick={postTopLevel}

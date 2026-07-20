@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { noProfanity } from "@/lib/profanity";
 import { z } from "zod";
 
 const specialUpdateSchema = z
   .object({
-    title: z.string().min(5).max(200),
-    description: z.string().min(10),
+    title: z.string().min(5).max(200).refine(noProfanity, { message: "Title contains language that isn't allowed" }),
+    description: z.string().min(10).refine(noProfanity, { message: "Description contains language that isn't allowed" }),
     venueName: z.string().min(1),
     address: z.string().optional().nullable(),
     url: z.string().url().optional().nullable().or(z.literal("")),

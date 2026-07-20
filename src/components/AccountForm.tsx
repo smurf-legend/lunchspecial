@@ -74,7 +74,13 @@ export default function AccountForm({
 
     if (!res.ok) {
       const data = await res.json();
-      setError(data.error?.formErrors?.[0] || data.error || "Failed to save changes");
+      const fieldError = data.error?.fieldErrors && (Object.values(data.error.fieldErrors) as string[][])[0]?.[0];
+      setError(
+        fieldError ||
+          data.error?.formErrors?.[0] ||
+          (typeof data.error === "string" ? data.error : null) ||
+          "Failed to save changes"
+      );
       return;
     }
 

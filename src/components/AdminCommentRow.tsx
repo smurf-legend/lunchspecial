@@ -44,7 +44,8 @@ export default function AdminCommentRow({
     setLoading(false);
     if (!res.ok) {
       const data = await res.json();
-      setError(data.error || "Failed to save");
+      const fieldError = data.error?.fieldErrors && (Object.values(data.error.fieldErrors) as string[][])[0]?.[0];
+      setError(fieldError || (typeof data.error === "string" ? data.error : null) || "Failed to save");
       return;
     }
     setEditing(false);

@@ -4,9 +4,15 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { containsProfanity } from "@/lib/profanity";
 
 const accountUpdateSchema = z.object({
-  name: z.string().min(1).max(100).optional(),
+  name: z
+    .string()
+    .min(1)
+    .max(100)
+    .refine((n) => !containsProfanity(n), { message: "That nickname isn't allowed" })
+    .optional(),
   marketingOptIn: z.boolean().optional(),
   preferredSuburbSlug: z.string().nullable().optional(),
   preferredCategorySlugs: z.array(z.string()).optional(),
