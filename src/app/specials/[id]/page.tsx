@@ -18,6 +18,7 @@ import ShareButton from "@/components/ShareButton";
 import { buildCommentTree } from "@/lib/commentTree";
 import { idFromSlug, specialSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
+import { buildOfferJsonLd, safeJsonLd } from "@/lib/structuredData";
 
 const authorSelect = {
   select: {
@@ -107,8 +108,23 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   const primarySuburb = suburbList[0];
   const chainWide = special.chainWide;
 
+  const offerJsonLd = buildOfferJsonLd({
+    url: `${SITE_URL}/specials/${canonical}`,
+    title: special.title,
+    description: special.description,
+    venueName: special.venueName,
+    imageUrl: special.imageUrl,
+    specialPrice: special.specialPrice,
+    discountPercent: special.discountPercent,
+    expiresAt: special.expiresAt,
+    expired,
+    locationName: chainWide ? "All locations" : primarySuburb?.name,
+  });
+
   return (
     <div className="flex flex-col gap-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(offerJsonLd) }} />
+
       {special.hidden && isAdmin && (
         <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
           This special is hidden — only admins can see it.{" "}
