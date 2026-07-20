@@ -109,7 +109,7 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
           {special._count.comments} comments
         </p>
       </div>
-      <div className="flex gap-2 shrink-0">
+      <div className="flex gap-2 flex-wrap">
         <Link
           href={`/kitchen/specials/${special.id}/edit`}
           prefetch={false}
