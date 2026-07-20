@@ -14,8 +14,10 @@ import ContributorBadge from "@/components/ContributorBadge";
 import DeleteSpecialButton from "@/components/DeleteSpecialButton";
 import DuplicateSpecialButton from "@/components/DuplicateSpecialButton";
 import SpecialGallery from "@/components/SpecialGallery";
+import ShareButton from "@/components/ShareButton";
 import { buildCommentTree } from "@/lib/commentTree";
 import { idFromSlug, specialSlug } from "@/lib/slugify";
+import { SITE_URL } from "@/lib/site";
 
 const authorSelect = {
   select: {
@@ -42,10 +44,26 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   if (!special || special.hidden) return {};
 
   const suburbNames = special.suburbs.map((s) => s.suburb.name).join(", ");
+  const title = `${special.title} — ${special.venueName}${suburbNames ? ` (${suburbNames})` : ""} | LunchSpecial`;
+  const description = special.description.slice(0, 155);
+  const canonical = `/specials/${specialSlug(special)}`;
+
   return {
-    title: `${special.title} — ${special.venueName}${suburbNames ? ` (${suburbNames})` : ""} | LunchSpecial`,
-    description: special.description.slice(0, 155),
-    alternates: { canonical: `/specials/${specialSlug(special)}` },
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: "LunchSpecial",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 
@@ -129,6 +147,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
               )
             )}
             <FavoriteButton specialId={special.id} initialFavorited={!!favorite} />
+            <ShareButton url={`${SITE_URL}/specials/${canonical}`} title={`${special.title} — ${special.venueName}`} />
             {isAdmin && (
               <>
                 <Link

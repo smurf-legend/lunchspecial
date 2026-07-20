@@ -1,8 +1,26 @@
 import { getServerSession } from "next-auth";
+import { Metadata } from "next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const suburb = await prisma.suburb.findUnique({ where: { slug: params.slug } });
+  if (!suburb) return {};
+
+  const title = `Lunch specials in ${suburb.name} | LunchSpecial`;
+  const description = `Crowdsourced lunch specials near ${suburb.name}, ${suburb.state} — browse what's on, posted by the community.`;
+  const canonical = `/suburbs/${suburb.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: { title, description, url: canonical, siteName: "LunchSpecial", type: "website" },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 export default async function SuburbPage({ params }: { params: { slug: string } }) {
   const suburb = await prisma.suburb.findUnique({ where: { slug: params.slug } });

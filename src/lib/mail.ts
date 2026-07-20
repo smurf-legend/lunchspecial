@@ -1,8 +1,8 @@
 import { Resend } from "resend";
 import { specialSlug } from "@/lib/slugify";
+import { SITE_URL } from "@/lib/site";
 
 const FROM = "LunchSpecial <team@lunchspecial.com.au>";
-const SITE_URL = "https://lunchspecial.com.au";
 
 export async function sendPasswordResetEmail(to: string, resetUrl: string) {
   if (!process.env.RESEND_API_KEY) {

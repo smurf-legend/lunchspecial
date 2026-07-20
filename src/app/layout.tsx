@@ -4,10 +4,15 @@ import Providers from "./providers";
 import NavAuth from "@/components/NavAuth";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
+const title = "LunchSpecial — Lunch specials near you, crowdsourced";
+const description = "Find and share the best lunch specials near you, posted by the community.";
+
 export const metadata = {
   metadataBase: new URL("https://lunchspecial.com.au"),
-  title: "LunchSpecial — Lunch specials near you, crowdsourced",
-  description: "Find and share the best lunch specials near you, posted by the community.",
+  title,
+  description,
+  openGraph: { title, description, siteName: "LunchSpecial", type: "website" },
+  twitter: { card: "summary_large_image", title, description },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
