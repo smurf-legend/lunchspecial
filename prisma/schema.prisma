@@ -361,3 +361,32 @@ model BlogCommentReaction {
 
   @@unique([userId, blogCommentId])
 }
+
+// Singleton row (id fixed at 1) holding the admin-editable digest
+// configuration — whether the scheduled Friday/Monday sends are paused, and
+// the subject/intro copy for each. Falls back to hardcoded defaults in
+// src/lib/digestSettings.ts until an admin saves changes here for the first
+// time.
+model DigestSettings {
+  id            Int      @id @default(1)
+  paused        Boolean  @default(false)
+  fridaySubject String?
+  fridayIntro   String?
+  mondaySubject String?
+  mondayIntro   String?
+  updatedAt     DateTime @updatedAt
+}
+
+// One row per digest run — scheduled (mode "friday"/"monday") or an
+// on-demand admin test send (mode "test") — so the kitchen panel can show a
+// history of what actually went out without re-deriving it from email logs.
+model DigestLog {
+  id            String   @id @default(cuid())
+  mode          String
+  totalEligible Int
+  sent          Int
+  skipped       Int
+  failed        Int
+  paused        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}

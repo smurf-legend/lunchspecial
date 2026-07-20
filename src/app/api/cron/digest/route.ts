@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendDigestEmail } from "@/lib/mail";
 import { getDigestSpecialsForUser, meetsDigestThreshold, DigestMode } from "@/lib/digest";
+import { getDigestSettings } from "@/lib/digestSettings";
 
 export const maxDuration = 60;
 
@@ -20,6 +21,14 @@ export async function GET(req: NextRequest) {
   }
   const mode = modeParam as DigestMode;
 
+  const settings = await getDigestSettings();
+  if (settings.paused) {
+    await prisma.digestLog.create({
+      data: { mode, totalEligible: 0, sent: 0, skipped: 0, failed: 0, paused: true },
+    });
+    return NextResponse.json({ mode, paused: true, totalEligible: 0, sent: 0, skipped: 0, failed: 0 });
+  }
+
   const users = await prisma.user.findMany({
     where: { marketingOptIn: true, preferredSuburbId: { not: null } },
     select: {
@@ -35,6 +44,7 @@ export async function GET(req: NextRequest) {
   let sent = 0;
   let skipped = 0;
   let failed = 0;
+  const { subject, intro } = settings[mode];
 
   for (const user of users) {
     const specials = await getDigestSpecialsForUser(
@@ -52,12 +62,17 @@ export async function GET(req: NextRequest) {
     const ok = await sendDigestEmail(user.email, {
       name: user.name,
       unsubscribeToken: user.unsubscribeToken,
-      mode,
+      subject,
+      intro,
       specials,
     });
     if (ok) sent++;
     else failed++;
   }
+
+  await prisma.digestLog.create({
+    data: { mode, totalEligible: users.length, sent, skipped, failed },
+  });
 
   return NextResponse.json({ mode, totalEligible: users.length, sent, skipped, failed });
 }

@@ -4,8 +4,9 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-const roleSchema = z.object({
-  role: z.enum(["user", "admin"]),
+const updateSchema = z.object({
+  role: z.enum(["user", "admin"]).optional(),
+  marketingOptIn: z.boolean().optional(),
 });
 
 async function requireAdmin() {
@@ -22,23 +23,23 @@ export async function PATCH(
   const session = await requireAdmin();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
+  const body = await req.json();
+  const parsed = updateSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+  }
+
   const currentUserId = (session.user as any).id as string;
-  if (currentUserId === params.id) {
+  if (currentUserId === params.id && parsed.data.role) {
     return NextResponse.json(
       { error: "You can't change your own admin role — ask another admin to do it." },
       { status: 400 }
     );
   }
 
-  const body = await req.json();
-  const parsed = roleSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
-  }
-
   const user = await prisma.user.update({
     where: { id: params.id },
-    data: { role: parsed.data.role },
+    data: parsed.data,
   });
 
   return NextResponse.json({ user });

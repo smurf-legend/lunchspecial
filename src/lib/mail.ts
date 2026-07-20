@@ -1,6 +1,5 @@
 import { Resend } from "resend";
 import { specialSlug } from "@/lib/slugify";
-import type { DigestMode } from "@/lib/digest";
 
 const FROM = "LunchSpecial <team@lunchspecial.com.au>";
 const SITE_URL = "https://lunchspecial.com.au";
@@ -38,29 +37,15 @@ type DigestSpecial = {
   suburbs: { suburb: { name: string } }[];
 };
 
-const DIGEST_COPY: Record<DigestMode, { subject: string; intro: string }> = {
-  friday: {
-    subject: "Try these specials next week",
-    intro:
-      "Planning your week? Here are some lunch specials near you that you haven't tried yet.",
-  },
-  monday: {
-    subject: "This week's top rated lunch specials",
-    intro: "Didn't get a chance to plan ahead? Here are the best rated lunch specials near you.",
-  },
-};
-
 export async function sendDigestEmail(
   to: string,
-  { name, unsubscribeToken, mode, specials }:
-    { name: string; unsubscribeToken: string; mode: DigestMode; specials: DigestSpecial[] }
+  { name, unsubscribeToken, subject, intro, specials }:
+    { name: string; unsubscribeToken: string; subject: string; intro: string; specials: DigestSpecial[] }
 ): Promise<boolean> {
   if (!process.env.RESEND_API_KEY) {
     console.error("[mail] RESEND_API_KEY is not set — skipping digest email");
     return false;
   }
-
-  const { subject, intro } = DIGEST_COPY[mode];
 
   const itemsHtml = specials
     .map((s) => {

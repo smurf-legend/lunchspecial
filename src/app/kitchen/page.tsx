@@ -99,6 +99,10 @@ export default async function AdminPage({
           <Link href="/kitchen/needs-review" className="text-orange-600 hover:underline">
             {needsReviewCount} needing review
           </Link>
+          {" · "}
+          <Link href="/kitchen/mailing-list" className="text-orange-600 hover:underline">
+            Mailing list
+          </Link>
         </p>
       </div>
 
