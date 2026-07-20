@@ -3,7 +3,9 @@ import { isExpired, formatExpiry } from "@/lib/dealStatus";
 import { googleMapsUrl } from "@/lib/mapsLink";
 import SpecialImage from "@/components/SpecialImage";
 import FavoriteButton from "@/components/FavoriteButton";
+import ShareButton from "@/components/ShareButton";
 import { specialSlug } from "@/lib/slugify";
+import { SITE_URL } from "@/lib/site";
 
 type SpecialCardType = {
   id: string;
@@ -67,12 +69,14 @@ export default function SpecialCard({
         </span>
       </div>
 
-      <SpecialImage
-        src={special.imageUrl}
-        alt={special.title}
-        className="w-20 h-20 object-cover rounded shrink-0"
-        iconClassName="text-2xl"
-      />
+      <Link href={`/specials/${specialSlug(special)}`} prefetch={false} className="shrink-0">
+        <SpecialImage
+          src={special.imageUrl}
+          alt={special.title}
+          className="w-20 h-20 object-cover rounded shrink-0"
+          iconClassName="text-2xl"
+        />
+      </Link>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
@@ -176,6 +180,10 @@ export default function SpecialCard({
             </Link>
           ))}
           <FavoriteButton specialId={special.id} initialFavorited={isFavorited} />
+          <ShareButton
+            url={`${SITE_URL}/specials/${specialSlug(special)}`}
+            title={`${special.title} — ${special.venueName}`}
+          />
         </div>
       </div>
     </div>
