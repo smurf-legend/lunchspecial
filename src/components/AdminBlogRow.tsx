@@ -45,7 +45,7 @@ export default function AdminBlogRow({ post }: { post: BlogPostRow }) {
   if (removed) return null;
 
   return (
-    <div className="flex items-center justify-between p-3 text-sm">
+    <div className="flex items-center justify-between flex-wrap gap-3 p-3 text-sm">
       <div>
         <Link href={`/table-talk/${post.slug}`} prefetch={false} className="font-medium hover:text-orange-600">
           {post.title}

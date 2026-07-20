@@ -78,7 +78,7 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
   if (removed) return null;
 
   return (
-    <div className="flex items-center justify-between p-3 text-sm">
+    <div className="flex items-center justify-between flex-wrap gap-3 p-3 text-sm">
       <div>
         <Link href={`/specials/${specialSlug(special)}`} prefetch={false} className="font-medium hover:text-orange-600">
           {special.title}
