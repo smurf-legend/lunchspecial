@@ -46,7 +46,7 @@ export default async function NeedsReviewPage() {
 
       <div className="bg-white rounded-lg border divide-y">
         {specials.map((special) => (
-          <div key={special.id} className="flex items-center justify-between p-3 text-sm gap-3">
+          <div key={special.id} className="flex items-center justify-between flex-wrap p-3 text-sm gap-3">
             <div>
               <Link
                 href={`/kitchen/specials/${special.id}/edit`}
