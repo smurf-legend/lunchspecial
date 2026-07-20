@@ -3,6 +3,12 @@ import { prisma } from "@/lib/prisma";
 import { specialSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
 
+// Without this, Next treats the route as static (no dynamic APIs are used
+// in it) and generates it once at build/deploy time — new specials/articles
+// posted by users between deploys would never show up. Revalidating hourly
+// keeps it fresh without hitting the DB on every single crawler request.
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [specials, suburbs, posts, stateRegions] = await Promise.all([
     prisma.special.findMany({
