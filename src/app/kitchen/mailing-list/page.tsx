@@ -5,6 +5,7 @@ import Link from "next/link";
 import DigestSettingsForm from "@/components/DigestSettingsForm";
 import DigestTestSendForm from "@/components/DigestTestSendForm";
 import AdminSubscriberRow from "@/components/AdminSubscriberRow";
+import DigestAnalyticsChart from "@/components/DigestAnalyticsChart";
 import { getDigestSettings } from "@/lib/digestSettings";
 
 export default async function MailingListPage() {
@@ -48,8 +49,20 @@ export default async function MailingListPage() {
     }),
     prisma.suburb.findMany({ orderBy: { name: "asc" }, select: { name: true, slug: true } }),
     prisma.category.findMany({ orderBy: { name: "asc" }, select: { name: true, slug: true } }),
-    prisma.digestLog.findMany({ orderBy: { createdAt: "desc" }, take: 20 }),
+    prisma.digestLog.findMany({ orderBy: { createdAt: "desc" }, take: 60 }),
   ]);
+
+  const scheduledLogs = logs.filter((l) => l.mode !== "test");
+  const historyLogs = logs.slice(0, 20);
+  const chartRuns = scheduledLogs
+    .filter((l) => !l.paused)
+    .slice(0, 20)
+    .reverse();
+
+  const totalSent = scheduledLogs.reduce((sum, l) => sum + l.sent, 0);
+  const totalFailed = scheduledLogs.reduce((sum, l) => sum + l.failed, 0);
+  const deliveryRate = totalSent + totalFailed > 0 ? Math.round((totalSent / (totalSent + totalFailed)) * 100) : null;
+  const lastRun = scheduledLogs[0] ?? null;
 
   return (
     <div className="flex flex-col gap-8">
@@ -81,6 +94,34 @@ export default async function MailingListPage() {
       </section>
 
       <section>
+        <h2 className="font-bold text-lg mb-3">Analytics</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          <div className="bg-white rounded-lg border p-3">
+            <p className="text-xs text-gray-500">Subscribers</p>
+            <p className="text-2xl font-bold mt-0.5">{subscribers.length}</p>
+          </div>
+          <div className="bg-white rounded-lg border p-3">
+            <p className="text-xs text-gray-500">Total sent (all-time)</p>
+            <p className="text-2xl font-bold mt-0.5">{totalSent}</p>
+          </div>
+          <div className="bg-white rounded-lg border p-3">
+            <p className="text-xs text-gray-500">Delivery rate</p>
+            <p className="text-2xl font-bold mt-0.5">{deliveryRate != null ? `${deliveryRate}%` : "—"}</p>
+          </div>
+          <div className="bg-white rounded-lg border p-3">
+            <p className="text-xs text-gray-500">Last run</p>
+            <p className="text-lg font-bold mt-0.5 capitalize">
+              {lastRun ? new Date(lastRun.createdAt).toLocaleDateString() : "—"}
+            </p>
+            {lastRun && <p className="text-xs text-gray-500 capitalize">{lastRun.mode}</p>}
+          </div>
+        </div>
+        <div className="bg-white rounded-lg border p-4">
+          <DigestAnalyticsChart runs={chartRuns as any} />
+        </div>
+      </section>
+
+      <section>
         <h2 className="font-bold text-lg mb-3">Subscribers</h2>
         <div className="bg-white rounded-lg border divide-y">
           {subscribers.map((s) => (
@@ -93,7 +134,7 @@ export default async function MailingListPage() {
       <section>
         <h2 className="font-bold text-lg mb-3">Send history</h2>
         <div className="bg-white rounded-lg border divide-y">
-          {logs.map((log) => (
+          {historyLogs.map((log) => (
             <div key={log.id} className="flex items-center justify-between flex-wrap gap-2 p-3 text-sm">
               <div>
                 <span className="font-medium capitalize">{log.mode}</span>{" "}
@@ -111,7 +152,7 @@ export default async function MailingListPage() {
               )}
             </div>
           ))}
-          {logs.length === 0 && <p className="text-gray-400 text-sm p-4">No digest sends yet.</p>}
+          {historyLogs.length === 0 && <p className="text-gray-400 text-sm p-4">No digest sends yet.</p>}
         </div>
       </section>
     </div>
