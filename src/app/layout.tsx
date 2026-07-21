@@ -24,7 +24,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="bg-gray-50 text-gray-900">
         <Providers>
-          <header className="bg-orange-600 text-white sticky top-0 z-10 shadow">
+          {/* transform-gpu forces the sticky header onto its own GPU-composited
+              layer — without it, some WebKit-based in-app browsers (e.g. the
+              WhatsApp/Instagram in-app browser) fail to repaint it correctly
+              after scrolling to the bottom and back up, leaving a stuck gray
+              rectangle until the page is reloaded. */}
+          <header className="bg-orange-600 text-white sticky top-0 z-10 shadow transform-gpu">
             <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3">
               <Link href="/" className="text-xl font-bold">LunchSpecial</Link>
               <nav className="flex flex-wrap gap-x-3 gap-y-1.5 text-sm font-medium items-center">
