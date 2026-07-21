@@ -6,7 +6,7 @@ import Link from "next/link";
 import SuburbAutocomplete from "@/components/SuburbAutocomplete";
 import CuisinePreferencePicker from "@/components/CuisinePreferencePicker";
 
-type Suburb = { name: string; slug: string; state: string };
+type Suburb = { name: string; slug: string; postcode: string; state: string };
 type Category = { name: string; slug: string };
 
 export default function RegisterPage() {

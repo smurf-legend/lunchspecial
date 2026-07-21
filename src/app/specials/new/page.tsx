@@ -5,12 +5,13 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { compressImage } from "@/lib/compressImage";
 import SuburbPicker from "@/components/SuburbPicker";
+import SuburbAutocomplete from "@/components/SuburbAutocomplete";
 import { specialSlug } from "@/lib/slugify";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 type Option = { name: string; slug: string };
-type SuburbOption = { name: string; slug: string; region: string; state: string };
+type SuburbOption = { name: string; slug: string; postcode: string; region: string; state: string };
 
 export default function NewSpecialPage() {
   const { data: session, status } = useSession();
@@ -358,19 +359,11 @@ export default function NewSpecialPage() {
             />
           )}
           {locationMode === "single" && (
-            <select
-              required
-              className="border rounded px-3 py-2 w-full"
-              value={form.suburbSlugs[0] ?? ""}
-              onChange={(e) => setForm({ ...form, suburbSlugs: e.target.value ? [e.target.value] : [] })}
-            >
-              <option value="">Select suburb...</option>
-              {suburbs.map((s) => (
-                <option key={s.slug} value={s.slug}>
-                  {s.name} ({s.state})
-                </option>
-              ))}
-            </select>
+            <SuburbAutocomplete
+              suburbs={suburbs}
+              value={form.suburbSlugs[0] ?? null}
+              onChange={(slug) => setForm({ ...form, suburbSlugs: slug ? [slug] : [] })}
+            />
           )}
           {locationMode === "chainWide" && (
             <p className="text-xs text-gray-500">
