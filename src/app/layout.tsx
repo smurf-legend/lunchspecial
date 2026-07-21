@@ -13,6 +13,7 @@ export const metadata = {
   description,
   openGraph: { title, description, siteName: "LunchSpecial", type: "website" },
   twitter: { card: "summary_large_image", title, description },
+  verification: { google: "3H9GppUjzAo1EO_QjQho5Php3072xTz5B-EaeZkkbz8" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
