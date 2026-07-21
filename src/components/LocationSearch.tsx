@@ -22,7 +22,7 @@ export default function LocationSearch() {
       <input
         type="text"
         maxLength={40}
-        placeholder="Suburb or postcode (e.g. Newtown or 2042)"
+        placeholder="Suburb, postcode, or keyword (e.g. Newtown, 2042, or banh mi)"
         className="border rounded px-3 py-2 flex-1 min-w-0"
         value={location}
         onChange={(e) => setLocation(e.target.value)}

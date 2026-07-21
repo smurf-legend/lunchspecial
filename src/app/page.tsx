@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
-import SearchBar from "@/components/SearchBar";
 import CategoryFilter from "@/components/CategoryFilter";
 import LocationSearch from "@/components/LocationSearch";
 import { AU_STATES, stateCodeFromRegionName, stateName } from "@/lib/auStates";
@@ -24,7 +23,6 @@ export default async function HomePage({
 }: {
   searchParams: {
     sort?: string;
-    q?: string;
     suburb?: string;
     category?: string;
     location?: string;
@@ -48,7 +46,6 @@ export default async function HomePage({
       : searchParams.sort === "hot"
       ? "hot"
       : undefined;
-  const q = searchParams.q?.trim();
   const suburbSlug = searchParams.suburb;
   const categorySlug = searchParams.category;
   const location = searchParams.location?.trim();
@@ -56,11 +53,22 @@ export default async function HomePage({
   const priceTier = searchParams.price && PRICE_TIERS[searchParams.price] ? searchParams.price : undefined;
   const greatValueOnly = searchParams.greatValue === "1";
 
+  // Look up matching suburbs before building the filter so we know whether
+  // the search box's text refers to a real place (a location search, which
+  // also surfaces chain-wide deals available everywhere) or should just
+  // fall through to a keyword match against title/description/venue — one
+  // search box covers both "where" and "what" instead of two separate ones.
+  const matchedSuburbs = location
+    ? await prisma.suburb.findMany({
+        where: isPostcode ? { postcode: location } : { name: { contains: location, mode: "insensitive" as const } },
+      })
+    : [];
+
   // No explicit filters at all means a fresh visit — try to default to the
   // visitor's own state via Vercel's edge geolocation header, but only if
   // that state actually has suburbs seeded, so nobody lands on an empty
   // page just because we detected e.g. Queensland before it's rolled out.
-  const noExplicitFilter = !searchParams.state && !suburbSlug && !location && !q && !categorySlug;
+  const noExplicitFilter = !searchParams.state && !suburbSlug && !location && !categorySlug;
   let detectedState: string | null = null;
   if (noExplicitFilter) {
     const regionHeader = headers().get("x-vercel-ip-country-region");
@@ -84,43 +92,30 @@ export default async function HomePage({
   if (location) {
     and.push({
       OR: [
-        {
-          suburbs: {
-            some: {
-              suburb: isPostcode
-                ? { postcode: location }
-                : { name: { contains: location, mode: "insensitive" as const } },
-            },
-          },
-        },
-        { chainWide: true },
+        // Only bring in the suburb/chain-wide match when the text actually
+        // matched a real suburb — otherwise a keyword like "banh mi" would
+        // wrongly pull in every chain-wide special regardless of relevance.
+        ...(matchedSuburbs.length > 0
+          ? [
+              { suburbs: { some: { suburb: { id: { in: matchedSuburbs.map((s) => s.id) } } } } },
+              { chainWide: true },
+            ]
+          : []),
+        { title: { contains: location, mode: "insensitive" as const } },
+        { description: { contains: location, mode: "insensitive" as const } },
+        { venueName: { contains: location, mode: "insensitive" as const } },
       ],
     });
   }
   if (categorySlug) and.push({ categories: { some: { category: { slug: categorySlug } } } });
   if (priceTier) and.push({ specialPrice: PRICE_TIERS[priceTier].where });
   if (greatValueOnly) and.push({ greatValue: true });
-  if (q) {
-    and.push({
-      OR: [
-        { title: { contains: q, mode: "insensitive" as const } },
-        { description: { contains: q, mode: "insensitive" as const } },
-        { venueName: { contains: q, mode: "insensitive" as const } },
-      ],
-    });
-  }
   if (sort === "oldie") {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - OLDIE_MIN_AGE_DAYS);
     and.push({ createdAt: { lte: cutoff } });
   }
   const where: any = and.length > 0 ? { AND: and } : {};
-
-  const matchedSuburbs = location
-    ? await prisma.suburb.findMany({
-        where: isPostcode ? { postcode: location } : { name: { contains: location, mode: "insensitive" as const } },
-      })
-    : [];
 
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
@@ -150,7 +145,6 @@ export default async function HomePage({
     const params = new URLSearchParams();
     const merged = {
       sort,
-      q,
       suburb: suburbSlug,
       category: categorySlug,
       price: priceTier,
@@ -213,39 +207,22 @@ export default async function HomePage({
 
       <div className="flex gap-3 flex-wrap items-center">
         <CategoryFilter categories={categories} />
-        <SearchBar />
       </div>
 
-      {(location || q) && (
+      {location && (
         <div className="flex flex-wrap items-center gap-2 mt-2 text-xs">
-          {location && (
-            <span className="bg-gray-100 text-gray-700 pl-2.5 pr-1.5 py-1 rounded-full flex items-center gap-1.5">
-              {matchedSuburbs.length > 0
-                ? `📍 ${matchedSuburbs.map((s) => s.name).join(", ")}`
-                : isPostcode
-                ? `No suburb data for postcode ${location} yet`
-                : `No suburb matching "${location}" yet`}
-              <Link
-                href={buildLink({ location: undefined })}
-                className="text-gray-400 hover:text-gray-900 font-bold px-1"
-                aria-label="Clear suburb filter"
-              >
-                ×
-              </Link>
-            </span>
-          )}
-          {q && (
-            <span className="bg-gray-100 text-gray-700 pl-2.5 pr-1.5 py-1 rounded-full flex items-center gap-1.5">
-              🔍 &quot;{q}&quot;
-              <Link
-                href={buildLink({ q: undefined })}
-                className="text-gray-400 hover:text-gray-900 font-bold px-1"
-                aria-label="Clear keyword filter"
-              >
-                ×
-              </Link>
-            </span>
-          )}
+          <span className="bg-gray-100 text-gray-700 pl-2.5 pr-1.5 py-1 rounded-full flex items-center gap-1.5">
+            {matchedSuburbs.length > 0
+              ? `📍 ${matchedSuburbs.map((s) => s.name).join(", ")}`
+              : `🔍 "${location}"`}
+            <Link
+              href={buildLink({ location: undefined })}
+              className="text-gray-400 hover:text-gray-900 font-bold px-1"
+              aria-label="Clear search"
+            >
+              ×
+            </Link>
+          </span>
         </div>
       )}
 
@@ -301,7 +278,7 @@ export default async function HomePage({
         ))}
         {specials.length === 0 && (
           <p className="text-gray-500 text-center py-12">
-            {q || suburbSlug || categorySlug || location || priceTier || greatValueOnly || stateFilter || sort === "oldie" ? (
+            {suburbSlug || categorySlug || location || priceTier || greatValueOnly || stateFilter || sort === "oldie" ? (
               "No lunch specials match those filters yet."
             ) : (
               <>
