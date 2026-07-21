@@ -18,6 +18,9 @@ export default function NavAuth() {
           </Link>
         )}
         <NotificationBell />
+        <Link href="/my-specials" className="text-sm underline" title="Specials you've posted">
+          My posts
+        </Link>
         <Link href="/favorites" className="text-sm underline" title="Your saved favourites">
           Favourites
         </Link>

@@ -88,9 +88,11 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   ]);
 
   if (!special) notFound();
-  // Hidden specials 404 for everyone except admins, who see a banner below
-  // instead — the row still exists so it can be reviewed/unhidden.
-  if (special.hidden && !isAdmin) notFound();
+  const isAuthor = userId != null && special.authorId === userId;
+  // Hidden specials 404 for everyone except admins and the post's own
+  // author, who see a banner below instead — the row still exists so it
+  // can be reviewed/unhidden (or fixed up and resubmitted) later.
+  if (special.hidden && !isAdmin && !isAuthor) notFound();
 
   // Send old bare-id links and stale slugs (e.g. after a title edit) to the
   // current canonical URL, so there's only ever one indexable address per special.
@@ -134,6 +136,12 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
         </div>
       )}
 
+      {special.hidden && !isAdmin && isAuthor && (
+        <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
+          This special is hidden by moderation — only you can see it. You can still edit it below.
+        </div>
+      )}
+
       {expired && (
         <div className="bg-gray-100 border border-gray-300 text-gray-700 rounded-lg px-4 py-3 text-sm font-medium">
           This deal expired on {formatExpiry(special.expiresAt!)} — it may no longer be available.
@@ -174,6 +182,17 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
                 </Link>
                 <DuplicateSpecialButton specialId={special.id} />
                 <DeleteSpecialButton specialId={special.id} title={special.title} />
+              </>
+            )}
+            {isAuthor && !isAdmin && (
+              <>
+                <Link
+                  href={`/specials/${special.id}/edit`}
+                  className="text-xs px-2 py-1 rounded-full font-medium border shrink-0 bg-gray-800 text-white border-gray-800"
+                >
+                  ✏️ Edit
+                </Link>
+                <DeleteSpecialButton specialId={special.id} title={special.title} apiBase="/api/specials" />
               </>
             )}
           </div>

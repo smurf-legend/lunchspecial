@@ -2,14 +2,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function DeleteSpecialButton({ specialId, title }: { specialId: string; title: string }) {
+export default function DeleteSpecialButton({
+  specialId,
+  title,
+  apiBase = "/api/admin/specials",
+}: {
+  specialId: string;
+  title: string;
+  apiBase?: string;
+}) {
   const router = useRouter();
   const [deleting, setDeleting] = useState(false);
 
   async function handleDelete() {
     if (!confirm(`Delete "${title}"? This can't be undone.`)) return;
     setDeleting(true);
-    const res = await fetch(`/api/admin/specials/${specialId}`, { method: "DELETE" });
+    const res = await fetch(`${apiBase}/${specialId}`, { method: "DELETE" });
     if (res.ok) {
       router.push("/");
       return;

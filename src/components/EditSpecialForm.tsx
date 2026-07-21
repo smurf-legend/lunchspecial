@@ -37,10 +37,12 @@ export default function EditSpecialForm({
   special,
   suburbs,
   categories: initialCategories,
+  apiBase = "/api/admin/specials",
 }: {
   special: SpecialData;
   suburbs: SuburbOption[];
   categories: Option[];
+  apiBase?: string;
 }) {
   const router = useRouter();
   const [categories, setCategories] = useState(initialCategories);
@@ -218,7 +220,7 @@ export default function EditSpecialForm({
       expiresAt: form.expiresAt || undefined,
     };
 
-    const res = await fetch(`/api/admin/specials/${special.id}`, {
+    const res = await fetch(`${apiBase}/${special.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

@@ -2,43 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { noProfanity } from "@/lib/profanity";
-import { z } from "zod";
-
-const specialUpdateSchema = z
-  .object({
-    title: z.string().min(5).max(200).refine(noProfanity, { message: "Title contains language that isn't allowed" }),
-    description: z.string().min(10).refine(noProfanity, { message: "Description contains language that isn't allowed" }),
-    venueName: z.string().min(1),
-    address: z.string().optional().nullable(),
-    url: z.string().url().optional().nullable().or(z.literal("")),
-    imageUrl: z.string().url().optional().nullable().or(z.literal("")),
-    extraImageUrls: z.array(z.string().url()).optional(),
-    couponCode: z.string().optional().nullable(),
-    usualPrice: z.number().optional().nullable(),
-    specialPrice: z.number().optional().nullable(),
-    discountPercent: z.number().int().min(1).max(100).optional().nullable(),
-    availableDays: z.string().optional(),
-    startTime: z.string().optional().nullable(),
-    endTime: z.string().optional().nullable(),
-    expiresAt: z
-      .string()
-      .optional()
-      .nullable()
-      .transform((val) => (val ? new Date(val) : null)),
-    suburbSlugs: z.array(z.string()),
-    chainWide: z.boolean().optional().default(false),
-    greatValue: z.boolean().optional().default(false),
-    categorySlugs: z.array(z.string()).optional(),
-  })
-  .refine((data) => data.chainWide || data.suburbSlugs.length > 0, {
-    message: "Select at least one suburb, or mark this as a nationwide chain",
-    path: ["suburbSlugs"],
-  })
-  .refine((data) => data.specialPrice != null || data.discountPercent != null, {
-    message: "Enter either a special price or a percentage discount",
-    path: ["specialPrice"],
-  });
+import { specialUpdateSchema } from "@/lib/specialUpdateSchema";
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions);
