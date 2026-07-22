@@ -148,8 +148,8 @@ export default function PrivacyPolicyPage() {
         <h2 className="font-bold text-gray-900 mb-1.5">Contact us</h2>
         <p>
           Questions about this policy or your data? Email{" "}
-          <a href="mailto:team@lunchspecial.com.au" className="text-orange-600 underline">
-            team@lunchspecial.com.au
+          <a href="mailto:chef@lunchspecial.com.au" className="text-orange-600 underline">
+            chef@lunchspecial.com.au
           </a>
           .
         </p>
