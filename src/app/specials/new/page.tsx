@@ -285,7 +285,7 @@ export default function NewSpecialPage() {
           placeholder="Description — what's included, anything to know"
           required
           minLength={10}
-          rows={3}
+          rows={6}
           className="border rounded px-3 py-2"
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
