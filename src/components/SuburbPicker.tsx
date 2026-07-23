@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 
-type Suburb = { name: string; slug: string; region: string; state: string };
+type Suburb = { name: string; slug: string; postcode: string; region: string; state: string };
 
 // Checkbox picker grouped by state then region, with a filter box — needed
 // once a special (e.g. a nationwide chain deal) can belong to many suburbs
@@ -21,7 +21,9 @@ export default function SuburbPicker({
 
   const grouped = useMemo(() => {
     const q = filter.trim().toLowerCase();
-    const filtered = q ? suburbs.filter((s) => s.name.toLowerCase().includes(q)) : suburbs;
+    const filtered = q
+      ? suburbs.filter((s) => s.name.toLowerCase().includes(q) || s.postcode.startsWith(q))
+      : suburbs;
     const groups: Record<string, Record<string, Suburb[]>> = {};
     for (const s of filtered) {
       const byRegion = (groups[s.state] ??= {});
@@ -48,7 +50,7 @@ export default function SuburbPicker({
       <div className="flex items-center justify-between mb-2 gap-2">
         <input
           type="text"
-          placeholder="Filter suburbs..."
+          placeholder="Filter by suburb name or postcode..."
           className="border rounded px-2 py-1 text-sm flex-1"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}

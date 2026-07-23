@@ -240,7 +240,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
           <div className="flex items-center gap-3 mt-4 text-sm flex-wrap">
             <span className="font-medium">{special.venueName}</span>
             {chainWide ? (
-              <span className="text-gray-600">📍 All Sydney locations</span>
+              <span className="text-gray-600">📍 All Stores</span>
             ) : suburbList.length > 1 ? (
               // Multiple branches but only one address/map link was captured
               // — a single pin next to one suburb name implied it was the

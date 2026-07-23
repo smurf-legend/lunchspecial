@@ -132,7 +132,7 @@ export default function SpecialCard({
         <div className="flex items-center gap-3 mt-2 text-sm flex-wrap">
           <span className="text-gray-700 font-medium">{special.venueName}</span>
           {chainWide ? (
-            <span className="text-gray-500">📍 All Sydney locations</span>
+            <span className="text-gray-500">📍 All Stores</span>
           ) : suburbList.length > 1 ? (
             // Multiple specific branches but only one address/map link was
             // captured — showing that single pin next to one suburb name

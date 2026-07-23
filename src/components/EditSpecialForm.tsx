@@ -306,7 +306,7 @@ export default function EditSpecialForm({
             {[
               { value: "single", label: "Single suburb" },
               { value: "chain", label: "Multiple suburbs (select specific locations)" },
-              { value: "chainWide", label: "All Sydney locations (nationwide chain, e.g. McDonald's)" },
+              { value: "chainWide", label: "All Stores (nationwide chain, e.g. McDonald's)" },
             ].map((opt) => (
               <label key={opt.value} className="flex items-center gap-2 text-sm text-gray-600">
                 <input

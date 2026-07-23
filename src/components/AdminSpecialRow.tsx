@@ -101,7 +101,7 @@ export default function AdminSpecialRow({ special }: { special: Special }) {
         <p className="text-gray-500 text-xs">
           {special.venueName} ·{" "}
           {special.chainWide
-            ? "All Sydney locations"
+            ? "All Stores"
             : special.suburbs.length > 1
             ? `${special.suburbs[0].suburb.name} +${special.suburbs.length - 1} more`
             : special.suburbs[0]?.suburb.name}{" "}

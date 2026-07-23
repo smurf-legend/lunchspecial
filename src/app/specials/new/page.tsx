@@ -334,7 +334,7 @@ export default function NewSpecialPage() {
             {[
               { value: "single", label: "Single suburb" },
               { value: "chain", label: "Multiple suburbs (select specific locations)" },
-              { value: "chainWide", label: "All Sydney locations (nationwide chain, e.g. McDonald's)" },
+              { value: "chainWide", label: "All Stores (nationwide chain, e.g. McDonald's)" },
             ].map((opt) => (
               <label key={opt.value} className="flex items-center gap-2 text-sm text-gray-600">
                 <input
@@ -621,7 +621,7 @@ export default function NewSpecialPage() {
                   </Link>{" "}
                   — {d.venueName},{" "}
                   {d.specialPrice != null ? `$${d.specialPrice.toFixed(2)}` : `${d.discountPercent}% off`} (
-                  {d.suburbNames.length > 0 ? d.suburbNames.join(", ") : "All Sydney locations"})
+                  {d.suburbNames.length > 0 ? d.suburbNames.join(", ") : "All Stores"})
                 </li>
               ))}
             </ul>
