@@ -6,11 +6,27 @@ import { RegExpMatcher, englishDataset, englishRecommendedTransformers } from "o
 const matcher = new RegExpMatcher({
   ...englishDataset.build(),
   ...englishRecommendedTransformers,
-  // Real words that happen to contain a blacklisted substring — "shiitake"
-  // only trips the filter via the duplicate-letter-collapsing transformer
-  // ("shiiit" -> "shit"), while "cumberland" matches "cum" directly with no
-  // transformation needed. Whitelist known-safe words as they turn up.
-  whitelistedTerms: ["shiitake", "cumberland"],
+  // Real words that happen to contain a blacklisted substring (the
+  // "Scunthorpe problem") — verified against the actual matcher, not just
+  // guessed, so this list doesn't carry words that were never a problem.
+  // Deliberately excludes words that are ambiguous or genuinely used as
+  // slurs/profanity in common usage despite a narrow legitimate meaning
+  // (e.g. "faggot" as a British offal dish, "retarded", "cuckold", "hookers")
+  // — those stay blocked rather than risk letting the real usage through.
+  whitelistedTerms: [
+    "shiitake",
+    "cumberland",
+    "assortment",
+    "cumin",
+    "cumquat",
+    "fagioli",
+    "fagiolini",
+    "fagottini",
+    "cockscomb",
+    "cockpit",
+    "retardant",
+    "cummerbund",
+  ],
 });
 
 export function containsProfanity(text: string): boolean {
