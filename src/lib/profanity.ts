@@ -6,6 +6,10 @@ import { RegExpMatcher, englishDataset, englishRecommendedTransformers } from "o
 const matcher = new RegExpMatcher({
   ...englishDataset.build(),
   ...englishRecommendedTransformers,
+  // The recommended transformers collapse repeated letters to catch evasion
+  // (e.g. "shiiit" -> "shit"), which also collapses legitimate words like
+  // "shiitake" into a false positive. Whitelist known-safe words as they turn up.
+  whitelistedTerms: ["shiitake"],
 });
 
 export function containsProfanity(text: string): boolean {
