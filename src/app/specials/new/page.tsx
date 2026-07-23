@@ -152,6 +152,19 @@ export default function NewSpecialPage() {
     setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   }
 
+  // Moves a photo to the front — index 0 is always what gets submitted as
+  // the cover (`imageUrl`), the rest become `extraImageUrls`.
+  function makeCoverImage(index: number) {
+    function moveToFront<T>(arr: T[]): T[] {
+      const next = [...arr];
+      const [item] = next.splice(index, 1);
+      next.unshift(item);
+      return next;
+    }
+    setImageFiles(moveToFront);
+    setImagePreviews(moveToFront);
+  }
+
   function handleImageUrlChange(value: string) {
     setImageUrlInput(value);
     if (value) {
@@ -547,10 +560,18 @@ export default function NewSpecialPage() {
                     alt={`Preview ${i + 1}`}
                     className="h-24 w-24 object-cover rounded border"
                   />
-                  {i === 0 && (
+                  {i === 0 ? (
                     <span className="absolute top-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">
                       Cover
                     </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => makeCoverImage(i)}
+                      className="absolute bottom-1 left-1 right-1 bg-black/60 text-white text-[10px] px-1 py-0.5 rounded hover:bg-black/80"
+                    >
+                      Make cover
+                    </button>
                   )}
                   <button
                     type="button"

@@ -10,6 +10,7 @@ const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 type Option = { name: string; slug: string };
 type SuburbOption = { name: string; slug: string; postcode: string; region: string; state: string };
+type Photo = { key: string; kind: "existing"; url: string } | { key: string; kind: "new"; file: File; preview: string };
 
 type SpecialData = {
   id: string;
@@ -74,11 +75,13 @@ export default function EditSpecialForm({
     categorySlugs: special.categories.map((c) => c.category.slug),
     expiresAt: special.expiresAt ? new Date(special.expiresAt).toISOString().split("T")[0] : "",
   });
-  const [existingImages, setExistingImages] = useState<string[]>(
-    special.imageUrl ? [special.imageUrl, ...special.extraImageUrls] : special.extraImageUrls
-  );
-  const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
-  const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
+  // A single ordered list — index 0 is always the cover — instead of
+  // separate "existing" and "newly uploaded" arrays, so any photo
+  // (already-saved or just added) can be dragged into the cover slot.
+  const [photos, setPhotos] = useState<Photo[]>(() => {
+    const urls = special.imageUrl ? [special.imageUrl, ...special.extraImageUrls] : special.extraImageUrls;
+    return urls.map((url, i) => ({ key: `existing-${i}`, kind: "existing" as const, url }));
+  });
   const [imageUrlInput, setImageUrlInput] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
   const [compressingImage, setCompressingImage] = useState(false);
@@ -138,35 +141,43 @@ export default function EditSpecialForm({
 
     setCompressingImage(true);
     for (const file of files) {
+      let compressed = file;
       try {
-        const compressed = await compressImage(file);
-        setNewImageFiles((prev) => [...prev, compressed]);
-        setNewImagePreviews((prev) => [...prev, URL.createObjectURL(compressed)]);
+        compressed = await compressImage(file);
       } catch {
         if (file.size > 5 * 1024 * 1024) {
           setError(`"${file.name}" is over 5MB — skipped`);
           continue;
         }
-        setNewImageFiles((prev) => [...prev, file]);
-        setNewImagePreviews((prev) => [...prev, URL.createObjectURL(file)]);
       }
+      const key = `new-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      setPhotos((prev) => [...prev, { key, kind: "new", file: compressed, preview: URL.createObjectURL(compressed) }]);
     }
     setCompressingImage(false);
   }
 
-  function removeExistingImage(index: number) {
-    setExistingImages((prev) => prev.filter((_, i) => i !== index));
+  function removePhoto(key: string) {
+    setPhotos((prev) => prev.filter((p) => p.key !== key));
   }
 
-  function removeNewImageFile(index: number) {
-    setNewImageFiles((prev) => prev.filter((_, i) => i !== index));
-    setNewImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  // Moves a photo to the front — index 0 is always what gets submitted as
+  // the cover (`imageUrl`), the rest become `extraImageUrls`. Works whether
+  // the photo is already-saved or was just added in this session.
+  function makeCoverPhoto(key: string) {
+    setPhotos((prev) => {
+      const index = prev.findIndex((p) => p.key === key);
+      if (index <= 0) return prev;
+      const next = [...prev];
+      const [item] = next.splice(index, 1);
+      next.unshift(item);
+      return next;
+    });
   }
 
   function addImageUrl() {
     const url = imageUrlInput.trim();
     if (!url) return;
-    setExistingImages((prev) => [...prev, url]);
+    setPhotos((prev) => [...prev, { key: `url-${Date.now()}`, kind: "existing", url }]);
     setImageUrlInput("");
   }
 
@@ -175,14 +186,15 @@ export default function EditSpecialForm({
     setLoading(true);
     setError(null);
 
-    const uploadedUrls: string[] = [];
-    if (newImageFiles.length > 0) {
+    const newPhotos = photos.filter((p) => p.kind === "new");
+    const uploadedByKey = new Map<string, string>();
+    if (newPhotos.length > 0) {
       setUploadingImage(true);
-      for (const file of newImageFiles) {
-        const uploadRes = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+      for (const photo of newPhotos) {
+        const uploadRes = await fetch(`/api/upload?filename=${encodeURIComponent(photo.file.name)}`, {
           method: "POST",
-          headers: { "Content-Type": file.type },
-          body: file,
+          headers: { "Content-Type": photo.file.type },
+          body: photo.file,
         });
         if (!uploadRes.ok) {
           setUploadingImage(false);
@@ -192,12 +204,14 @@ export default function EditSpecialForm({
           return;
         }
         const { url } = await uploadRes.json();
-        uploadedUrls.push(url);
+        uploadedByKey.set(photo.key, url);
       }
       setUploadingImage(false);
     }
 
-    const allImages = [...existingImages, ...uploadedUrls];
+    // Preserves the on-screen order (cover first) whether each photo was
+    // already saved or just uploaded above.
+    const allImages = photos.map((p) => (p.kind === "existing" ? p.url : uploadedByKey.get(p.key)!));
 
     const payload = {
       title: form.title,
@@ -477,41 +491,34 @@ export default function EditSpecialForm({
 
         <div>
           <p className="text-sm font-medium mb-1">Photos</p>
-          {(existingImages.length > 0 || newImagePreviews.length > 0) && (
+          {photos.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-2">
-              {existingImages.map((url, i) => (
-                <div key={`existing-${i}`} className="relative">
+              {photos.map((p, i) => (
+                <div key={p.key} className="relative">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={url} alt={`Photo ${i + 1}`} className="h-24 w-24 object-cover rounded border" />
-                  {i === 0 && (
+                  <img
+                    src={p.kind === "existing" ? p.url : p.preview}
+                    alt={`Photo ${i + 1}`}
+                    className="h-24 w-24 object-cover rounded border"
+                  />
+                  {i === 0 ? (
                     <span className="absolute top-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">
                       Cover
                     </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => makeCoverPhoto(p.key)}
+                      className="absolute bottom-1 left-1 right-1 bg-black/60 text-white text-[10px] px-1 py-0.5 rounded hover:bg-black/80"
+                    >
+                      Make cover
+                    </button>
                   )}
                   <button
                     type="button"
-                    onClick={() => removeExistingImage(i)}
+                    onClick={() => removePhoto(p.key)}
                     className="absolute -top-1.5 -right-1.5 bg-white border rounded-full w-5 h-5 text-xs leading-none hover:bg-gray-50"
                     aria-label={`Remove photo ${i + 1}`}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-              {newImagePreviews.map((preview, i) => (
-                <div key={`new-${i}`} className="relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={preview} alt="New photo" className="h-24 w-24 object-cover rounded border" />
-                  {existingImages.length === 0 && i === 0 && (
-                    <span className="absolute top-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">
-                      Cover
-                    </span>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => removeNewImageFile(i)}
-                    className="absolute -top-1.5 -right-1.5 bg-white border rounded-full w-5 h-5 text-xs leading-none hover:bg-gray-50"
-                    aria-label="Remove photo"
                   >
                     ×
                   </button>
