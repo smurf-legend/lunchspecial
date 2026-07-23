@@ -3,13 +3,13 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { findDuplicateSpecials } from "@/lib/duplicateCheck";
-import { noProfanity } from "@/lib/profanity";
+import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { z } from "zod";
 
 const specialSchema = z
   .object({
-    title: z.string().min(5).max(200).refine(noProfanity, { message: "Title contains language that isn't allowed" }),
-    description: z.string().min(10).refine(noProfanity, { message: "Description contains language that isn't allowed" }),
+    title: z.string().min(5).max(200).refine(noProfanity, profanityMessage("Title")),
+    description: z.string().min(10).refine(noProfanity, profanityMessage("Description")),
     venueName: z.string().min(1),
     address: z.string().optional(),
     url: z.string().url().optional(),

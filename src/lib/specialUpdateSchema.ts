@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { noProfanity } from "@/lib/profanity";
+import { noProfanity, profanityMessage } from "@/lib/profanity";
 
 // Shared between the admin edit route and the owner-facing edit route so
 // the two can never validate updates differently.
 export const specialUpdateSchema = z
   .object({
-    title: z.string().min(5).max(200).refine(noProfanity, { message: "Title contains language that isn't allowed" }),
-    description: z.string().min(10).refine(noProfanity, { message: "Description contains language that isn't allowed" }),
+    title: z.string().min(5).max(200).refine(noProfanity, profanityMessage("Title")),
+    description: z.string().min(10).refine(noProfanity, profanityMessage("Description")),
     venueName: z.string().min(1),
     address: z.string().optional().nullable(),
     url: z.string().url().optional().nullable().or(z.literal("")),

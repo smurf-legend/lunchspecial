@@ -2,16 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { noProfanity } from "@/lib/profanity";
+import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { getDigestSettings, DEFAULT_DIGEST_COPY } from "@/lib/digestSettings";
 import { z } from "zod";
 
 const settingsSchema = z.object({
   paused: z.boolean().optional(),
-  fridaySubject: z.string().min(1).max(200).refine(noProfanity, { message: "Subject contains language that isn't allowed" }).optional(),
-  fridayIntro: z.string().min(1).max(1000).refine(noProfanity, { message: "Intro contains language that isn't allowed" }).optional(),
-  mondaySubject: z.string().min(1).max(200).refine(noProfanity, { message: "Subject contains language that isn't allowed" }).optional(),
-  mondayIntro: z.string().min(1).max(1000).refine(noProfanity, { message: "Intro contains language that isn't allowed" }).optional(),
+  fridaySubject: z.string().min(1).max(200).refine(noProfanity, profanityMessage("Subject")).optional(),
+  fridayIntro: z.string().min(1).max(1000).refine(noProfanity, profanityMessage("Intro")).optional(),
+  mondaySubject: z.string().min(1).max(200).refine(noProfanity, profanityMessage("Subject")).optional(),
+  mondayIntro: z.string().min(1).max(1000).refine(noProfanity, profanityMessage("Intro")).optional(),
 });
 
 async function requireAdmin() {

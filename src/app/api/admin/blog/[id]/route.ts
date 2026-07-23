@@ -2,18 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { noProfanity } from "@/lib/profanity";
+import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { z } from "zod";
 
 const blogPostUpdateSchema = z.object({
-  title: z.string().min(3).max(200).refine(noProfanity, { message: "Title contains language that isn't allowed" }),
+  title: z.string().min(3).max(200).refine(noProfanity, profanityMessage("Title")),
   excerpt: z
     .string()
     .max(300)
-    .refine(noProfanity, { message: "Excerpt contains language that isn't allowed" })
+    .refine(noProfanity, profanityMessage("Excerpt"))
     .optional()
     .nullable(),
-  body: z.string().min(10).refine(noProfanity, { message: "Body contains language that isn't allowed" }),
+  body: z.string().min(10).refine(noProfanity, profanityMessage("Body")),
   imageUrl: z.string().url().optional().nullable().or(z.literal("")),
   hidden: z.boolean().optional(),
 });

@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { noProfanity } from "@/lib/profanity";
+import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { z } from "zod";
 
 const commentSchema = z.object({
-  body: z.string().min(1).max(2000).refine(noProfanity, { message: "Comment contains language that isn't allowed" }),
+  body: z.string().min(1).max(2000).refine(noProfanity, profanityMessage("Comment")),
   parentId: z.string().optional(),
 });
 
