@@ -29,7 +29,6 @@ export default function SuburbAutocomplete({
   const [adding, setAdding] = useState(false);
   const [newPostcode, setNewPostcode] = useState("");
   const [newState, setNewState] = useState<string>(AU_STATES[0].code);
-  const [newRegion, setNewRegion] = useState("");
   const [addError, setAddError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -49,7 +48,7 @@ export default function SuburbAutocomplete({
     const res = await fetch("/api/suburbs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: query.trim(), postcode: newPostcode, state: newState, region: newRegion }),
+      body: JSON.stringify({ name: query.trim(), postcode: newPostcode, state: newState }),
     });
 
     setSubmitting(false);
@@ -66,7 +65,6 @@ export default function SuburbAutocomplete({
     setQuery("");
     setAdding(false);
     setNewPostcode("");
-    setNewRegion("");
   }
 
   if (selected) {
@@ -153,28 +151,13 @@ export default function SuburbAutocomplete({
                     </option>
                   ))}
                 </select>
-                <input
-                  type="text"
-                  list="suburb-region-suggestions"
-                  placeholder="Region, e.g. Inner West"
-                  className="border rounded px-2 py-1 text-sm flex-1 min-w-0"
-                  value={newRegion}
-                  onChange={(e) => setNewRegion(e.target.value)}
-                />
-                <datalist id="suburb-region-suggestions">
-                  <option value="Central" />
-                  <option value="North" />
-                  <option value="East" />
-                  <option value="South" />
-                  <option value="West" />
-                </datalist>
               </div>
               {addError && <p className="text-red-600 text-xs">{addError}</p>}
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={handleAddSuburb}
-                  disabled={submitting || !newPostcode || !newRegion}
+                  disabled={submitting || !newPostcode}
                   className="bg-orange-600 text-white px-3 py-1 rounded text-xs font-medium disabled:opacity-50"
                 >
                   {submitting ? "Adding..." : "Add suburb"}

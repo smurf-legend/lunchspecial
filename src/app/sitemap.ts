@@ -10,18 +10,29 @@ import { SITE_URL } from "@/lib/site";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [specials, suburbs, posts, stateRegions] = await Promise.all([
+  const [specials, hasChainWide, posts, stateRegions] = await Promise.all([
     prisma.special.findMany({
       where: { hidden: false },
       select: { id: true, title: true, venueName: true, createdAt: true },
     }),
-    prisma.suburb.findMany({ select: { slug: true } }),
+    prisma.special.count({ where: { hidden: false, chainWide: true } }).then((c) => c > 0),
     prisma.blogPost.findMany({
       where: { hidden: false },
       select: { slug: true, updatedAt: true },
     }),
     prisma.suburb.findMany({ select: { state: true, region: true }, distinct: ["state", "region"] }),
   ]);
+
+  // A chain-wide special (e.g. a McDonald's deal) shows up on every suburb
+  // page regardless of that suburb's own specials, so it makes every page
+  // non-empty. Without one, only suburbs with a direct special have real
+  // content — with several thousand suburbs now loaded nationally (most
+  // with no locally-posted deals yet), including all of them unconditionally
+  // would flood the sitemap with thin/empty pages.
+  const suburbs = await prisma.suburb.findMany({
+    where: hasChainWide ? {} : { specials: { some: { special: { hidden: false } } } },
+    select: { slug: true },
+  });
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: SITE_URL, changeFrequency: "hourly", priority: 1 },

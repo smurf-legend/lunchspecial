@@ -1,14 +1,13 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AU_STATES } from "@/lib/auStates";
 
-type Suburb = { name: string; slug: string; postcode: string; region: string; state: string };
+type Suburb = { name: string; slug: string; postcode: string; state: string };
 
-// Checkbox picker grouped by state then region, with a filter box — needed
-// once a special (e.g. a nationwide chain deal) can belong to many suburbs
-// instead of just one. Most posts still only pick a single suburb. Grouping
-// by state first matters once more than one state has data, since region
-// names like "Central" or "North" repeat across states.
+// Search-and-add multi-select, shown as removable chips — same interaction
+// pattern as SuburbAutocomplete's single-suburb search, just allowing more
+// than one. Needed once a special (e.g. a chain deal at a few specific
+// locations) can belong to many suburbs instead of just one.
 export default function SuburbPicker({
   suburbs,
   selected,
@@ -18,41 +17,34 @@ export default function SuburbPicker({
   selected: string[];
   onChange: (slugs: string[]) => void;
 }) {
-  const [filter, setFilter] = useState("");
+  const [query, setQuery] = useState("");
   const [localSuburbs, setLocalSuburbs] = useState(suburbs);
   const [adding, setAdding] = useState(false);
   const [newPostcode, setNewPostcode] = useState("");
   const [newState, setNewState] = useState<string>(AU_STATES[0].code);
-  const [newRegion, setNewRegion] = useState("");
   const [addError, setAddError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => setLocalSuburbs(suburbs), [suburbs]);
 
-  const grouped = useMemo(() => {
-    const q = filter.trim().toLowerCase();
-    const filtered = q
-      ? localSuburbs.filter((s) => s.name.toLowerCase().includes(q) || s.postcode.startsWith(q))
-      : localSuburbs;
-    const groups: Record<string, Record<string, Suburb[]>> = {};
-    for (const s of filtered) {
-      const byRegion = (groups[s.state] ??= {});
-      (byRegion[s.region] ??= []).push(s);
-    }
-    return groups;
-  }, [localSuburbs, filter]);
+  const q = query.trim().toLowerCase();
+  const matches = q
+    ? localSuburbs
+        .filter((s) => !selected.includes(s.slug) && (s.name.toLowerCase().includes(q) || s.postcode.startsWith(q)))
+        .slice(0, 8)
+    : [];
 
-  function toggle(slug: string) {
-    onChange(selected.includes(slug) ? selected.filter((s) => s !== slug) : [...selected, slug]);
+  const selectedSuburbs = selected
+    .map((slug) => localSuburbs.find((s) => s.slug === slug))
+    .filter((s): s is Suburb => !!s);
+
+  function addSlug(slug: string) {
+    onChange([...selected, slug]);
+    setQuery("");
   }
 
-  function toggleGroup(groupSlugs: string[]) {
-    const allSelected = groupSlugs.every((s) => selected.includes(s));
-    onChange(
-      allSelected
-        ? selected.filter((s) => !groupSlugs.includes(s))
-        : [...new Set([...selected, ...groupSlugs])]
-    );
+  function removeSlug(slug: string) {
+    onChange(selected.filter((s) => s !== slug));
   }
 
   async function handleAddSuburb() {
@@ -62,7 +54,7 @@ export default function SuburbPicker({
     const res = await fetch("/api/suburbs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: filter.trim(), postcode: newPostcode, state: newState, region: newRegion }),
+      body: JSON.stringify({ name: query.trim(), postcode: newPostcode, state: newState }),
     });
 
     setSubmitting(false);
@@ -75,80 +67,67 @@ export default function SuburbPicker({
 
     const { suburb } = await res.json();
     setLocalSuburbs((prev) => [...prev, suburb]);
-    onChange([...selected, suburb.slug]);
-    setFilter("");
+    addSlug(suburb.slug);
     setAdding(false);
     setNewPostcode("");
-    setNewRegion("");
   }
 
   return (
     <div className="border rounded p-3">
-      <div className="flex items-center justify-between mb-2 gap-2">
+      {selectedSuburbs.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {selectedSuburbs.map((s) => (
+            <span
+              key={s.slug}
+              className="flex items-center gap-1 bg-orange-50 text-orange-700 text-sm pl-2.5 pr-1.5 py-1 rounded-full"
+            >
+              {s.name}
+              <button
+                type="button"
+                onClick={() => removeSlug(s.slug)}
+                className="text-orange-400 hover:text-orange-900 font-bold px-1"
+                aria-label={`Remove ${s.name}`}
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+      <div className="relative">
         <input
           type="text"
-          placeholder="Filter by suburb name or postcode..."
-          className="border rounded px-2 py-1 text-sm flex-1"
-          value={filter}
+          placeholder="Search by suburb name or postcode..."
+          className="border rounded px-2 py-1.5 text-sm w-full"
+          value={query}
           onChange={(e) => {
-            setFilter(e.target.value);
+            setQuery(e.target.value);
             setAdding(false);
           }}
         />
-        <span className="text-xs text-gray-500 shrink-0">{selected.length} selected</span>
-      </div>
-      <div className="max-h-64 overflow-y-auto flex flex-col gap-4">
-        {Object.entries(grouped).map(([state, byRegion]) => (
-          <div key={state}>
-            <p className="text-xs font-bold text-gray-700 mb-1.5">{state}</p>
-            <div className="flex flex-col gap-3 pl-2">
-              {Object.entries(byRegion).map(([region, list]) => {
-                const regionSlugs = list.map((s) => s.slug);
-                const allSelected = regionSlugs.every((s) => selected.includes(s));
-                return (
-                  <div key={region}>
-                    <div className="flex items-center justify-between">
-                      <p className="text-xs font-semibold text-gray-500">{region}</p>
-                      <button
-                        type="button"
-                        onClick={() => toggleGroup(regionSlugs)}
-                        className="text-xs text-orange-600 hover:underline"
-                      >
-                        {allSelected ? "Deselect all" : "Select all"}
-                      </button>
-                    </div>
-                    <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
-                      {list.map((s) => (
-                        <label key={s.slug} className="flex items-center gap-1 text-sm">
-                          <input
-                            type="checkbox"
-                            checked={selected.includes(s.slug)}
-                            onChange={() => toggle(s.slug)}
-                          />
-                          {s.name}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+        {matches.length > 0 && (
+          <div className="absolute z-10 top-full left-0 right-0 bg-white border rounded mt-1 shadow-md max-h-48 overflow-y-auto">
+            {matches.map((s) => (
+              <button
+                key={s.slug}
+                type="button"
+                onClick={() => addSlug(s.slug)}
+                className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-50"
+              >
+                {s.name} <span className="text-gray-400">({s.postcode}, {s.state})</span>
+              </button>
+            ))}
           </div>
-        ))}
-        {Object.keys(grouped).length === 0 && (
-          <div className="text-sm">
-            {!filter.trim() ? (
-              <p className="text-gray-400">No suburbs yet.</p>
-            ) : !adding ? (
-              <p className="text-gray-400">
-                No suburbs match "{filter}" —{" "}
-                <button type="button" onClick={() => setAdding(true)} className="text-orange-600 hover:underline">
-                  add it
-                </button>
-              </p>
+        )}
+        {q && matches.length === 0 && (
+          <div className="absolute z-10 top-full left-0 right-0 bg-white border rounded mt-1 shadow-md p-3 text-sm">
+            {!adding ? (
+              <button type="button" onClick={() => setAdding(true)} className="text-orange-600 hover:underline">
+                + Add "{query.trim()}" as a new suburb
+              </button>
             ) : (
               <div className="flex flex-col gap-2">
-                <p className="text-gray-500">Adding "{filter.trim()}"</p>
+                <p className="text-gray-500">Adding "{query.trim()}"</p>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -169,28 +148,13 @@ export default function SuburbPicker({
                       </option>
                     ))}
                   </select>
-                  <input
-                    type="text"
-                    list="suburb-region-suggestions"
-                    placeholder="Region, e.g. Inner West"
-                    className="border rounded px-2 py-1 text-sm flex-1 min-w-0"
-                    value={newRegion}
-                    onChange={(e) => setNewRegion(e.target.value)}
-                  />
-                  <datalist id="suburb-region-suggestions">
-                    <option value="Central" />
-                    <option value="North" />
-                    <option value="East" />
-                    <option value="South" />
-                    <option value="West" />
-                  </datalist>
                 </div>
                 {addError && <p className="text-red-600 text-xs">{addError}</p>}
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={handleAddSuburb}
-                    disabled={submitting || !newPostcode || !newRegion}
+                    disabled={submitting || !newPostcode}
                     className="bg-orange-600 text-white px-3 py-1 rounded text-xs font-medium disabled:opacity-50"
                   >
                     {submitting ? "Adding..." : "Add suburb"}
