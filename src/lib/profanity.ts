@@ -6,10 +6,11 @@ import { RegExpMatcher, englishDataset, englishRecommendedTransformers } from "o
 const matcher = new RegExpMatcher({
   ...englishDataset.build(),
   ...englishRecommendedTransformers,
-  // The recommended transformers collapse repeated letters to catch evasion
-  // (e.g. "shiiit" -> "shit"), which also collapses legitimate words like
-  // "shiitake" into a false positive. Whitelist known-safe words as they turn up.
-  whitelistedTerms: ["shiitake"],
+  // Real words that happen to contain a blacklisted substring — "shiitake"
+  // only trips the filter via the duplicate-letter-collapsing transformer
+  // ("shiiit" -> "shit"), while "cumberland" matches "cum" directly with no
+  // transformation needed. Whitelist known-safe words as they turn up.
+  whitelistedTerms: ["shiitake", "cumberland"],
 });
 
 export function containsProfanity(text: string): boolean {
