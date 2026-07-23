@@ -363,6 +363,7 @@ export default function NewSpecialPage() {
               suburbs={suburbs}
               value={form.suburbSlugs[0] ?? null}
               onChange={(slug) => setForm({ ...form, suburbSlugs: slug ? [slug] : [] })}
+              allowAdd
             />
           )}
           {locationMode === "chainWide" && (
