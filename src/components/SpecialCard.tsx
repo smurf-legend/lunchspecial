@@ -15,6 +15,8 @@ type SpecialCardType = {
   address?: string | null;
   specialPrice: number | null;
   discountPercent?: number | null;
+  priceRangeMin?: number | null;
+  priceRangeMax?: number | null;
   usualPrice?: number | null;
   availableDays: string;
   score: number;
@@ -110,10 +112,15 @@ export default function SpecialCard({
             <span className="font-bold text-green-700 text-xl">
               ${special.specialPrice.toFixed(2)}
             </span>
+          ) : special.discountPercent != null ? (
+            <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-lg text-base font-bold">
+              {special.discountPercent}% off
+            </span>
           ) : (
-            special.discountPercent != null && (
-              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-lg text-base font-bold">
-                {special.discountPercent}% off
+            special.priceRangeMin != null &&
+            special.priceRangeMax != null && (
+              <span className="font-bold text-green-700 text-xl">
+                ${special.priceRangeMin.toFixed(2)}–${special.priceRangeMax.toFixed(2)}
               </span>
             )
           )}

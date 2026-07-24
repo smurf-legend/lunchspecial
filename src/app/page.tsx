@@ -8,12 +8,15 @@ import CategoryFilter from "@/components/CategoryFilter";
 import LocationSearch from "@/components/LocationSearch";
 import { AU_STATES, stateCodeFromRegionName, stateName } from "@/lib/auStates";
 
-const PRICE_TIERS: Record<string, { label: string; where: any }> = {
-  under10: { label: "Under $10", where: { lt: 10 } },
-  under15: { label: "Under $15", where: { lt: 15 } },
-  under20: { label: "Under $20", where: { lt: 20 } },
-  under25: { label: "Under $25", where: { lt: 25 } },
-  over25: { label: "Over $25", where: { gte: 25 } },
+// Each tier also matches range-priced specials (a whole specials menu
+// rather than one item) — "under" tiers check the range's low end (does
+// it have anything that cheap), "over" checks the high end.
+const PRICE_TIERS: Record<string, { label: string; where: any; rangeField: "priceRangeMin" | "priceRangeMax" }> = {
+  under10: { label: "Under $10", where: { lt: 10 }, rangeField: "priceRangeMin" },
+  under15: { label: "Under $15", where: { lt: 15 }, rangeField: "priceRangeMin" },
+  under20: { label: "Under $20", where: { lt: 20 }, rangeField: "priceRangeMin" },
+  under25: { label: "Under $25", where: { lt: 25 }, rangeField: "priceRangeMin" },
+  over25: { label: "Over $25", where: { gte: 25 }, rangeField: "priceRangeMax" },
 };
 
 const OLDIE_MIN_AGE_DAYS = 30;
@@ -108,7 +111,10 @@ export default async function HomePage({
     });
   }
   if (categorySlug) and.push({ categories: { some: { category: { slug: categorySlug } } } });
-  if (priceTier) and.push({ specialPrice: PRICE_TIERS[priceTier].where });
+  if (priceTier) {
+    const tier = PRICE_TIERS[priceTier];
+    and.push({ OR: [{ specialPrice: tier.where }, { [tier.rangeField]: tier.where }] });
+  }
   if (greatValueOnly) and.push({ greatValue: true });
   if (sort === "oldie") {
     const cutoff = new Date();

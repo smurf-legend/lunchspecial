@@ -33,6 +33,8 @@ type DigestSpecial = {
   venueName: string;
   specialPrice: number | null;
   discountPercent: number | null;
+  priceRangeMin: number | null;
+  priceRangeMax: number | null;
   chainWide: boolean;
   suburbs: { suburb: { name: string } }[];
 };
@@ -54,6 +56,8 @@ export async function sendDigestEmail(
           ? `$${s.specialPrice.toFixed(2)}`
           : s.discountPercent != null
           ? `${s.discountPercent}% off`
+          : s.priceRangeMin != null && s.priceRangeMax != null
+          ? `$${s.priceRangeMin.toFixed(2)}–$${s.priceRangeMax.toFixed(2)}`
           : "";
       const location = s.chainWide ? "All locations" : s.suburbs[0]?.suburb.name ?? "";
       const url = `${SITE_URL}/specials/${specialSlug(s)}`;

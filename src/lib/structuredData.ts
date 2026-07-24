@@ -15,15 +15,22 @@ type OfferJsonLdInput = {
   imageUrl?: string | null;
   specialPrice?: number | null;
   discountPercent?: number | null;
+  priceRangeMin?: number | null;
+  priceRangeMax?: number | null;
   expiresAt?: Date | string | null;
   expired: boolean;
   locationName?: string;
 };
 
 export function buildOfferJsonLd(special: OfferJsonLdInput) {
+  // A price range (a whole specials menu, not one item) has no single price
+  // to report — schema.org's dedicated type for that is AggregateOffer with
+  // lowPrice/highPrice, rather than Offer's single price/priceCurrency pair.
+  const isRange = special.specialPrice == null && special.priceRangeMin != null && special.priceRangeMax != null;
+
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
-    "@type": "Offer",
+    "@type": isRange ? "AggregateOffer" : "Offer",
     name: special.title,
     description: special.description,
     url: special.url,
@@ -37,11 +44,14 @@ export function buildOfferJsonLd(special: OfferJsonLdInput) {
 
   if (special.imageUrl) jsonLd.image = special.imageUrl;
   if (special.expiresAt) jsonLd.priceValidUntil = new Date(special.expiresAt).toISOString().slice(0, 10);
-  // Only advertise a price when there's a real fixed one — a percentage-off
-  // deal has no single price to report, and schema.org's Offer expects a
-  // price/priceCurrency pair rather than a percentage.
+  // Only advertise a price when there's a real fixed one or a range — a
+  // percentage-off deal has no single price to report.
   if (special.specialPrice != null) {
     jsonLd.price = special.specialPrice;
+    jsonLd.priceCurrency = "AUD";
+  } else if (isRange) {
+    jsonLd.lowPrice = special.priceRangeMin;
+    jsonLd.highPrice = special.priceRangeMax;
     jsonLd.priceCurrency = "AUD";
   }
 

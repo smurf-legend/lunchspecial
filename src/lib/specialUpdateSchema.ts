@@ -16,6 +16,8 @@ export const specialUpdateSchema = z
     usualPrice: z.number().optional().nullable(),
     specialPrice: z.number().optional().nullable(),
     discountPercent: z.number().int().min(1).max(100).optional().nullable(),
+    priceRangeMin: z.number().optional().nullable(),
+    priceRangeMax: z.number().optional().nullable(),
     availableDays: z.string().optional(),
     startTime: z.string().optional().nullable(),
     endTime: z.string().optional().nullable(),
@@ -33,7 +35,14 @@ export const specialUpdateSchema = z
     message: "Select at least one suburb, or mark this as a nationwide chain",
     path: ["suburbSlugs"],
   })
-  .refine((data) => data.specialPrice != null || data.discountPercent != null, {
-    message: "Enter either a special price or a percentage discount",
-    path: ["specialPrice"],
+  .refine(
+    (data) => data.specialPrice != null || data.discountPercent != null || (data.priceRangeMin != null && data.priceRangeMax != null),
+    {
+      message: "Enter a special price, a percentage discount, or a price range",
+      path: ["specialPrice"],
+    }
+  )
+  .refine((data) => data.priceRangeMin == null || data.priceRangeMax == null || data.priceRangeMax > data.priceRangeMin, {
+    message: "The high end of the price range must be more than the low end",
+    path: ["priceRangeMax"],
   });

@@ -19,6 +19,8 @@ const specialSchema = z
     usualPrice: z.number().optional(),
     specialPrice: z.number().optional(),
     discountPercent: z.number().int().min(1).max(100).optional(),
+    priceRangeMin: z.number().optional(),
+    priceRangeMax: z.number().optional(),
     availableDays: z.string().optional(),
     startTime: z.string().optional(),
     endTime: z.string().optional(),
@@ -37,9 +39,16 @@ const specialSchema = z
     message: "Select at least one suburb, or mark this as a nationwide chain",
     path: ["suburbSlugs"],
   })
-  .refine((data) => data.specialPrice != null || data.discountPercent != null, {
-    message: "Enter either a special price or a percentage discount",
-    path: ["specialPrice"],
+  .refine(
+    (data) => data.specialPrice != null || data.discountPercent != null || (data.priceRangeMin != null && data.priceRangeMax != null),
+    {
+      message: "Enter a special price, a percentage discount, or a price range",
+      path: ["specialPrice"],
+    }
+  )
+  .refine((data) => data.priceRangeMin == null || data.priceRangeMax == null || data.priceRangeMax > data.priceRangeMin, {
+    message: "The high end of the price range must be more than the low end",
+    path: ["priceRangeMax"],
   });
 
 // GET /api/specials?sort=hot|new&suburb=slug&location=suburbName|postcode&category=slug&q=search&page=1
@@ -140,6 +149,8 @@ export async function POST(req: NextRequest) {
             title: d.title,
             specialPrice: d.specialPrice,
             discountPercent: d.discountPercent,
+            priceRangeMin: d.priceRangeMin,
+            priceRangeMax: d.priceRangeMax,
             venueName: d.venueName,
             suburbNames: d.suburbs.map((s) => s.suburb.name),
           })),

@@ -118,6 +118,8 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
     imageUrl: special.imageUrl,
     specialPrice: special.specialPrice,
     discountPercent: special.discountPercent,
+    priceRangeMin: special.priceRangeMin,
+    priceRangeMax: special.priceRangeMax,
     expiresAt: special.expiresAt,
     expired,
     locationName: chainWide ? "All locations" : primarySuburb?.name,
@@ -202,10 +204,15 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
               <span className="font-bold text-green-700 text-3xl">
                 ${special.specialPrice.toFixed(2)}
               </span>
+            ) : special.discountPercent != null ? (
+              <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-2xl font-bold">
+                {special.discountPercent}% off
+              </span>
             ) : (
-              special.discountPercent != null && (
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-2xl font-bold">
-                  {special.discountPercent}% off
+              special.priceRangeMin != null &&
+              special.priceRangeMax != null && (
+                <span className="font-bold text-green-700 text-3xl">
+                  ${special.priceRangeMin.toFixed(2)}–${special.priceRangeMax.toFixed(2)}
                 </span>
               )
             )}

@@ -25,6 +25,8 @@ type SpecialData = {
   usualPrice: number | null;
   specialPrice: number | null;
   discountPercent: number | null;
+  priceRangeMin: number | null;
+  priceRangeMax: number | null;
   availableDays: string;
   startTime: string | null;
   endTime: string | null;
@@ -55,8 +57,8 @@ export default function EditSpecialForm({
   );
   const [greatValue, setGreatValue] = useState(special.greatValue);
   const [anyTime, setAnyTime] = useState(!special.startTime && !special.endTime);
-  const [priceMode, setPriceMode] = useState<"fixed" | "percent">(
-    special.discountPercent != null ? "percent" : "fixed"
+  const [priceMode, setPriceMode] = useState<"fixed" | "percent" | "range">(
+    special.discountPercent != null ? "percent" : special.priceRangeMin != null ? "range" : "fixed"
   );
   const [form, setForm] = useState({
     title: special.title,
@@ -69,6 +71,8 @@ export default function EditSpecialForm({
     usualPrice: special.usualPrice?.toString() ?? "",
     specialPrice: special.specialPrice?.toString() ?? "",
     discountPercent: special.discountPercent?.toString() ?? "",
+    priceRangeMin: special.priceRangeMin?.toString() ?? "",
+    priceRangeMax: special.priceRangeMax?.toString() ?? "",
     availableDays: special.availableDays.split(",").filter(Boolean),
     startTime: special.startTime ?? "11:30",
     endTime: special.endTime ?? "14:00",
@@ -226,6 +230,8 @@ export default function EditSpecialForm({
       usualPrice: priceMode === "fixed" && form.usualPrice ? parseFloat(form.usualPrice) : null,
       specialPrice: priceMode === "fixed" ? parseFloat(form.specialPrice) : null,
       discountPercent: priceMode === "percent" ? parseInt(form.discountPercent, 10) : null,
+      priceRangeMin: priceMode === "range" ? parseFloat(form.priceRangeMin) : null,
+      priceRangeMax: priceMode === "range" ? parseFloat(form.priceRangeMax) : null,
       availableDays: form.availableDays.join(","),
       startTime: anyTime ? null : form.startTime || undefined,
       endTime: anyTime ? null : form.endTime || undefined,
@@ -360,7 +366,7 @@ export default function EditSpecialForm({
           )}
         </div>
 
-        <div className="flex gap-2 text-sm">
+        <div className="flex gap-2 text-sm flex-wrap">
           <button
             type="button"
             onClick={() => setPriceMode("fixed")}
@@ -379,9 +385,18 @@ export default function EditSpecialForm({
           >
             Percentage off
           </button>
+          <button
+            type="button"
+            onClick={() => setPriceMode("range")}
+            className={`px-3 py-1 rounded-full font-medium ${
+              priceMode === "range" ? "bg-orange-600 text-white" : "bg-white border"
+            }`}
+          >
+            Price range
+          </button>
         </div>
 
-        {priceMode === "fixed" ? (
+        {priceMode === "fixed" && (
           <div className="flex gap-3">
             <input
               type="number"
@@ -401,7 +416,8 @@ export default function EditSpecialForm({
               onChange={(e) => setForm({ ...form, usualPrice: e.target.value })}
             />
           </div>
-        ) : (
+        )}
+        {priceMode === "percent" && (
           <div>
             <input
               type="number"
@@ -416,6 +432,35 @@ export default function EditSpecialForm({
             />
             <p className="text-xs text-gray-500 mt-1">
               For deals like "20% off anything on the menu" with no single fixed price.
+            </p>
+          </div>
+        )}
+        {priceMode === "range" && (
+          <div>
+            <div className="flex items-center gap-3">
+              <input
+                type="number"
+                step="0.01"
+                placeholder="From $"
+                required
+                className="border rounded px-3 py-2 flex-1 min-w-0"
+                value={form.priceRangeMin}
+                onChange={(e) => setForm({ ...form, priceRangeMin: e.target.value })}
+              />
+              <span className="text-gray-400">–</span>
+              <input
+                type="number"
+                step="0.01"
+                placeholder="To $"
+                required
+                className="border rounded px-3 py-2 flex-1 min-w-0"
+                value={form.priceRangeMax}
+                onChange={(e) => setForm({ ...form, priceRangeMax: e.target.value })}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              For a whole specials menu spanning several price points (e.g. a full set of
+              entrées and mains), rather than one specific item.
             </p>
           </div>
         )}

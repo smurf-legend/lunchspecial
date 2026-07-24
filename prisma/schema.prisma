@@ -99,11 +99,15 @@ model Special {
   couponCode   String?   // vendor-provided coupon/deal code, optional
 
   usualPrice   Float?    // optional "normally $X" comparison
-  // A special has either a fixed price (specialPrice) or a percentage off
-  // (discountPercent, for deals like "20% off anything on the menu" with no
-  // single fixed price) — exactly one is set, enforced at the API layer.
+  // A special has exactly one pricing mode, enforced at the API layer:
+  // a fixed price (specialPrice), a percentage off (discountPercent, for
+  // deals like "20% off anything on the menu" with no single fixed price),
+  // or a price range (priceRangeMin/Max, for a specials menu spanning many
+  // items/prices rather than one specific dish).
   specialPrice Float?
   discountPercent Int?
+  priceRangeMin Float?
+  priceRangeMax Float?
 
   // Recurrence: which days the special runs. Stored as comma-separated
   // day codes (Mon,Tue,Wed,Thu,Fri,Sat,Sun) for simplicity — avoids a
