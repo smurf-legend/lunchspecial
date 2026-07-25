@@ -56,7 +56,17 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         <VoteButtons voteEndpoint={`/api/blog/${post.id}/vote`} initialScore={post.score} />
 
         <div className="flex-1 min-w-0">
-          <h1 className="text-2xl font-bold">{post.title}</h1>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h1 className="text-2xl font-bold">{post.title}</h1>
+            {isAdmin && (
+              <Link
+                href={`/kitchen/table-talk/${post.id}/edit`}
+                className="text-xs px-2 py-1 rounded-full font-medium border shrink-0 bg-gray-800 text-white border-gray-800"
+              >
+                ✏️ Edit
+              </Link>
+            )}
+          </div>
           <p className="text-sm text-gray-500 mt-1">
             By {post.author.name} · {new Date(post.publishAt ?? post.createdAt).toLocaleDateString()}
           </p>
