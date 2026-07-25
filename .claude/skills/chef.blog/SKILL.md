@@ -11,6 +11,14 @@ Table Talk posts are the `BlogPost` model (`prisma/schema.prisma`): `title`,
 same admin-author convention as Specials (see `verify-special-source` — the
 `team@lunchspecial.com.au` account is the usual author for house content).
 
+**The live URL is not `post.slug`.** It's `blogPostSlug(post)` from
+`src/lib/slugify.ts` — computed fresh from the *current* title + id every
+time, same self-healing scheme as `specialSlug()`. Editing the title later
+just works; the URL updates the next time it's generated, and old links
+still resolve (redirected to the new canonical) because the lookup is by
+id, not by the stored `slug` column. Don't hand-build a `/table-talk/...`
+link from `post.slug` directly — always go through `blogPostSlug()`.
+
 ## Preview and scheduling (BlogForm)
 
 `BlogForm` (`src/components/BlogForm.tsx`) has an Edit/Preview toggle at
