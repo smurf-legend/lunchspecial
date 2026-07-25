@@ -2,7 +2,9 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { compressImage } from "@/lib/compressImage";
-import { videoEmbedUrl } from "@/lib/articleBlocks";
+import { socialEmbedUrl } from "@/lib/articleBlocks";
+import { isScheduled, formatScheduled } from "@/lib/postStatus";
+import ArticleBody from "@/components/ArticleBody";
 
 type BlogPostData = {
   id: string;
@@ -11,7 +13,26 @@ type BlogPostData = {
   body: string;
   imageUrl: string | null;
   hidden: boolean;
+  publishAt: string | Date | null;
 };
+
+type PublishMode = "publish" | "draft" | "schedule";
+
+// datetime-local inputs want "YYYY-MM-DDTHH:mm" in the viewer's own local
+// time — toISOString() would silently shift it to UTC, so build it by hand.
+function toDatetimeLocalValue(date: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(
+    date.getHours()
+  )}:${pad(date.getMinutes())}`;
+}
+
+function initialMode(post?: BlogPostData): PublishMode {
+  if (!post) return "publish";
+  if (isScheduled(post.publishAt)) return "schedule";
+  if (post.hidden) return "draft";
+  return "publish";
+}
 
 export default function BlogForm({ post }: { post?: BlogPostData }) {
   const router = useRouter();
@@ -19,7 +40,10 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
   const [title, setTitle] = useState(post?.title ?? "");
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [body, setBody] = useState(post?.body ?? "");
-  const [hidden, setHidden] = useState(post?.hidden ?? false);
+  const [mode, setMode] = useState<PublishMode>(initialMode(post));
+  const [scheduledFor, setScheduledFor] = useState(
+    post?.publishAt ? toDatetimeLocalValue(new Date(post.publishAt)) : ""
+  );
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(post?.imageUrl ?? null);
   const [imageUrlInput, setImageUrlInput] = useState(post?.imageUrl ?? "");
@@ -27,6 +51,7 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
   const [compressingImage, setCompressingImage] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
 
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const inlineImageInputRef = useRef<HTMLInputElement>(null);
@@ -89,10 +114,10 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
   }
 
   function handleInsertVideo() {
-    const url = window.prompt("Paste a YouTube or Vimeo link:");
+    const url = window.prompt("Paste a YouTube, Vimeo, Instagram, X/Twitter, TikTok, or Facebook link:");
     if (!url) return;
-    if (!videoEmbedUrl(url.trim())) {
-      setError("That doesn't look like a YouTube or Vimeo link");
+    if (!socialEmbedUrl(url.trim())) {
+      setError("That doesn't look like a supported video/post link");
       return;
     }
     setError(null);
@@ -135,11 +160,22 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // On create, two submit buttons share this handler — which one was
-    // clicked decides whether the new article saves as a draft or goes
-    // live immediately (defaults to publish, e.g. if submitted via Enter).
-    const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
-    const saveAsDraft = submitter?.value === "draft";
+
+    let publishAt: string | null = null;
+    if (mode === "schedule") {
+      if (!scheduledFor) {
+        setError("Pick a date and time to schedule this for");
+        return;
+      }
+      const when = new Date(scheduledFor);
+      if (when.getTime() <= Date.now()) {
+        setError("Scheduled time must be in the future");
+        return;
+      }
+      publishAt = when.toISOString();
+    } else if (mode === "publish") {
+      publishAt = new Date().toISOString();
+    }
 
     setLoading(true);
     setError(null);
@@ -170,7 +206,8 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
       excerpt: excerpt || undefined,
       body,
       imageUrl: imageUrl || undefined,
-      hidden: isEdit ? hidden : saveAsDraft,
+      hidden: mode === "draft",
+      publishAt,
     };
 
     const res = await fetch(isEdit ? `/api/admin/blog/${post!.id}` : "/api/admin/blog", {
@@ -192,130 +229,212 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
     router.refresh();
   }
 
+  const submitLabel = loading
+    ? uploadingImage
+      ? "Uploading photo..."
+      : "Saving..."
+    : mode === "draft"
+    ? "Save as draft"
+    : mode === "schedule"
+    ? isEdit
+      ? "Save & schedule"
+      : "Schedule article"
+    : isEdit
+    ? "Save changes"
+    : "Publish article";
+
+  // Rough stand-in for the real /table-talk/[slug] byline: the actual live
+  // post uses `author.name`, which an unsaved draft doesn't have yet — the
+  // vast majority of articles are posted from the house team account, so
+  // that's a reasonable approximation for "does this look right" purposes.
+  const previewDate =
+    mode === "schedule" && scheduledFor && !isNaN(new Date(scheduledFor).getTime())
+      ? formatScheduled(new Date(scheduledFor))
+      : new Date().toLocaleDateString();
+
   return (
     <div className="max-w-xl mx-auto bg-white p-6 rounded-lg border">
-      <h1 className="text-xl font-bold mb-4">{isEdit ? "Edit article" : "Write a new article"}</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
-          type="text"
-          placeholder="Title"
-          required
-          minLength={3}
-          className="border rounded px-3 py-2"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <textarea
-          placeholder="Excerpt (optional) — short summary shown in the article list"
-          rows={2}
-          maxLength={300}
-          className="border rounded px-3 py-2"
-          value={excerpt}
-          onChange={(e) => setExcerpt(e.target.value)}
-        />
-        <div>
-          <textarea
-            ref={bodyRef}
-            placeholder="Article body — separate paragraphs with a blank line"
-            required
-            minLength={10}
-            rows={14}
-            className="border rounded px-3 py-2 w-full"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-          />
-          <div className="flex items-center gap-2 mt-1.5">
-            <button
-              type="button"
-              disabled={insertingImage}
-              onClick={() => inlineImageInputRef.current?.click()}
-              className="text-xs border rounded px-2.5 py-1 font-medium hover:bg-gray-50 disabled:opacity-50"
-            >
-              {insertingImage ? "Uploading..." : "🖼 Insert image"}
-            </button>
-            <button
-              type="button"
-              onClick={handleInsertVideo}
-              className="text-xs border rounded px-2.5 py-1 font-medium hover:bg-gray-50"
-            >
-              🎬 Insert video link
-            </button>
-            <input
-              ref={inlineImageInputRef}
-              type="file"
-              accept="image/jpeg,image/png,image/webp,image/gif"
-              onChange={handleInsertImageFile}
-              className="hidden"
-            />
-          </div>
-          <p className="text-xs text-gray-400 mt-1">
-            Puts the photo or video link at your cursor, on its own line — separate paragraphs with a
-            blank line.
-          </p>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-xl font-bold">{isEdit ? "Edit article" : "Write a new article"}</h1>
+        <div className="flex text-xs border rounded overflow-hidden shrink-0">
+          <button
+            type="button"
+            onClick={() => setPreviewing(false)}
+            className={`px-2.5 py-1 font-medium ${!previewing ? "bg-gray-800 text-white" : "hover:bg-gray-50"}`}
+          >
+            ✏️ Edit
+          </button>
+          <button
+            type="button"
+            onClick={() => setPreviewing(true)}
+            className={`px-2.5 py-1 font-medium ${previewing ? "bg-gray-800 text-white" : "hover:bg-gray-50"}`}
+          >
+            👁 Preview
+          </button>
         </div>
+      </div>
 
-        <div>
-          <p className="text-sm font-medium mb-1">Cover photo (optional)</p>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            onChange={handleImageSelect}
-            className="text-sm"
-          />
-          {compressingImage && <p className="text-xs text-gray-400 mt-1">Compressing image...</p>}
-          <p className="text-xs text-gray-400 my-1.5">— or —</p>
-          <input
-            type="url"
-            placeholder="Paste a link to an image instead"
-            className="border rounded px-3 py-2 text-sm w-full"
-            value={imageUrlInput}
-            onChange={(e) => handleImageUrlChange(e.target.value)}
-          />
-          {imagePreview && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="mt-2 h-32 w-32 object-cover rounded border"
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        {previewing ? (
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+              Preview — comments and votes aren't shown here
+            </p>
+            <div className="bg-white rounded-lg border p-6">
+              <h1 className="text-2xl font-bold">{title || "Untitled article"}</h1>
+              <p className="text-sm text-gray-500 mt-1">By LunchSpecial Team · {previewDate}</p>
+              {imagePreview && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={imagePreview}
+                  alt={title}
+                  className="mt-4 w-full max-h-[500px] object-contain rounded-lg border bg-gray-50"
+                />
+              )}
+              <div className="mt-4">
+                <ArticleBody body={body || "*Nothing written yet.*"} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <input
+              type="text"
+              placeholder="Title"
+              required
+              minLength={3}
+              className="border rounded px-3 py-2"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <textarea
+              placeholder="Excerpt (optional) — short summary shown in the article list"
+              rows={2}
+              maxLength={300}
+              className="border rounded px-3 py-2"
+              value={excerpt}
+              onChange={(e) => setExcerpt(e.target.value)}
+            />
+            <div>
+              <textarea
+                ref={bodyRef}
+                placeholder="Article body — separate paragraphs with a blank line"
+                required
+                minLength={10}
+                rows={14}
+                className="border rounded px-3 py-2 w-full"
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+              />
+              <div className="flex items-center gap-2 mt-1.5">
+                <button
+                  type="button"
+                  disabled={insertingImage}
+                  onClick={() => inlineImageInputRef.current?.click()}
+                  className="text-xs border rounded px-2.5 py-1 font-medium hover:bg-gray-50 disabled:opacity-50"
+                >
+                  {insertingImage ? "Uploading..." : "🖼 Insert image"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleInsertVideo}
+                  className="text-xs border rounded px-2.5 py-1 font-medium hover:bg-gray-50"
+                >
+                  🎬 Insert video/post link
+                </button>
+                <input
+                  ref={inlineImageInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={handleInsertImageFile}
+                  className="hidden"
+                />
+              </div>
+              <p className="text-xs text-gray-400 mt-1">
+                Puts the photo or video link at your cursor, on its own line — separate paragraphs with a
+                blank line.
+              </p>
+            </div>
+
+            <div>
+              <p className="text-sm font-medium mb-1">Cover photo (optional)</p>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                onChange={handleImageSelect}
+                className="text-sm"
+              />
+              {compressingImage && <p className="text-xs text-gray-400 mt-1">Compressing image...</p>}
+              <p className="text-xs text-gray-400 my-1.5">— or —</p>
+              <input
+                type="url"
+                placeholder="Paste a link to an image instead"
+                className="border rounded px-3 py-2 text-sm w-full"
+                value={imageUrlInput}
+                onChange={(e) => handleImageUrlChange(e.target.value)}
+              />
+              {imagePreview && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="mt-2 h-32 w-32 object-cover rounded border"
+                />
+              )}
+            </div>
+          </>
+        )}
+
+        <div className="flex flex-col gap-2 border rounded px-3 py-2.5">
+          <p className="text-sm font-medium">Publishing</p>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="radio"
+              name="publishMode"
+              checked={mode === "publish"}
+              onChange={() => setMode("publish")}
+            />
+            Publish immediately
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="radio"
+              name="publishMode"
+              checked={mode === "draft"}
+              onChange={() => setMode("draft")}
+            />
+            Save as draft (hidden — only admins can see it)
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="radio"
+              name="publishMode"
+              checked={mode === "schedule"}
+              onChange={() => setMode("schedule")}
+            />
+            Schedule for later
+          </label>
+          {mode === "schedule" && (
+            <input
+              type="datetime-local"
+              required
+              className="border rounded px-3 py-2 text-sm"
+              value={scheduledFor}
+              min={toDatetimeLocalValue(new Date(Date.now() + 5 * 60 * 1000))}
+              onChange={(e) => setScheduledFor(e.target.value)}
             />
           )}
         </div>
-
-        {isEdit && (
-          <label className="flex items-center gap-2 text-sm text-gray-600">
-            <input type="checkbox" checked={hidden} onChange={(e) => setHidden(e.target.checked)} />
-            Hidden (unpublished — only admins can view it)
-          </label>
-        )}
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
 
         <div className="flex gap-2">
-          {!isEdit && (
-            <button
-              type="submit"
-              name="intent"
-              value="draft"
-              disabled={loading || compressingImage}
-              className="border rounded py-2 px-4 font-medium disabled:opacity-50"
-            >
-              {loading ? "Saving..." : "Save as draft"}
-            </button>
-          )}
           <button
             type="submit"
-            name="intent"
-            value="publish"
             disabled={loading || compressingImage}
             className="bg-orange-600 text-white rounded py-2 px-4 font-medium disabled:opacity-50"
           >
-            {loading
-              ? uploadingImage
-                ? "Uploading photo..."
-                : "Saving..."
-              : isEdit
-              ? "Save changes"
-              : "Publish article"}
+            {submitLabel}
           </button>
           <button type="button" onClick={() => router.back()} className="border rounded py-2 px-4 font-medium">
             Cancel

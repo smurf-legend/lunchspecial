@@ -16,6 +16,13 @@ const blogPostUpdateSchema = z.object({
   body: z.string().min(10).refine(noProfanity, profanityMessage("Body")),
   imageUrl: z.string().url().optional().nullable().or(z.literal("")),
   hidden: z.boolean().optional(),
+  publishAt: z
+    .string()
+    .datetime()
+    .optional()
+    .nullable()
+    .transform((val) => (val ? new Date(val) : null))
+    .refine((date) => !date || date.getTime() > Date.now(), "Scheduled time must be in the future"),
 });
 
 async function requireAdmin() {

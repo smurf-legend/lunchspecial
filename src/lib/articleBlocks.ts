@@ -2,12 +2,16 @@
 // support two special block forms on their own line, surrounded by blank
 // lines like any paragraph break:
 //   ![alt text](https://image-url)         -> inline image
-//   https://www.youtube.com/watch?v=xyz    -> embedded video (YouTube/Vimeo)
+//   https://www.youtube.com/watch?v=xyz    -> embedded video/post (YouTube,
+//                                              Vimeo, Instagram, X/Twitter,
+//                                              TikTok, Facebook)
 // Everything else renders as a plain paragraph, same as before.
+export type SocialPlatform = "youtube" | "vimeo" | "instagram" | "twitter" | "tiktok" | "facebook";
+
 export type ArticleBlock =
   | { type: "paragraph"; text: string }
   | { type: "image"; src: string; alt: string }
-  | { type: "video"; embedUrl: string };
+  | { type: "embed"; platform: SocialPlatform; embedUrl: string };
 
 const IMAGE_RE = /^!\[(.*)\]\((\S+)\)$/;
 
@@ -21,6 +25,57 @@ function vimeoEmbedUrl(url: string): string | null {
   return m ? `https://player.vimeo.com/video/${m[1]}` : null;
 }
 
+// Instagram's own embed path — works as a plain iframe src, no widgets.js
+// needed. Covers both feed posts (/p/) and Reels (/reel/).
+function instagramEmbedUrl(url: string): string | null {
+  const m = url.match(/instagram\.com\/(p|reel)\/([\w-]+)/);
+  return m ? `https://www.instagram.com/${m[1]}/${m[2]}/embed` : null;
+}
+
+// The iframe X/Twitter's own widgets.js loads under the hood — using it
+// directly avoids pulling in their external script for a single embed.
+function twitterEmbedUrl(url: string): string | null {
+  const m = url.match(/(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/);
+  return m ? `https://platform.twitter.com/embed/Tweet.html?id=${m[1]}` : null;
+}
+
+// Same idea as Instagram/Twitter: TikTok's embed.js hydrates a blockquote
+// into an iframe pointing at this exact URL, so skip the script tag.
+function tiktokEmbedUrl(url: string): string | null {
+  const m = url.match(/tiktok\.com\/@[\w.-]+\/video\/(\d+)/);
+  return m ? `https://www.tiktok.com/embed/v2/${m[1]}` : null;
+}
+
+// Facebook's plugin iframe takes the target post/video URL as a query param
+// rather than extracting an ID — it resolves the href server-side.
+function facebookEmbedUrl(url: string): string | null {
+  if (!/^https?:\/\/(www\.)?facebook\.com\/.+/.test(url)) return null;
+  const isVideo = /\/videos?\//.test(url);
+  const base = isVideo ? "https://www.facebook.com/plugins/video.php" : "https://www.facebook.com/plugins/post.php";
+  return `${base}?href=${encodeURIComponent(url)}&show_text=true`;
+}
+
+const PLATFORM_MATCHERS: [SocialPlatform, (url: string) => string | null][] = [
+  ["youtube", youtubeEmbedUrl],
+  ["vimeo", vimeoEmbedUrl],
+  ["instagram", instagramEmbedUrl],
+  ["twitter", twitterEmbedUrl],
+  ["tiktok", tiktokEmbedUrl],
+  ["facebook", facebookEmbedUrl],
+];
+
+// Returns the embed iframe src plus which platform matched, or null if the
+// URL isn't a recognized post/video link from any supported platform.
+export function socialEmbedUrl(url: string): { platform: SocialPlatform; embedUrl: string } | null {
+  for (const [platform, matcher] of PLATFORM_MATCHERS) {
+    const embedUrl = matcher(url);
+    if (embedUrl) return { platform, embedUrl };
+  }
+  return null;
+}
+
+// Kept for existing callers (e.g. BlogForm's "paste a link" validation
+// message) that only care about the video-site subset.
 export function videoEmbedUrl(url: string): string | null {
   return youtubeEmbedUrl(url) || vimeoEmbedUrl(url);
 }
@@ -34,11 +89,11 @@ export function parseArticleBlocks(body: string): ArticleBlock[] {
       const imgMatch = block.match(IMAGE_RE);
       if (imgMatch) return { type: "image", alt: imgMatch[1], src: imgMatch[2] };
 
-      // Only treat a block as a video if it's nothing but the URL — a
-      // sentence that happens to mention a YouTube link stays a paragraph.
+      // Only treat a block as an embed if it's nothing but the URL — a
+      // sentence that happens to mention a link stays a paragraph.
       if (/^\S+$/.test(block)) {
-        const embedUrl = videoEmbedUrl(block);
-        if (embedUrl) return { type: "video", embedUrl };
+        const embed = socialEmbedUrl(block);
+        if (embed) return { type: "embed", platform: embed.platform, embedUrl: embed.embedUrl };
       }
 
       return { type: "paragraph", text: block };

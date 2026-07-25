@@ -8,6 +8,7 @@ type BlogPostCardType = {
   excerpt: string | null;
   imageUrl: string | null;
   createdAt: string | Date;
+  publishAt?: string | Date | null;
   upvoteCount: number;
   downvoteCount: number;
   hidden?: boolean;
@@ -51,7 +52,7 @@ export default function BlogCard({ post }: { post: BlogPostCardType }) {
         </div>
         {post.excerpt && <p className="text-sm text-gray-600 mt-1 line-clamp-2">{post.excerpt}</p>}
         <p className="text-xs text-gray-400 mt-2">
-          By {post.author.name} · {new Date(post.createdAt).toLocaleDateString()} · 💬{" "}
+          By {post.author.name} · {new Date(post.publishAt ?? post.createdAt).toLocaleDateString()} · 💬{" "}
           {post._count?.comments ?? 0}
         </p>
       </div>

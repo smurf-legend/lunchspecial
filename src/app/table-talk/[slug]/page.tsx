@@ -8,6 +8,7 @@ import CommentThread from "@/components/CommentThread";
 import SpecialImage from "@/components/SpecialImage";
 import ArticleBody from "@/components/ArticleBody";
 import { buildCommentTree } from "@/lib/commentTree";
+import { isScheduled, formatScheduled } from "@/lib/postStatus";
 
 const authorSelect = {
   select: {
@@ -26,8 +27,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   });
 
   if (!post) notFound();
-  // Hidden posts 404 for everyone except admins, same as hidden specials.
-  if (post.hidden && !isAdmin) notFound();
+  const scheduled = isScheduled(post.publishAt);
+  // Hidden or not-yet-scheduled posts 404 for everyone except admins, same
+  // as hidden specials.
+  if ((post.hidden || scheduled) && !isAdmin) notFound();
 
   const flatComments = await prisma.blogComment.findMany({
     where: { blogPostId: post.id },
@@ -38,9 +41,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   return (
     <div className="flex flex-col gap-6">
-      {post.hidden && isAdmin && (
+      {(post.hidden || scheduled) && isAdmin && (
         <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
-          This article is hidden — only admins can see it.{" "}
+          {scheduled
+            ? `This article is scheduled to publish on ${formatScheduled(post.publishAt!)} — only admins can see it until then.`
+            : "This article is hidden — only admins can see it."}{" "}
           <Link href={`/kitchen/table-talk/${post.id}/edit`} className="underline">
             Manage
           </Link>
@@ -53,7 +58,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         <div className="flex-1 min-w-0">
           <h1 className="text-2xl font-bold">{post.title}</h1>
           <p className="text-sm text-gray-500 mt-1">
-            By {post.author.name} · {new Date(post.createdAt).toLocaleDateString()}
+            By {post.author.name} · {new Date(post.publishAt ?? post.createdAt).toLocaleDateString()}
           </p>
 
           <SpecialImage

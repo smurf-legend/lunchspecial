@@ -16,6 +16,13 @@ const blogPostSchema = z.object({
   body: z.string().min(10).refine(noProfanity, profanityMessage("Body")),
   imageUrl: z.string().url().optional(),
   hidden: z.boolean().optional().default(false),
+  publishAt: z
+    .string()
+    .datetime()
+    .optional()
+    .nullable()
+    .transform((val) => (val ? new Date(val) : null))
+    .refine((date) => !date || date.getTime() > Date.now(), "Scheduled time must be in the future"),
 });
 
 async function requireAdmin() {
@@ -58,6 +65,7 @@ export async function POST(req: NextRequest) {
       body: parsed.data.body,
       imageUrl: parsed.data.imageUrl,
       hidden: parsed.data.hidden,
+      publishAt: parsed.data.publishAt,
       slug,
       authorId: (session.user as any).id,
     },

@@ -307,6 +307,13 @@ model BlogPost {
 
   hidden    Boolean  @default(false)
 
+  // When set to a future time, the post is a scheduled draft — live/visible
+  // status is derived by comparing this to now() wherever the post is
+  // queried or displayed (see isScheduled in src/lib/postStatus.ts), same
+  // "no background job" pattern as Special.expiresAt. Null means "always
+  // was live from createdAt", so existing rows need no backfill.
+  publishAt DateTime?
+
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
 
@@ -321,6 +328,7 @@ model BlogPost {
   downvoteCount Int @default(0)
 
   @@index([createdAt])
+  @@index([publishAt])
 }
 
 model BlogVote {

@@ -2,12 +2,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { isScheduled, formatScheduled } from "@/lib/postStatus";
 
 type BlogPostRow = {
   id: string;
   title: string;
   slug: string;
   hidden: boolean;
+  publishAt: string | Date | null;
   createdAt: string | Date;
   author: { name: string | null };
   score: number;
@@ -15,6 +17,7 @@ type BlogPostRow = {
 };
 
 export default function AdminBlogRow({ post }: { post: BlogPostRow }) {
+  const scheduled = isScheduled(post.publishAt);
   const router = useRouter();
   const [deleting, setDeleting] = useState(false);
   const [togglingHidden, setTogglingHidden] = useState(false);
@@ -52,6 +55,11 @@ export default function AdminBlogRow({ post }: { post: BlogPostRow }) {
         </Link>
         {post.hidden && (
           <span className="ml-2 bg-gray-800 text-white px-1.5 py-0.5 rounded text-xs font-medium">Hidden</span>
+        )}
+        {scheduled && (
+          <span className="ml-2 bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-xs font-medium">
+            Scheduled {formatScheduled(post.publishAt!)}
+          </span>
         )}
         <p className="text-gray-500 text-xs">
           by {post.author.name} · {new Date(post.createdAt).toLocaleDateString()} · score {post.score} ·{" "}
