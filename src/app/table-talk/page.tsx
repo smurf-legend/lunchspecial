@@ -1,6 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import BlogCard from "@/components/BlogCard";
 
+// This page touches no dynamic API (no searchParams, no getServerSession),
+// so Next.js has no automatic signal to render it per-request — without
+// this, it gets prerendered once at build time and cached, and a newly
+// published/scheduled article won't show up until the next deploy no
+// matter what's actually in the database.
+export const dynamic = "force-dynamic";
+
 export default async function BlogPage() {
   const posts = await prisma.blogPost.findMany({
     where: { hidden: false, OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
