@@ -16,13 +16,17 @@ const blogPostSchema = z.object({
   body: z.string().min(10).refine(noProfanity, profanityMessage("Body")),
   imageUrl: z.string().url().optional(),
   hidden: z.boolean().optional().default(false),
+  // "Publish now" sends the current instant, which is already in the past
+  // by the time this validates server-side — so this only checks the value
+  // is a real timestamp, not that it's in the future. The scheduling UI
+  // itself (BlogForm's datetime-local `min`) is what stops picking a past
+  // date for an actual schedule.
   publishAt: z
     .string()
     .datetime()
     .optional()
     .nullable()
-    .transform((val) => (val ? new Date(val) : null))
-    .refine((date) => !date || date.getTime() > Date.now(), "Scheduled time must be in the future"),
+    .transform((val) => (val ? new Date(val) : null)),
 });
 
 async function requireAdmin() {
