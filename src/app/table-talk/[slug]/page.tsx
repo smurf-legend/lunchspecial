@@ -7,9 +7,11 @@ import VoteButtons from "@/components/VoteButtons";
 import CommentThread from "@/components/CommentThread";
 import SpecialImage from "@/components/SpecialImage";
 import ArticleBody from "@/components/ArticleBody";
+import ShareButton from "@/components/ShareButton";
 import { buildCommentTree } from "@/lib/commentTree";
 import { isScheduled, formatScheduled } from "@/lib/postStatus";
 import { blogPostSlug, idFromSlug } from "@/lib/slugify";
+import { SITE_URL } from "@/lib/site";
 
 const authorSelect = {
   select: {
@@ -75,6 +77,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-bold">{post.title}</h1>
+            <ShareButton url={`${SITE_URL}/table-talk/${canonical}`} title={post.title} />
             {isAdmin && (
               <Link
                 href={`/kitchen/table-talk/${post.id}/edit`}
