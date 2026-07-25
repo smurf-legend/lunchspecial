@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
-import { specialSlug } from "@/lib/slugify";
+import { specialSlug, blogPostSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
 
 // Without this, Next treats the route as static (no dynamic APIs are used
@@ -18,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     prisma.special.count({ where: { hidden: false, chainWide: true } }).then((c) => c > 0),
     prisma.blogPost.findMany({
       where: { hidden: false },
-      select: { slug: true, updatedAt: true },
+      select: { id: true, title: true, updatedAt: true },
     }),
     prisma.suburb.findMany({ select: { state: true, region: true }, distinct: ["state", "region"] }),
   ]);
@@ -67,7 +67,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const blogRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
-    url: `${SITE_URL}/table-talk/${p.slug}`,
+    url: `${SITE_URL}/table-talk/${blogPostSlug(p)}`,
     lastModified: p.updatedAt,
     changeFrequency: "monthly",
     priority: 0.5,

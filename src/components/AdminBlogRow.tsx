@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isScheduled, formatScheduled } from "@/lib/postStatus";
+import { blogPostSlug } from "@/lib/slugify";
 
 type BlogPostRow = {
   id: string;
@@ -50,7 +51,7 @@ export default function AdminBlogRow({ post }: { post: BlogPostRow }) {
   return (
     <div className="flex items-center justify-between flex-wrap gap-3 p-3 text-sm">
       <div>
-        <Link href={`/table-talk/${post.slug}`} prefetch={false} className="font-medium hover:text-orange-600">
+        <Link href={`/table-talk/${blogPostSlug(post)}`} prefetch={false} className="font-medium hover:text-orange-600">
           {post.title}
         </Link>
         {post.hidden && (

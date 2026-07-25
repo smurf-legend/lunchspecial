@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -9,6 +9,7 @@ import SpecialImage from "@/components/SpecialImage";
 import ArticleBody from "@/components/ArticleBody";
 import { buildCommentTree } from "@/lib/commentTree";
 import { isScheduled, formatScheduled } from "@/lib/postStatus";
+import { blogPostSlug, idFromSlug } from "@/lib/slugify";
 
 const authorSelect = {
   select: {
@@ -21,16 +22,32 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   const session = await getServerSession(authOptions);
   const isAdmin = (session?.user as any)?.role === "admin";
 
-  const post = await prisma.blogPost.findUnique({
-    where: { slug: params.slug },
+  const id = idFromSlug(params.slug);
+  let post = await prisma.blogPost.findUnique({
+    where: { id },
     include: { author: { select: { name: true } } },
   });
+  // Links published before this id-based scheme are a plain slugified
+  // title with no id suffix — idFromSlug on those just grabs the last
+  // word, which won't match a real id, so fall back to the legacy column.
+  if (!post) {
+    post = await prisma.blogPost.findUnique({
+      where: { slug: params.slug },
+      include: { author: { select: { name: true } } },
+    });
+  }
 
   if (!post) notFound();
   const scheduled = isScheduled(post.publishAt);
   // Hidden or not-yet-scheduled posts 404 for everyone except admins, same
   // as hidden specials.
   if ((post.hidden || scheduled) && !isAdmin) notFound();
+
+  // Send legacy links and stale slugs (e.g. after a title edit) to the
+  // current canonical URL, so there's only ever one indexable address per
+  // article — same scheme as Special.
+  const canonical = blogPostSlug(post);
+  if (params.slug !== canonical) redirect(`/table-talk/${canonical}`);
 
   const flatComments = await prisma.blogComment.findMany({
     where: { blogPostId: post.id },

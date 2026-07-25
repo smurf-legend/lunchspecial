@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SpecialImage from "@/components/SpecialImage";
+import { blogPostSlug } from "@/lib/slugify";
 
 type BlogPostCardType = {
   id: string;
@@ -40,7 +41,7 @@ export default function BlogCard({ post }: { post: BlogPostCardType }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
           <Link
-            href={`/table-talk/${post.slug}`}
+            href={`/table-talk/${blogPostSlug(post)}`}
             prefetch={false}
             className="font-semibold text-lg hover:text-orange-600"
           >
