@@ -71,9 +71,16 @@ works the same way the pre-existing YouTube/Vimeo embed did. Confirmed
 working end-to-end against a real Instagram post (renders live, pulls
 current avatar/caption/attribution straight from Instagram — not a copy).
 `ArticleBody` sizes the container per platform (`embedContainerClass`):
-16:9 for YouTube/Vimeo, a capped vertical box for TikTok, and a
-min-height box for Instagram/Twitter/Facebook, since those vary in height
-post to post.
+16:9 for YouTube/Vimeo, a capped vertical box for TikTok, and a fixed
+720px box for Instagram/Twitter/Facebook (a bare iframe src never gets the
+resize postMessage real embed.js would send, so it needs a generous fixed
+height, not a min-height — a min-height doesn't work because the iframe's
+`h-full` can't resolve a percentage against a parent whose height is only
+a minimum, so it silently collapses and clips instead of growing).
+Instagram specifically uses the `/embed/captioned` path — the plain
+`/embed` path renders a bare, resize-dependent card, where `/embed/captioned`
+is self-contained and ends cleanly (header → media → "View more on
+Instagram") without needing JS-driven resizing at all.
 
 When testing a new embed while writing a post, create the draft via a
 one-off `prisma.blogPost.create` script (same pattern as
@@ -104,6 +111,38 @@ influencer (Places in Sydney / Adrian Widjonarko). The research process:
    generic search results page, not the original AI answer — WebFetching it
    directly won't recover the content. Treat it as a dead end and go
    straight to WebSearch on the subject's name/handle instead.
+
+## Voice: write for an Aussie audience
+
+Table Talk should read distinctly Australian, not generic internet-snark
+— confirmed from the user's own hands-on edits to the first piece:
+
+- **Regional self-deprecation beats a specific local address.** "A hole in
+  Wagga Wagga" landed better than "the Ibis on George Street" as the
+  second half of the "a bus stop qualifies" joke — Wagga Wagga is a
+  shared, affectionately-mocked national "middle of nowhere" reference
+  that lands instantly, where a specific Sydney street needs the reader to
+  already know that street.
+- **Idiom, twisted against the subject, beats a straight description.**
+  "An ad with his stupid surprised face like he just discovered sliced
+  bread" turns "best thing since sliced bread" into a visual jab, and
+  does more work than just calling the post an ad.
+- **Blunt, unfussy physical humour is a deliberate, occasional tool — not
+  a running bit.** "Not even a little bit of food poisoning. The
+  occasional diarrhoea would definitely make us believe his reviews had a
+  drop of authenticity" is a full notch cruder than the rest of the piece,
+  and the user flagged it themselves, unprompted, as the one line most
+  likely to draw a complaint. That's the right amount of self-awareness to
+  have about a line like this: one per piece at most, chosen deliberately,
+  not reached for by default.
+- **Undercut your own authority at the close.** The piece ends "Actually
+  we could be wrong, maybe someone wrote 'this bus stop sucks' at a bus
+  stop. :)" — a callback to the opening joke that deliberately walks back
+  the confidence of everything just said. That "eh, we might be talking
+  nonsense" shrug is what keeps a piece that's been cutting the whole way
+  through reading as a joke among mates rather than a takedown — which
+  also does real work for staying on the right side of the
+  funny-but-not-defamatory line below, not just tone.
 
 ## The funny-but-not-defamatory line
 
