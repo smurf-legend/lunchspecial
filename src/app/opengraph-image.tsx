@@ -15,7 +15,10 @@ export default function Image() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "0 80px",
-          background: "linear-gradient(135deg, #ea580c 0%, #9a3412 100%)",
+          // Brand red (tailwind.config.ts overrides Tailwind's orange-* scale
+          // to this same red site-wide — @vercel/og renders raw inline
+          // styles, not Tailwind classes, so it can't pick that up itself).
+          background: "linear-gradient(135deg, #cd1c18 0%, #7f110f 100%)",
         }}
       >
         <div style={{ display: "flex", fontSize: 72, fontWeight: 700, color: "#ffffff" }}>LunchSpecial</div>

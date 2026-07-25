@@ -1,3 +1,5 @@
+import { cache } from "react";
+import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -20,11 +22,10 @@ const authorSelect = {
   },
 };
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const session = await getServerSession(authOptions);
-  const isAdmin = (session?.user as any)?.role === "admin";
-
-  const id = idFromSlug(params.slug);
+// Shared between generateMetadata and the page body so the two don't issue
+// duplicate queries for the same post within one request.
+const getPost = cache(async (slugParam: string) => {
+  const id = idFromSlug(slugParam);
   let post = await prisma.blogPost.findUnique({
     where: { id },
     include: { author: { select: { name: true } } },
@@ -34,10 +35,45 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   // word, which won't match a real id, so fall back to the legacy column.
   if (!post) {
     post = await prisma.blogPost.findUnique({
-      where: { slug: params.slug },
+      where: { slug: slugParam },
       include: { author: { select: { name: true } } },
     });
   }
+  return post;
+});
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = await getPost(params.slug);
+  if (!post || post.hidden || isScheduled(post.publishAt)) return {};
+
+  const title = `${post.title} | LunchSpecial Table Talk`;
+  const description = (post.excerpt || post.body).slice(0, 155);
+  const canonical = `/table-talk/${blogPostSlug(post)}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: "LunchSpecial",
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
+
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const session = await getServerSession(authOptions);
+  const isAdmin = (session?.user as any)?.role === "admin";
+
+  const post = await getPost(params.slug);
 
   if (!post) notFound();
   const scheduled = isScheduled(post.publishAt);

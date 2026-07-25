@@ -28,7 +28,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
           flexDirection: "column",
           justifyContent: "center",
           padding: "0 80px",
-          background: "linear-gradient(135deg, #ea580c 0%, #9a3412 100%)",
+          background: "linear-gradient(135deg, #cd1c18 0%, #7f110f 100%)", // brand red, see src/app/opengraph-image.tsx
         }}
       >
         <div style={{ display: "flex", fontSize: 34, fontWeight: 700, color: "#ffffff", opacity: 0.85 }}>

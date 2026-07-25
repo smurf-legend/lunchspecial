@@ -62,7 +62,7 @@ export default async function Image({ params }: { params: { id: string } }) {
             display: "flex",
             background: special?.imageUrl
               ? "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.35) 100%)"
-              : "linear-gradient(135deg, #ea580c 0%, #9a3412 100%)",
+              : "linear-gradient(135deg, #cd1c18 0%, #7f110f 100%)", // brand red, see src/app/opengraph-image.tsx
           }}
         />
 
