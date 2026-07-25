@@ -26,10 +26,13 @@ function vimeoEmbedUrl(url: string): string | null {
 }
 
 // Instagram's own embed path — works as a plain iframe src, no widgets.js
-// needed. Covers both feed posts (/p/) and Reels (/reel/).
+// needed. Covers both feed posts (/p/) and Reels (/reel/). "captioned"
+// renders the caption text inside the iframe itself — without it the embed
+// relies on Instagram's own JS to resize the iframe to fit content (which
+// a bare iframe src doesn't get), and cuts off with no scrollbar instead.
 function instagramEmbedUrl(url: string): string | null {
   const m = url.match(/instagram\.com\/(p|reel)\/([\w-]+)/);
-  return m ? `https://www.instagram.com/${m[1]}/${m[2]}/embed` : null;
+  return m ? `https://www.instagram.com/${m[1]}/${m[2]}/embed/captioned` : null;
 }
 
 // The iframe X/Twitter's own widgets.js loads under the hood — using it

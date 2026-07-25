@@ -3,8 +3,12 @@ import { parseArticleBlocks, SocialPlatform } from "@/lib/articleBlocks";
 // YouTube/Vimeo are always 16:9. TikTok embeds are tall (vertical video),
 // so a 16:9 box would crush them — cap their width instead of the aspect.
 // Instagram/Twitter/Facebook posts vary in height post-to-post (a photo vs.
-// a long tweet thread), so those get a min-height and are left to size
-// themselves rather than being locked to one ratio.
+// a long tweet thread). A bare iframe src (no widgets.js/embed.js) never
+// gets the postMessage telling the parent to resize to fit content, so it
+// needs an explicit, generously tall fixed height — a *min*-height doesn't
+// work here, since percentage heights (the iframe's h-full) don't resolve
+// against a parent whose height is only a minimum, and the iframe silently
+// collapses instead of growing to fill it.
 function embedContainerClass(platform: SocialPlatform): string {
   switch (platform) {
     case "youtube":
@@ -15,7 +19,7 @@ function embedContainerClass(platform: SocialPlatform): string {
     case "instagram":
     case "twitter":
     case "facebook":
-      return "w-full min-h-[500px] max-w-lg mx-auto";
+      return "w-full h-[720px] max-w-lg mx-auto";
   }
 }
 
