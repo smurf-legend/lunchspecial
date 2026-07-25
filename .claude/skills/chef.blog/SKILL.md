@@ -19,6 +19,18 @@ still resolve (redirected to the new canonical) because the lookup is by
 id, not by the stored `slug` column. Don't hand-build a `/table-talk/...`
 link from `post.slug` directly — always go through `blogPostSlug()`.
 
+**Link previews (`table-talk/[slug]/opengraph-image.tsx`) use a fixed
+brand-red background, not a full-bleed photo with a dark overlay** —
+unlike Specials' OG image, which assumes an actual food photo. Table
+Talk cover images vary a lot more (a venue logo, a text-crop screenshot
+like the `[A D]` caption crop, an actual photo all happened within the
+same article), and a dark gradient overlaid on a white-background logo
+turned out unreadable. The cover image instead sits in its own white
+rounded card next to the text, so it stays legible no matter what kind of
+image it is. Worth remembering when picking a cover image: it doesn't
+need to be photogenic or dark — a plain white-background logo/screenshot
+crop works fine in the link preview specifically because of this layout.
+
 ## Preview and scheduling (BlogForm)
 
 `BlogForm` (`src/components/BlogForm.tsx`) has an Edit/Preview toggle at
