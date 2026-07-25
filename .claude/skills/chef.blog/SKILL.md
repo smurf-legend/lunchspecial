@@ -82,6 +82,32 @@ Instagram specifically uses the `/embed/captioned` path — the plain
 is self-contained and ends cleanly (header → media → "View more on
 Instagram") without needing JS-driven resizing at all.
 
+**The cover photo field (`imageUrl`) is different from an embed — it needs
+a real static image file, not a post/profile page URL.** Pasting an
+Instagram link into the cover photo field renders a broken image, since
+`imageUrl` goes straight into an `<img src>`, not an iframe. If a
+Playwright/Chromium screenshot isn't available (e.g. its cached browser
+binary is missing and reinstalling is a sizeable download not worth doing
+mid-task) and Claude in Chrome's `save_to_disk` screenshot option doesn't
+land anywhere the Bash tool can reach, there's a reliable no-browser
+fallback for grabbing a real image: reload the target page with Claude in
+Chrome, then `read_network_requests` filtered to the platform's CDN domain
+(e.g. `cdninstagram`) — the actual photo/avatar files show up as direct,
+signed CDN URLs (`scontent.cdninstagram.com/...`) that `curl` can fetch
+directly, no page render needed. Instagram serves multiple sized variants
+of the same profile picture; the one with a `stp=dst-jpg_s150x150_tt6`-style
+query param is a small downsized crop, while a same-photo request without
+that param (look for a second network request for a similarly-named file,
+often a `t51.2885-19` path) is the full-resolution original (1080×1080 in
+practice) — don't hand-edit a signed URL's query string to strip the size
+param yourself, it breaks the request signature; find the CDN's own
+already-larger variant among the other logged requests instead. For an
+account's own logo/avatar specifically (as opposed to a specific post's
+photo), this is often a better and safer cover-image choice than any
+individual post photo anyway — it's the account's own public brand asset
+rather than a photo of the person, sidestepping the portrait-as-hero-image
+concern entirely.
+
 When testing a new embed while writing a post, create the draft via a
 one-off `prisma.blogPost.create` script (same pattern as
 `verify-special-source`'s DB scripts), view it at `/table-talk/<slug>`,
