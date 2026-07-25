@@ -14,6 +14,7 @@ import { buildCommentTree } from "@/lib/commentTree";
 import { isScheduled, formatScheduled } from "@/lib/postStatus";
 import { blogPostSlug, idFromSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
+import { buildBlogPostingJsonLd, safeJsonLd } from "@/lib/structuredData";
 
 const authorSelect = {
   select: {
@@ -94,8 +95,20 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   });
   const commentTree = buildCommentTree(flatComments);
 
+  const blogPostingJsonLd = buildBlogPostingJsonLd({
+    url: `${SITE_URL}/table-talk/${canonical}`,
+    title: post.title,
+    description: (post.excerpt || post.body).slice(0, 155),
+    imageUrl: post.imageUrl,
+    authorName: post.author.name ?? "LunchSpecial Team",
+    datePublished: post.publishAt ?? post.createdAt,
+    dateModified: post.updatedAt,
+  });
+
   return (
     <div className="flex flex-col gap-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(blogPostingJsonLd) }} />
+
       {(post.hidden || scheduled) && isAdmin && (
         <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
           {scheduled

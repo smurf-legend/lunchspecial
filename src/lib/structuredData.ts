@@ -57,3 +57,35 @@ export function buildOfferJsonLd(special: OfferJsonLdInput) {
 
   return jsonLd;
 }
+
+type BlogPostingJsonLdInput = {
+  url: string;
+  title: string;
+  description: string;
+  imageUrl?: string | null;
+  authorName: string;
+  datePublished: Date | string;
+  dateModified: Date | string;
+};
+
+export function buildBlogPostingJsonLd(post: BlogPostingJsonLdInput) {
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    url: post.url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": post.url },
+    datePublished: new Date(post.datePublished).toISOString(),
+    dateModified: new Date(post.dateModified).toISOString(),
+    author: { "@type": "Person", name: post.authorName },
+    // No logo asset exists to reference yet — omitting publisher.logo
+    // entirely rather than pointing it at the 1200x630 OG social card,
+    // which fails Google's ~1:1 recommended shape for a publisher logo.
+    publisher: { "@type": "Organization", name: "LunchSpecial" },
+  };
+
+  if (post.imageUrl) jsonLd.image = post.imageUrl;
+
+  return jsonLd;
+}
