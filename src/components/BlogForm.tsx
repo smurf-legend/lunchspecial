@@ -315,6 +315,37 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
             />
+
+            <div>
+              <p className="text-sm font-medium mb-1">Cover photo (optional)</p>
+              <p className="text-xs text-gray-400 mb-1.5">
+                Shown at the top of the article and as its thumbnail in the Table Talk list.
+              </p>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                onChange={handleImageSelect}
+                className="text-sm"
+              />
+              {compressingImage && <p className="text-xs text-gray-400 mt-1">Compressing image...</p>}
+              <p className="text-xs text-gray-400 my-1.5">— or —</p>
+              <input
+                type="url"
+                placeholder="Paste a link to an image instead"
+                className="border rounded px-3 py-2 text-sm w-full"
+                value={imageUrlInput}
+                onChange={(e) => handleImageUrlChange(e.target.value)}
+              />
+              {imagePreview && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="mt-2 h-32 w-32 object-cover rounded border"
+                />
+              )}
+            </div>
+
             <div>
               <textarea
                 ref={bodyRef}
@@ -354,33 +385,6 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
                 Puts the photo or video link at your cursor, on its own line — separate paragraphs with a
                 blank line.
               </p>
-            </div>
-
-            <div>
-              <p className="text-sm font-medium mb-1">Cover photo (optional)</p>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
-                onChange={handleImageSelect}
-                className="text-sm"
-              />
-              {compressingImage && <p className="text-xs text-gray-400 mt-1">Compressing image...</p>}
-              <p className="text-xs text-gray-400 my-1.5">— or —</p>
-              <input
-                type="url"
-                placeholder="Paste a link to an image instead"
-                className="border rounded px-3 py-2 text-sm w-full"
-                value={imageUrlInput}
-                onChange={(e) => handleImageUrlChange(e.target.value)}
-              />
-              {imagePreview && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="mt-2 h-32 w-32 object-cover rounded border"
-                />
-              )}
             </div>
           </>
         )}
