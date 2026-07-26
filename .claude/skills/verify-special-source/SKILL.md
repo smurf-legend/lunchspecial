@@ -40,7 +40,18 @@ steps."
 
 - **No price in `title`.** The app shows `specialPrice`/`usualPrice` in a
   bigger, more prominent spot right next to the title, so `"$18 burgers"`
-  is redundant — title the item itself: `"Burgers"`.
+  is redundant — title the item itself: `"Burgers"`. This is an SEO rule as
+  much as a UX one: the dish name is what actually captures search intent
+  ("steak lunch Clovelly" is a real query, "$18 lunch Clovelly" isn't), and
+  price isn't lost by leaving it out of the title text — it's already
+  carried independently via the page's JSON-LD `Offer` structured data
+  (`buildOfferJsonLd`), so Google can still surface it in a rich snippet
+  regardless. Every character spent on "$18 " in the title is a character
+  not spent on dish keywords, in a title tag that's already truncated
+  around 50-60 characters once `venueName` and suburb are auto-appended.
+  **If sibling rows for the same venue already have price-first titles,
+  that's not a reason to match them** — it means those rows are wrong too
+  and worth fixing while you're in there, not a convention to extend.
 - **No generic titles like "Lunch Special" or "Lunch Menu."** Name the dish,
   or the choice of dishes, not the category the reader already knows it's
   in. `"Fisherman Basket - Monday Special"`, not `"$15 Fisherman Basket -
@@ -212,7 +223,7 @@ would actually want to compare. This shows up two ways:
 - For the day variant (Club Hotel Mount Druitt), each day gets its own
   Special row: `availableDays` set to just that one day code (`"Mon"`, not
   `"Mon,Tue,Wed,Thu,Fri"`), a day-specific title
-  (`"$15 Fisherman Basket - Monday Special"`), and — when the source actually
+  (`"Fisherman Basket - Monday Special"`), and — when the source actually
   has a distinct photo per day (like Club Hotel Mount Druitt's socials) —
   that day's own screenshot rather than a shared image.
   **But** if the source is just one plain-text listing of all the days
@@ -404,6 +415,28 @@ the venue's deal at all, but about the source itself:
   `\n\n`, the same way `src/app/specials/new/page.tsx`'s description
   textarea would if a human typed it with the Enter key — not a single
   dense paragraph, and not comma/semicolon-joined.
+- **Don't name specific dishes in the `title` of a rotating-pool special —
+  keep it generic (`"Weekday Lunch Special — Choice of 6 Mains"`), even
+  though that looks like it contradicts "no price in title"'s advice to
+  lead with something concrete.** The difference: a single-dish title names
+  the *only* thing on offer, but a rotating-pool title naming 2-3 of the
+  options implicitly claims those are *what's on offer* — someone searching
+  for one of the other options in the pool (chicken pesto pasta, say, when
+  the title only mentions schnitzel/fish and chips/burger) may skip the
+  listing entirely on the strength of the title alone, even though their
+  dish is right there. That's worse than a missed SEO opportunity — it's
+  actively talking away a real match. The `description` field already
+  carries every option's name for search matching (and often surfaces
+  directly in the Google snippet when it contains the matched term), so
+  nothing is lost by keeping the title generic. Separately: the classic
+  pool items that come up again and again (chicken schnitzel, fish and
+  chips, rump steak, burgers, pizza, pasta) are so common across pub/bistro
+  lunch menus nationwide that naming them in the title barely helps
+  anyway — you'd be competing on an identical phrase against thousands of
+  other venues. The actual local-search differentiator is `venueName` and
+  suburb, which the page's title tag appends automatically regardless of
+  what `title` says — so there's little to gain and a real downside to
+  cherry-picking dishes into a rotating-pool title.
 
 ## Shared steps (Cases A and B)
 

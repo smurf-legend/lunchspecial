@@ -123,6 +123,8 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
     expiresAt: special.expiresAt,
     expired,
     locationName: chainWide ? "All locations" : primarySuburb?.name,
+    upvoteCount: special.upvoteCount,
+    downvoteCount: special.downvoteCount,
   });
 
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([

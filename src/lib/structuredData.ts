@@ -20,6 +20,8 @@ type OfferJsonLdInput = {
   expiresAt?: Date | string | null;
   expired: boolean;
   locationName?: string;
+  upvoteCount?: number;
+  downvoteCount?: number;
 };
 
 export function buildOfferJsonLd(special: OfferJsonLdInput) {
@@ -53,6 +55,23 @@ export function buildOfferJsonLd(special: OfferJsonLdInput) {
     jsonLd.lowPrice = special.priceRangeMin;
     jsonLd.highPrice = special.priceRangeMax;
     jsonLd.priceCurrency = "AUD";
+  }
+
+  // Only emit a rating when there's at least one real vote — Google's
+  // structured data guidelines require a genuine value, not a placeholder,
+  // and a 0-count rating would look fabricated rather than just absent.
+  const totalVotes = (special.upvoteCount ?? 0) + (special.downvoteCount ?? 0);
+  if (totalVotes > 0) {
+    jsonLd.aggregateRating = {
+      "@type": "AggregateRating",
+      // Maps 0% yummy votes to 1 star and 100% to 5 stars, rather than a
+      // 0-5 scale, since schema.org's ratingValue is expected to sit
+      // between worstRating and bestRating (default worst is 1, not 0).
+      ratingValue: Number((1 + (special.upvoteCount! / totalVotes) * 4).toFixed(1)),
+      bestRating: 5,
+      worstRating: 1,
+      ratingCount: totalVotes,
+    };
   }
 
   return jsonLd;
