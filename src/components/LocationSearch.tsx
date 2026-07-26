@@ -56,6 +56,16 @@ export default function LocationSearch() {
     const trimmed = value.trim();
     if (trimmed) params.set("location", trimmed);
     else params.delete("location");
+    // A leftover suburb/state filter from earlier browsing (e.g. arriving
+    // here from a suburb page) silently ANDs with the new keyword search,
+    // which can produce zero results even when the keyword itself matches
+    // something — the same text finds a real result via the dropdown
+    // suggestions below only because those links go straight to the
+    // special, bypassing filters entirely. Typing a new search is a fresh
+    // query, not a refinement of whatever place was previously selected,
+    // so it should replace that constraint rather than combine with it.
+    params.delete("suburb");
+    params.delete("state");
     setOpen(false);
     router.push(`/?${params.toString()}`);
   }
