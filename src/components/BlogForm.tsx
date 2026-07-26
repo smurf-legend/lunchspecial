@@ -97,11 +97,14 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
       toUpload = file;
     }
 
-    const uploadRes = await fetch(`/api/upload?filename=${encodeURIComponent(toUpload.name)}`, {
-      method: "POST",
-      headers: { "Content-Type": toUpload.type },
-      body: toUpload,
-    });
+    const uploadRes = await fetch(
+      `/api/upload?filename=${encodeURIComponent(toUpload.name)}${title ? `&label=${encodeURIComponent(title)}` : ""}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": toUpload.type },
+        body: toUpload,
+      }
+    );
     setInsertingImage(false);
 
     if (!uploadRes.ok) {
@@ -183,11 +186,14 @@ export default function BlogForm({ post }: { post?: BlogPostData }) {
     let imageUrl: string | null;
     if (imageFile) {
       setUploadingImage(true);
-      const uploadRes = await fetch(`/api/upload?filename=${encodeURIComponent(imageFile.name)}`, {
-        method: "POST",
-        headers: { "Content-Type": imageFile.type },
-        body: imageFile,
-      });
+      const uploadRes = await fetch(
+        `/api/upload?filename=${encodeURIComponent(imageFile.name)}${title ? `&label=${encodeURIComponent(title)}` : ""}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": imageFile.type },
+          body: imageFile,
+        }
+      );
       setUploadingImage(false);
 
       if (!uploadRes.ok) {

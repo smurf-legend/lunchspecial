@@ -194,12 +194,16 @@ export default function EditSpecialForm({
     const uploadedByKey = new Map<string, string>();
     if (newPhotos.length > 0) {
       setUploadingImage(true);
+      const label = form.venueName || form.title;
       for (const photo of newPhotos) {
-        const uploadRes = await fetch(`/api/upload?filename=${encodeURIComponent(photo.file.name)}`, {
-          method: "POST",
-          headers: { "Content-Type": photo.file.type },
-          body: photo.file,
-        });
+        const uploadRes = await fetch(
+          `/api/upload?filename=${encodeURIComponent(photo.file.name)}${label ? `&label=${encodeURIComponent(label)}` : ""}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": photo.file.type },
+            body: photo.file,
+          }
+        );
         if (!uploadRes.ok) {
           setUploadingImage(false);
           const data = await uploadRes.json();

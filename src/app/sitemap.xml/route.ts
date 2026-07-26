@@ -27,7 +27,10 @@ type Entry = {
   lastModified?: Date | string;
   changeFrequency?: string;
   priority?: number;
-  image?: string | null;
+  // The sitemap image extension allows multiple <image:image> blocks per
+  // <url> — a Special's extra gallery photos are just as indexable as its
+  // cover photo, so all of them go in, not just the primary imageUrl.
+  images?: (string | null | undefined)[];
 };
 
 function entryXml(e: Entry): string {
@@ -35,7 +38,9 @@ function entryXml(e: Entry): string {
   if (e.lastModified) parts.push(`<lastmod>${new Date(e.lastModified).toISOString()}</lastmod>`);
   if (e.changeFrequency) parts.push(`<changefreq>${e.changeFrequency}</changefreq>`);
   if (e.priority != null) parts.push(`<priority>${e.priority}</priority>`);
-  if (e.image) parts.push(`<image:image><image:loc>${escapeXml(e.image)}</image:loc></image:image>`);
+  for (const image of e.images ?? []) {
+    if (image) parts.push(`<image:image><image:loc>${escapeXml(image)}</image:loc></image:image>`);
+  }
   return `<url>${parts.join("")}</url>`;
 }
 
@@ -43,7 +48,7 @@ export async function GET() {
   const [specials, hasChainWide, posts, stateRegions] = await Promise.all([
     prisma.special.findMany({
       where: { hidden: false },
-      select: { id: true, title: true, venueName: true, createdAt: true, imageUrl: true },
+      select: { id: true, title: true, venueName: true, createdAt: true, imageUrl: true, extraImageUrls: true },
     }),
     prisma.special.count({ where: { hidden: false, chainWide: true } }).then((c) => c > 0),
     prisma.blogPost.findMany({
@@ -75,7 +80,7 @@ export async function GET() {
     lastModified: s.createdAt,
     changeFrequency: "weekly",
     priority: 0.7,
-    image: s.imageUrl,
+    images: [s.imageUrl, ...s.extraImageUrls],
   }));
 
   const suburbRoutes: Entry[] = suburbs.map((s) => ({
@@ -102,7 +107,7 @@ export async function GET() {
     lastModified: p.updatedAt,
     changeFrequency: "monthly",
     priority: 0.5,
-    image: p.imageUrl,
+    images: [p.imageUrl],
   }));
 
   const allRoutes = [...staticRoutes, ...specialRoutes, ...suburbRoutes, ...stateRoutes, ...regionRoutes, ...blogRoutes];

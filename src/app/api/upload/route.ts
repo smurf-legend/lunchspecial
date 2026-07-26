@@ -2,11 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { put } from "@vercel/blob";
 import { authOptions } from "@/lib/auth";
+import { slugify } from "@/lib/slugify";
 
 const MAX_BYTES = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
-// POST /api/upload — body is the raw image file, ?filename=xyz.jpg query param
+// POST /api/upload — body is the raw image file, ?filename=xyz.jpg query param.
+// Optional ?label=xyz (venue name, dish title, article title — whatever the
+// calling form already has typed in) becomes a descriptive slug prefix in
+// the blob filename instead of a bare random hash — a real, if minor,
+// Google Images SEO signal (descriptive filenames are one of the signals
+// Google's own image SEO guidance calls out), and free since the caller
+// usually already has this text on screen.
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
@@ -17,6 +24,7 @@ export async function POST(req: NextRequest) {
   if (!filename) {
     return NextResponse.json({ error: "Missing filename" }, { status: 400 });
   }
+  const label = req.nextUrl.searchParams.get("label")?.slice(0, 80);
 
   const contentType = req.headers.get("content-type") ?? "";
   if (!ALLOWED_TYPES.includes(contentType)) {
@@ -40,7 +48,10 @@ export async function POST(req: NextRequest) {
   // Random suffix (not just Date.now()) since multi-image posts upload
   // several files concurrently and could otherwise land in the same ms.
   const unique = Math.random().toString(36).slice(2, 8);
-  const pathname = `specials/${userId}-${Date.now()}-${unique}.${ext}`;
+  const labelSlug = label ? slugify(label) : "";
+  const pathname = labelSlug
+    ? `specials/${labelSlug}-${unique}.${ext}`
+    : `specials/${userId}-${Date.now()}-${unique}.${ext}`;
 
   const blob = await put(pathname, req.body, {
     access: "public",

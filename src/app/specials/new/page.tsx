@@ -189,8 +189,11 @@ export default function NewSpecialPage() {
     if (imageFiles.length > 0) {
       setUploadingImage(true);
       const urls: string[] = [];
+      const label = form.venueName || form.title;
       for (const file of imageFiles) {
-        const uploadRes = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+        const uploadRes = await fetch(
+          `/api/upload?filename=${encodeURIComponent(file.name)}${label ? `&label=${encodeURIComponent(label)}` : ""}`,
+          {
           method: "POST",
           headers: { "Content-Type": file.type },
           body: file,
