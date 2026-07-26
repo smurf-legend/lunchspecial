@@ -36,7 +36,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/">Specials</Link>
                 <Link href="/table-talk">Table Talk</Link>
                 <Link href="/specials/new">Post a Special</Link>
-                <Link href="/suggest">Suggest a Special</Link>
                 <NavAuth />
               </nav>
             </div>

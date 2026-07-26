@@ -74,8 +74,8 @@ export default function LocationSearch() {
         <input
           type="text"
           maxLength={40}
-          placeholder="Suburb, postcode, or keyword (e.g. Newtown, 2042, or banh mi)"
-          className="border rounded px-3 py-2 flex-1 min-w-0"
+          placeholder="Suburb, postcode, or keyword"
+          className="border rounded px-3 py-2 flex-1 sm:flex-none sm:w-56 min-w-0"
           value={location}
           onChange={(e) => {
             setLocation(e.target.value);
@@ -90,6 +90,12 @@ export default function LocationSearch() {
           className="bg-white border-2 border-orange-600 text-orange-600 px-4 py-2 rounded font-medium hover:bg-orange-50 whitespace-nowrap"
         >
           + Post a Special
+        </Link>
+        <Link
+          href="/suggest"
+          className="bg-white border text-gray-600 px-4 py-2 rounded font-medium hover:bg-gray-50 whitespace-nowrap"
+        >
+          Suggest a Special
         </Link>
       </form>
 
