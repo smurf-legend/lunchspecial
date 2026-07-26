@@ -1,4 +1,3 @@
-import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { specialSlug, blogPostSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
@@ -9,16 +8,47 @@ import { SITE_URL } from "@/lib/site";
 // keeps it fresh without hitting the DB on every single crawler request.
 export const revalidate = 3600;
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+// A plain route handler rather than the sitemap.ts file convention — the
+// convention's MetadataRoute.Sitemap type has no field for the Google image
+// sitemap extension (xmlns:image / <image:image>), which is what actually
+// gets Special and Table Talk photos surfaced in Google Images search. XML
+// has to be built by hand to add that namespace.
+function escapeXml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+type Entry = {
+  url: string;
+  lastModified?: Date | string;
+  changeFrequency?: string;
+  priority?: number;
+  image?: string | null;
+};
+
+function entryXml(e: Entry): string {
+  const parts = [`<loc>${escapeXml(e.url)}</loc>`];
+  if (e.lastModified) parts.push(`<lastmod>${new Date(e.lastModified).toISOString()}</lastmod>`);
+  if (e.changeFrequency) parts.push(`<changefreq>${e.changeFrequency}</changefreq>`);
+  if (e.priority != null) parts.push(`<priority>${e.priority}</priority>`);
+  if (e.image) parts.push(`<image:image><image:loc>${escapeXml(e.image)}</image:loc></image:image>`);
+  return `<url>${parts.join("")}</url>`;
+}
+
+export async function GET() {
   const [specials, hasChainWide, posts, stateRegions] = await Promise.all([
     prisma.special.findMany({
       where: { hidden: false },
-      select: { id: true, title: true, venueName: true, createdAt: true },
+      select: { id: true, title: true, venueName: true, createdAt: true, imageUrl: true },
     }),
     prisma.special.count({ where: { hidden: false, chainWide: true } }).then((c) => c > 0),
     prisma.blogPost.findMany({
       where: { hidden: false },
-      select: { id: true, title: true, updatedAt: true },
+      select: { id: true, title: true, updatedAt: true, imageUrl: true },
     }),
     prisma.suburb.findMany({ select: { state: true, region: true }, distinct: ["state", "region"] }),
   ]);
@@ -34,44 +64,55 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: { slug: true },
   });
 
-  const staticRoutes: MetadataRoute.Sitemap = [
+  const staticRoutes: Entry[] = [
     { url: SITE_URL, changeFrequency: "hourly", priority: 1 },
     { url: `${SITE_URL}/table-talk`, changeFrequency: "daily", priority: 0.8 },
     { url: `${SITE_URL}/privacy`, changeFrequency: "yearly", priority: 0.2 },
   ];
 
-  const specialRoutes: MetadataRoute.Sitemap = specials.map((s) => ({
+  const specialRoutes: Entry[] = specials.map((s) => ({
     url: `${SITE_URL}/specials/${specialSlug(s)}`,
     lastModified: s.createdAt,
     changeFrequency: "weekly",
     priority: 0.7,
+    image: s.imageUrl,
   }));
 
-  const suburbRoutes: MetadataRoute.Sitemap = suburbs.map((s) => ({
+  const suburbRoutes: Entry[] = suburbs.map((s) => ({
     url: `${SITE_URL}/suburbs/${s.slug}`,
     changeFrequency: "daily",
     priority: 0.6,
   }));
 
   const states = [...new Set(stateRegions.map((r) => r.state))];
-  const stateRoutes: MetadataRoute.Sitemap = states.map((state) => ({
+  const stateRoutes: Entry[] = states.map((state) => ({
     url: `${SITE_URL}/${state.toLowerCase()}`,
     changeFrequency: "daily",
     priority: 0.65,
   }));
 
-  const regionRoutes: MetadataRoute.Sitemap = stateRegions.map((r) => ({
+  const regionRoutes: Entry[] = stateRegions.map((r) => ({
     url: `${SITE_URL}/regions/${r.state.toLowerCase()}/${encodeURIComponent(r.region.toLowerCase())}`,
     changeFrequency: "daily",
     priority: 0.6,
   }));
 
-  const blogRoutes: MetadataRoute.Sitemap = posts.map((p) => ({
+  const blogRoutes: Entry[] = posts.map((p) => ({
     url: `${SITE_URL}/table-talk/${blogPostSlug(p)}`,
     lastModified: p.updatedAt,
     changeFrequency: "monthly",
     priority: 0.5,
+    image: p.imageUrl,
   }));
 
-  return [...staticRoutes, ...specialRoutes, ...suburbRoutes, ...stateRoutes, ...regionRoutes, ...blogRoutes];
+  const allRoutes = [...staticRoutes, ...specialRoutes, ...suburbRoutes, ...stateRoutes, ...regionRoutes, ...blogRoutes];
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${allRoutes.map(entryXml).join("\n")}
+</urlset>`;
+
+  return new Response(xml, {
+    headers: { "Content-Type": "application/xml" },
+  });
 }

@@ -17,6 +17,8 @@ export default function robots(): MetadataRoute.Robots {
         "/favorites",
         "/notifications",
         "/unsubscribed",
+        "/my-specials",
+        "/specials/*/edit",
       ],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
