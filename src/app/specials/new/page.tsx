@@ -84,6 +84,12 @@ export default function NewSpecialPage() {
         <Link href="/login" className="text-orange-600 underline font-medium">
           Log in
         </Link>
+        <p className="text-sm text-gray-500 mt-4">
+          Don't want to make an account?{" "}
+          <Link href="/suggest" className="text-orange-600 underline font-medium">
+            Just send us the details instead
+          </Link>
+        </p>
       </div>
     );
   }
