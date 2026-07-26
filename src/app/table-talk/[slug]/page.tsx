@@ -10,11 +10,13 @@ import CommentThread from "@/components/CommentThread";
 import SpecialImage from "@/components/SpecialImage";
 import ArticleBody from "@/components/ArticleBody";
 import ShareButton from "@/components/ShareButton";
+import SpecialCard from "@/components/SpecialCard";
 import { buildCommentTree } from "@/lib/commentTree";
 import { isScheduled, formatScheduled } from "@/lib/postStatus";
 import { blogPostSlug, idFromSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
 import { buildBlogPostingJsonLd, buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
+import { getRelatedSpecials } from "@/lib/relatedSpecials";
 
 const authorSelect = {
   select: {
@@ -73,6 +75,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const session = await getServerSession(authOptions);
   const isAdmin = (session?.user as any)?.role === "admin";
+  const userId = (session?.user as any)?.id as string | undefined;
 
   const post = await getPost(params.slug);
 
@@ -94,6 +97,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     orderBy: { createdAt: "asc" },
   });
   const commentTree = buildCommentTree(flatComments);
+
+  const [relatedSpecials, favorites] = await Promise.all([
+    getRelatedSpecials(post.title),
+    userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
+  ]);
+  const favoritedIds = new Set(favorites.map((f) => f.specialId));
 
   const blogPostingJsonLd = buildBlogPostingJsonLd({
     url: `${SITE_URL}/table-talk/${canonical}`,
@@ -163,6 +172,21 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           </div>
         </div>
       </div>
+
+      {relatedSpecials.length > 0 && (
+        <div className="bg-white rounded-lg border p-6">
+          <h2 className="text-lg font-bold mb-3">Related Specials</h2>
+          <div className="flex flex-col gap-3">
+            {relatedSpecials.map((special) => (
+              <SpecialCard
+                key={special.id}
+                special={special as any}
+                isFavorited={favoritedIds.has(special.id)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="bg-white rounded-lg border p-6">
         <CommentThread
