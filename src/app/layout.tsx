@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <nav className="flex flex-wrap gap-x-3 gap-y-1.5 text-sm font-medium items-center">
                 <Link href="/">Specials</Link>
                 <Link href="/table-talk">Table Talk</Link>
-                <Link href="/post">Post a Special</Link>
+                <Link href="/post">Add a Special</Link>
                 <NavAuth />
               </nav>
             </div>

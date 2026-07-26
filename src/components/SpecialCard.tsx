@@ -98,7 +98,7 @@ export default function SpecialCard({
           )}
           {special.membersOnly && (
             <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-xs font-medium shrink-0">
-              🔒 Members Only
+              🔒 Membership Required
             </span>
           )}
           {special.deliveryAvailable && (

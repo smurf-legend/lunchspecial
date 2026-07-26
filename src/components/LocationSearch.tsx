@@ -89,7 +89,7 @@ export default function LocationSearch() {
           href="/post"
           className="bg-white border-2 border-orange-600 text-orange-600 px-4 py-2 rounded font-medium hover:bg-orange-50 whitespace-nowrap"
         >
-          + Post a Special
+          + Add a Special
         </Link>
       </form>
 
