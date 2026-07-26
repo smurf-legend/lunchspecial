@@ -4,6 +4,9 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import { notFound } from "next/navigation";
+import { SITE_URL } from "@/lib/site";
+import { buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
+import { stateName } from "@/lib/auStates";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const suburb = await prisma.suburb.findUnique({ where: { slug: params.slug } });
@@ -47,8 +50,19 @@ export default async function SuburbPage({ params }: { params: { slug: string } 
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
 
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: "Home", url: SITE_URL },
+    { name: stateName(suburb.state), url: `${SITE_URL}/${suburb.state.toLowerCase()}` },
+    {
+      name: suburb.region,
+      url: `${SITE_URL}/regions/${suburb.state.toLowerCase()}/${encodeURIComponent(suburb.region.toLowerCase())}`,
+    },
+    { name: suburb.name, url: `${SITE_URL}/suburbs/${suburb.slug}` },
+  ]);
+
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       <h1 className="text-xl font-bold mb-1">Lunch specials in {suburb.name}</h1>
       <p className="text-sm text-gray-500 mb-4">{suburb.postcode}, {suburb.state}</p>
       <div className="flex flex-col gap-3">

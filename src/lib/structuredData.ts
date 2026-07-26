@@ -89,3 +89,19 @@ export function buildBlogPostingJsonLd(post: BlogPostingJsonLdInput) {
 
   return jsonLd;
 }
+
+// Breadcrumbs are what let Google show the little "Home > Suburb > Special"
+// path in place of a bare URL under a search result — items are just
+// {name, url} in order, Home first, current page last.
+export function buildBreadcrumbJsonLd(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}

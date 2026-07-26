@@ -14,7 +14,7 @@ import { buildCommentTree } from "@/lib/commentTree";
 import { isScheduled, formatScheduled } from "@/lib/postStatus";
 import { blogPostSlug, idFromSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
-import { buildBlogPostingJsonLd, safeJsonLd } from "@/lib/structuredData";
+import { buildBlogPostingJsonLd, buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
 
 const authorSelect = {
   select: {
@@ -105,9 +105,16 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     dateModified: post.updatedAt,
   });
 
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: "Home", url: SITE_URL },
+    { name: "Table Talk", url: `${SITE_URL}/table-talk` },
+    { name: post.title, url: `${SITE_URL}/table-talk/${canonical}` },
+  ]);
+
   return (
     <div className="flex flex-col gap-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(blogPostingJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
 
       {(post.hidden || scheduled) && isAdmin && (
         <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">

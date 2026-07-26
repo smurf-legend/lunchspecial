@@ -18,7 +18,7 @@ import ShareButton from "@/components/ShareButton";
 import { buildCommentTree } from "@/lib/commentTree";
 import { idFromSlug, specialSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
-import { buildOfferJsonLd, safeJsonLd } from "@/lib/structuredData";
+import { buildOfferJsonLd, buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
 
 const authorSelect = {
   select: {
@@ -125,9 +125,18 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
     locationName: chainWide ? "All locations" : primarySuburb?.name,
   });
 
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: "Home", url: SITE_URL },
+    ...(primarySuburb
+      ? [{ name: primarySuburb.name, url: `${SITE_URL}/suburbs/${primarySuburb.slug}` }]
+      : []),
+    { name: special.title, url: `${SITE_URL}/specials/${canonical}` },
+  ]);
+
   return (
     <div className="flex flex-col gap-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(offerJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
 
       {special.hidden && isAdmin && (
         <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
