@@ -381,6 +381,28 @@ model BlogCommentReaction {
   @@unique([userId, blogCommentId])
 }
 
+// A raw, unstructured tip from someone who doesn't want to make an account
+// or fill out the full posting form — just "here's a deal, do with it what
+// you want." No auth required to create one. Deliberately not reusing
+// Special's shape: a tip is one free-text blob (+ optional link/photo), not
+// a fully-formed listing, so it needs a human (admin) to turn it into a
+// real Special via the normal form/skill workflow rather than auto-publishing.
+model SpecialSubmission {
+  id        String   @id @default(cuid())
+  details   String   // freeform: whatever the tipster typed — venue, price, days, anything
+  link      String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+
+  // "pending" | "posted" | "dismissed" — no separate boolean per state since
+  // exactly one of these is ever true at once; mirrors the simple string-enum
+  // style already used for User.role rather than adding a Prisma enum type.
+  status String @default("pending")
+
+  @@index([status])
+  @@index([createdAt])
+}
+
 // Singleton row (id fixed at 1) holding the admin-editable digest
 // configuration — whether the scheduled Friday/Monday sends are paused, and
 // the subject/intro copy for each. Falls back to hardcoded defaults in

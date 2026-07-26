@@ -50,7 +50,7 @@ export default async function AdminPage({
       }
     : {};
 
-  const [specials, totalMatching, suburbs, categories, userCount, totalSpecials, totalComments, totalBlogPosts, needsReviewCount] =
+  const [specials, totalMatching, suburbs, categories, userCount, totalSpecials, totalComments, totalBlogPosts, needsReviewCount, pendingTipCount] =
     await Promise.all([
       prisma.special.findMany({
         where,
@@ -71,6 +71,7 @@ export default async function AdminPage({
       prisma.comment.count(),
       prisma.blogPost.count(),
       prisma.special.count({ where: { needsReview: true } }),
+      prisma.specialSubmission.count({ where: { status: "pending" } }),
     ]);
 
   const totalPages = Math.max(1, Math.ceil(totalMatching / PAGE_SIZE));
@@ -98,6 +99,10 @@ export default async function AdminPage({
           {" · "}
           <Link href="/kitchen/needs-review" className="text-orange-600 hover:underline">
             {needsReviewCount} needing review
+          </Link>
+          {" · "}
+          <Link href="/kitchen/submissions" className="text-orange-600 hover:underline">
+            {pendingTipCount} tip{pendingTipCount === 1 ? "" : "s"} submitted
           </Link>
           {" · "}
           <Link href="/kitchen/mailing-list" className="text-orange-600 hover:underline">

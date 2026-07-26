@@ -3,6 +3,11 @@ import { specialSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
 
 const FROM = "LunchSpecial <team@lunchspecial.com.au>";
+// Where anonymous "suggest a special" tips get emailed for review — no admin
+// UI notification system exists yet, so email is the simplest way to not
+// miss one. Overridable via env without a code change if that ever needs to
+// go somewhere else (a shared inbox, etc).
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "clark.kent.480190@gmail.com";
 
 export async function sendPasswordResetEmail(to: string, resetUrl: string) {
   if (!process.env.RESEND_API_KEY) {
@@ -93,4 +98,29 @@ export async function sendDigestEmail(
     return false;
   }
   return true;
+}
+
+export async function sendTipSubmissionEmail(details: string, link: string | null, imageUrl: string | null) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[mail] RESEND_API_KEY is not set — skipping tip submission email");
+    return;
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: "New special tip submitted",
+    html: `
+      <p>Someone sent in a special without posting it themselves:</p>
+      <p style="white-space:pre-line;background:#f7f7f7;padding:12px;border-radius:6px;">${details}</p>
+      ${link ? `<p>Link: <a href="${link}">${link}</a></p>` : ""}
+      ${imageUrl ? `<p><img src="${imageUrl}" style="max-width:400px;border-radius:6px;" /></p>` : ""}
+      <p><a href="${SITE_URL}/kitchen/submissions" style="color:#ea580c;">Review in the kitchen →</a></p>
+    `,
+  });
+
+  if (error) {
+    console.error("[mail] Failed to send tip submission email:", error);
+  }
 }
