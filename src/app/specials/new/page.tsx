@@ -20,6 +20,8 @@ export default function NewSpecialPage() {
   const [categories, setCategories] = useState<Option[]>([]);
   const [locationMode, setLocationMode] = useState<"single" | "chain" | "chainWide">("single");
   const [greatValue, setGreatValue] = useState(false);
+  const [membersOnly, setMembersOnly] = useState(false);
+  const [deliveryAvailable, setDeliveryAvailable] = useState(false);
   const [anyTime, setAnyTime] = useState(false);
   const [priceMode, setPriceMode] = useState<"fixed" | "percent" | "range">("fixed");
   const [form, setForm] = useState({
@@ -224,6 +226,8 @@ export default function NewSpecialPage() {
       suburbSlugs: form.suburbSlugs,
       chainWide: locationMode === "chainWide",
       greatValue,
+      membersOnly,
+      deliveryAvailable,
       usualPrice: priceMode === "fixed" && form.usualPrice ? parseFloat(form.usualPrice) : undefined,
       specialPrice: priceMode === "fixed" ? parseFloat(form.specialPrice) : undefined,
       discountPercent: priceMode === "percent" ? parseInt(form.discountPercent, 10) : undefined,
@@ -509,6 +513,24 @@ export default function NewSpecialPage() {
             onChange={(e) => setGreatValue(e.target.checked)}
           />
           💎 Everyday value — exceptional price for what you get (doesn't need to be discounted)
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-gray-600">
+          <input
+            type="checkbox"
+            checked={membersOnly}
+            onChange={(e) => setMembersOnly(e.target.checked)}
+          />
+          🔒 Members only — only set this when the venue explicitly says so
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-gray-600">
+          <input
+            type="checkbox"
+            checked={deliveryAvailable}
+            onChange={(e) => setDeliveryAvailable(e.target.checked)}
+          />
+          🛵 Available for delivery
         </label>
 
         <div>

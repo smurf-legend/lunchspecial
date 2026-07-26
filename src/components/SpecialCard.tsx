@@ -27,6 +27,8 @@ type SpecialCardType = {
   suburbs: { suburb: { name: string; slug: string } }[];
   chainWide?: boolean;
   greatValue?: boolean;
+  membersOnly?: boolean;
+  deliveryAvailable?: boolean;
   couponCode?: string | null;
   _count?: { comments: number };
   categories?: { category: { name: string; slug: string } }[];
@@ -92,6 +94,16 @@ export default function SpecialCard({
           {special.greatValue && (
             <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium shrink-0">
               💎 Everyday Value
+            </span>
+          )}
+          {special.membersOnly && (
+            <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-xs font-medium shrink-0">
+              🔒 Members Only
+            </span>
+          )}
+          {special.deliveryAvailable && (
+            <span className="bg-teal-100 text-teal-700 px-2 py-0.5 rounded text-xs font-medium shrink-0">
+              🛵 Delivery Available
             </span>
           )}
           {expired ? (

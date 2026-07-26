@@ -170,6 +170,16 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
                 💎 Everyday Value
               </span>
             )}
+            {special.membersOnly && (
+              <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-xs font-medium">
+                🔒 Members Only
+              </span>
+            )}
+            {special.deliveryAvailable && (
+              <span className="bg-teal-100 text-teal-700 px-2 py-0.5 rounded text-xs font-medium">
+                🛵 Delivery Available
+              </span>
+            )}
             {expired ? (
               <span className="bg-gray-200 text-gray-600 px-2 py-0.5 rounded text-xs font-medium">
                 Expired

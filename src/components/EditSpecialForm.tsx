@@ -34,6 +34,8 @@ type SpecialData = {
   suburbs: { suburb: { slug: string } }[];
   chainWide: boolean;
   greatValue: boolean;
+  membersOnly: boolean;
+  deliveryAvailable: boolean;
   categories: { category: { slug: string } }[];
 };
 
@@ -56,6 +58,8 @@ export default function EditSpecialForm({
     special.chainWide ? "chainWide" : special.suburbs.length > 1 ? "chain" : "single"
   );
   const [greatValue, setGreatValue] = useState(special.greatValue);
+  const [membersOnly, setMembersOnly] = useState(special.membersOnly);
+  const [deliveryAvailable, setDeliveryAvailable] = useState(special.deliveryAvailable);
   const [anyTime, setAnyTime] = useState(!special.startTime && !special.endTime);
   const [priceMode, setPriceMode] = useState<"fixed" | "percent" | "range">(
     special.discountPercent != null ? "percent" : special.priceRangeMin != null ? "range" : "fixed"
@@ -231,6 +235,8 @@ export default function EditSpecialForm({
       suburbSlugs: form.suburbSlugs,
       chainWide: locationMode === "chainWide",
       greatValue,
+      membersOnly,
+      deliveryAvailable,
       usualPrice: priceMode === "fixed" && form.usualPrice ? parseFloat(form.usualPrice) : null,
       specialPrice: priceMode === "fixed" ? parseFloat(form.specialPrice) : null,
       discountPercent: priceMode === "percent" ? parseInt(form.discountPercent, 10) : null,
@@ -476,6 +482,24 @@ export default function EditSpecialForm({
             onChange={(e) => setGreatValue(e.target.checked)}
           />
           💎 Everyday value — exceptional price for what you get (doesn't need to be discounted)
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-gray-600">
+          <input
+            type="checkbox"
+            checked={membersOnly}
+            onChange={(e) => setMembersOnly(e.target.checked)}
+          />
+          🔒 Members only — only set this when the venue explicitly says so
+        </label>
+
+        <label className="flex items-center gap-2 text-sm text-gray-600">
+          <input
+            type="checkbox"
+            checked={deliveryAvailable}
+            onChange={(e) => setDeliveryAvailable(e.target.checked)}
+          />
+          🛵 Available for delivery
         </label>
 
         <div>

@@ -156,6 +156,13 @@ model Special {
   // users as "Everyday Value" — field name predates that label.
   greatValue   Boolean   @default(false)
 
+  // Access/fulfilment flags, independent of each other and of everything
+  // else — most specials set neither, so no badge shows by default. Only
+  // set when the source explicitly says so (a venue rarely states these
+  // outright, so leave unset rather than guess from context).
+  membersOnly      Boolean @default(false)
+  deliveryAvailable Boolean @default(false)
+
   votes        Vote[]
   favorites    Favorite[]
   comments     Comment[]

@@ -29,6 +29,8 @@ export const specialUpdateSchema = z
     suburbSlugs: z.array(z.string()),
     chainWide: z.boolean().optional().default(false),
     greatValue: z.boolean().optional().default(false),
+    membersOnly: z.boolean().optional().default(false),
+    deliveryAvailable: z.boolean().optional().default(false),
     categorySlugs: z.array(z.string()).optional(),
   })
   .refine((data) => data.chainWide || data.suburbSlugs.length > 0, {

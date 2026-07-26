@@ -18,6 +18,62 @@ conclude "delete this" rather than "fix this".
 tier** (Case C) — if it does, that changes everything else about how this
 venue gets entered, so check this first, not after already writing one post.
 
+## Members-only and delivery flags
+
+`Special` has `membersOnly` and `deliveryAvailable` booleans (both default
+false, independent of each other — added 2026-07-26). Set `membersOnly:
+true` only when the source explicitly says so ("Members only", "Members
+and Dine-in Only" — Cabravale's District 8 and Bistro 1925 both state this
+outright). Same bar as `greatValue`: don't infer it from venue type (e.g.
+don't assume a club/RSL is members-only just because some are — check the
+actual page). `deliveryAvailable` likewise only when a delivery
+platform/link is actually mentioned, not assumed from venue type. Leave
+both false/unset if the source doesn't say, rather than guessing — a wrong
+`false` (silently missing a real restriction) is a worse failure than an
+absent badge, but don't flip it to `true` without a real statement to
+point to.
+
+## Title, price, and description formatting
+
+Applies to every case below (A, B, and C alike), and to step 4 of "Shared
+steps."
+
+- **No price in `title`.** The app shows `specialPrice`/`usualPrice` in a
+  bigger, more prominent spot right next to the title, so `"$18 burgers"`
+  is redundant — title the item itself: `"Burgers"`.
+- **No generic titles like "Lunch Special" or "Lunch Menu."** Name the dish,
+  or the choice of dishes, not the category the reader already knows it's
+  in. `"Fisherman Basket - Monday Special"`, not `"$15 Fisherman Basket -
+  Monday Special"` or just `"Lunch Special"`.
+- **`description` is about the food, not the venue.** Venue name, address,
+  and "a dedicated X shop on Y street" framing already have their own
+  fields (`venueName`, `address`) — repeating them in `description` is
+  redundant filler. Describe the dish: what's in it, how it's prepared,
+  what makes it worth ordering.
+- **No verification/sourcing notes in `description`.** "Confirmed against
+  the venue's own menu," "DoorDash lists it higher, which looks like
+  markup," "no real photo was available this pass" — that's your working
+  notes, not customer-facing copy. Put anything unverifiable in
+  `needsReviewNote` instead, and keep `description` to the fact itself.
+- **Real line breaks (`\n\n`) between items**, not one run-on paragraph, when
+  a description lists multiple options with their own detail. One item per
+  paragraph, the way `src/app/specials/new/page.tsx`'s textarea would render
+  it if typed by hand — the detail page already renders `\n\n` correctly
+  (`whitespace-pre-line`).
+- **A price with no discount and no "usually $X" isn't a "special" — but
+  that doesn't automatically mean `greatValue` either.** `greatValue`
+  ("Everyday Value") is for a price that's genuinely good against what
+  that dish normally costs elsewhere, not just "not a discount." If the
+  price is merely average for the category — Tenkomori's Chatswood ramen
+  turned out to be $20.90–$21.40, squarely in the normal $18–24 range for
+  Sydney ramen, nothing cheap about it — it isn't a deal *or* an everyday
+  value, it's just a menu price with nothing special to say about it:
+  **delete it**, same as Get Sashimi below. Reserve `greatValue` for cases
+  where you can actually argue the price is low for what it is (Marrickville
+  Pork Roll's $9 banh mi, or a $9 lemongrass beef banh mi against a $15+
+  Sydney norm) — if you can't make that case, it's either a real discount
+  (`usualPrice` set) or it doesn't belong on the site.
+
 ## Case A — the deal is a PDF (e.g. Newtown Hotel)
 
 The venue's site has no lunch-special content itself, only a "Download Menu"
@@ -205,6 +261,17 @@ this, from a real case:
   says something like "No weekly specials on file for this venue" — treat
   that as corroborating evidence, not proof on its own, but a real signal
   worth weighing alongside the venue's own site.
+- **The source article itself is old — treat that as a reason to lean
+  toward deleting, not as something a review or two can outweigh.** Manly
+  Thai Gourmet's $12 lunch menu was sourced from a "Manly food deals"
+  roundup dated 2024/03 — over two years stale by the time it was audited.
+  Finding a couple of recent reviews that still mention "the $12 deal" felt
+  like corroboration, but it wasn't a real check against the venue's
+  current, actual offering — it was just evidence *some* review mentioned
+  it at *some* point. When the only source for a deal's existence is a
+  dated article and nothing current and venue-specific confirms it, that's
+  grounds to delete on its own, not something to patch over with weak
+  secondary signals.
 
 If all of that holds — old/mismatched pricing, and no current special
 findable anywhere — don't try to force a correction (e.g. guessing an
@@ -257,7 +324,20 @@ the venue's deal at all, but about the source itself:
   aggregator but $16.90 on the venue's own Shopify store. When a price
   looks off, check whether the number you have came from a delivery
   platform rather than the venue directly, and prefer the venue's own site/
-  socials/PDF menu as the authoritative price.
+  socials/PDF menu as the authoritative price. **But this is a pattern to
+  check for, not a default to assume without evidence.** Tenkomori's own
+  site (tenkomori.com.au) only covers its Regent Place/Sydney CBD store —
+  it says so explicitly in the footer ("contents are based on Tenkomori
+  Regent Place... may vary for other shops") and its Chatswood location has
+  a different menu (a vegan ramen option that doesn't exist at Regent
+  Place at all). With no Chatswood-specific venue source available,
+  DoorDash's Chatswood store listing was assumed to be "marked up" from an
+  unrelated bulk-import price that had no actual source behind it —
+  that's backwards: an unsourced number isn't more trustworthy than a
+  sourced one just because it's lower. When the venue's own site covers a
+  *different location* than the one you're verifying, treat it as no
+  source at all for that location, not as grounds to doubt the one number
+  you actually have.
 - **Uber Eats (and similar) may show a bot-challenge page instead of
   content.** Don't try to solve or bypass it — treat that source as
   inaccessible and look elsewhere (the venue's own site, other aggregators,
@@ -359,16 +439,26 @@ the venue's deal at all, but about the source itself:
    "
    ```
 
-4. **Write to the DB.** Existing Special → `prisma.special.update(...)` on
+4. **Decide special vs. everyday value vs. delete before writing anything,
+   and re-check title/description against the formatting rules above.**
+   Every single post, no exceptions: no price in the title, no generic
+   "Lunch Special" title, description about the food not the venue, no
+   leaked verification notes. For the price itself — a real discount keeps
+   `usualPrice` set; a price that's genuinely low for the category (not
+   just undiscounted) gets `greatValue: true`; a price that's merely
+   average with nothing special about it gets deleted, not kept and
+   labelled "Everyday Value" as a consolation.
+
+5. **Write to the DB.** Existing Special → `prisma.special.update(...)` on
    just the fields that were wrong. New Special → follow the app's normal
    creation shape (see `src/app/specials/new/page.tsx`'s payload and the
    `SpecialSuburb`/`SpecialCategory` join rows) rather than hand-rolling a
    different shape.
 
-5. **Verify** by re-querying the row (and/or loading the live page) — don't
+6. **Verify** by re-querying the row (and/or loading the live page) — don't
    just trust that the write succeeded.
 
-6. **Clean up** downloaded PDFs/renders from the scratchpad once confirmed.
+7. **Clean up** downloaded PDFs/renders from the scratchpad once confirmed.
 
 ## Gotchas learned so far
 
