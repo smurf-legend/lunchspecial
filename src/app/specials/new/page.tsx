@@ -314,6 +314,7 @@ export default function NewSpecialPage() {
           placeholder="Title (e.g. $12 banh mi + drink combo)"
           required
           minLength={5}
+          maxLength={60}
           className="border rounded px-3 py-2"
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}

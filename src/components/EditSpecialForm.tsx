@@ -279,6 +279,7 @@ export default function EditSpecialForm({
           placeholder="Title"
           required
           minLength={5}
+          maxLength={60}
           className="border rounded px-3 py-2"
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}

@@ -5,7 +5,7 @@ import { noProfanity, profanityMessage } from "@/lib/profanity";
 // the two can never validate updates differently.
 export const specialUpdateSchema = z
   .object({
-    title: z.string().min(5).max(200).refine(noProfanity, profanityMessage("Title")),
+    title: z.string().min(5).max(60).refine(noProfanity, profanityMessage("Title")),
     description: z.string().min(10).refine(noProfanity, profanityMessage("Description")),
     venueName: z.string().min(1),
     address: z.string().optional().nullable(),
