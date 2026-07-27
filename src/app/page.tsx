@@ -147,6 +147,48 @@ export default async function HomePage({
   const stateCounts = new Map(suburbsByState.map((s) => [s.state, s._count]));
   const totalPages = Math.max(1, Math.ceil(totalMatching / PAGE_SIZE));
 
+  // A keyword that doesn't substring-match anything (a typo, a plural, a
+  // slightly different word order) otherwise dead-ends at "no results" even
+  // when a close match exists — fall back to trigram similarity, but only
+  // for a plain keyword search with nothing else narrowing it down, so a
+  // typo'd suburb name doesn't surface unrelated specials from elsewhere.
+  let fuzzyMatches: typeof specials = [];
+  const isPureKeywordSearch =
+    !!location &&
+    matchedSuburbs.length === 0 &&
+    !suburbSlug &&
+    !categorySlug &&
+    !priceTier &&
+    !greatValueOnly &&
+    sort !== "oldie" &&
+    !searchParams.state;
+  if (isPureKeywordSearch && totalMatching === 0) {
+    const candidates = await prisma.$queryRaw<{ id: string; sim: number }[]>`
+      SELECT id, GREATEST(
+        similarity(unaccent(title), unaccent(${location})),
+        similarity(unaccent("venueName"), unaccent(${location}))
+      ) AS sim
+      FROM "Special"
+      WHERE hidden = false
+      ORDER BY sim DESC
+      LIMIT 5
+    `;
+    const relevantIds = candidates.filter((c) => c.sim > 0.15).map((c) => c.id);
+    if (relevantIds.length > 0) {
+      const rows = await prisma.special.findMany({
+        where: { id: { in: relevantIds } },
+        include: {
+          suburbs: { include: { suburb: true } },
+          categories: { include: { category: true } },
+          _count: { select: { comments: true } },
+        },
+      });
+      const rank = new Map(relevantIds.map((id, i) => [id, i]));
+      fuzzyMatches = rows.sort((a, b) => rank.get(a.id)! - rank.get(b.id)!);
+    }
+  }
+  const displaySpecials = specials.length > 0 ? specials : fuzzyMatches;
+
   function buildLink(overrides: Record<string, string | undefined>) {
     const params = new URLSearchParams();
     const merged = {
@@ -274,7 +316,12 @@ export default async function HomePage({
       </div>
 
       <div className="flex flex-col gap-3">
-        {specials.map((special) => (
+        {specials.length === 0 && fuzzyMatches.length > 0 && (
+          <p className="text-gray-500 text-sm">
+            No exact matches for &ldquo;{location}&rdquo; — here&rsquo;s what&rsquo;s close:
+          </p>
+        )}
+        {displaySpecials.map((special) => (
           <SpecialCard
             key={special.id}
             special={special as any}
@@ -282,7 +329,7 @@ export default async function HomePage({
             contextSuburbSlug={suburbSlug ?? matchedSuburbs[0]?.slug}
           />
         ))}
-        {specials.length === 0 && (
+        {displaySpecials.length === 0 && (
           <p className="text-gray-500 text-center py-12">
             {suburbSlug || categorySlug || location || priceTier || greatValueOnly || stateFilter || sort === "oldie" ? (
               "No lunch specials match those filters yet."
