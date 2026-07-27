@@ -8,6 +8,9 @@ const FROM = "LunchSpecial <team@lunchspecial.com.au>";
 // miss one. Overridable via env without a code change if that ever needs to
 // go somewhere else (a shared inbox, etc).
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "clark.kent.480190@gmail.com";
+// Where new-signup and new-special notifications go — the shared inbox the
+// chef actually checks, distinct from ADMIN_EMAIL above (tip submissions).
+const CHEF_EMAIL = process.env.CHEF_EMAIL || "chef@lunchspecial.com.au";
 
 export async function sendPasswordResetEmail(to: string, resetUrl: string) {
   if (!process.env.RESEND_API_KEY) {
@@ -122,5 +125,55 @@ export async function sendTipSubmissionEmail(details: string, link: string | nul
 
   if (error) {
     console.error("[mail] Failed to send tip submission email:", error);
+  }
+}
+
+export async function sendNewSignupEmail(user: { name: string; email: string }) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[mail] RESEND_API_KEY is not set — skipping new signup email");
+    return;
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: CHEF_EMAIL,
+    subject: "New LunchSpecial signup",
+    html: `
+      <p>A new user just signed up:</p>
+      <p><strong>${user.name}</strong> — ${user.email}</p>
+    `,
+  });
+
+  if (error) {
+    console.error("[mail] Failed to send new signup email:", error);
+  }
+}
+
+export async function sendNewSpecialEmail(special: {
+  id: string;
+  title: string;
+  venueName: string;
+  authorName: string;
+}) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[mail] RESEND_API_KEY is not set — skipping new special email");
+    return;
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: CHEF_EMAIL,
+    subject: "New special posted",
+    html: `
+      <p><strong>${special.venueName}</strong> — ${special.title}</p>
+      <p>Posted by ${special.authorName}</p>
+      <p><a href="${SITE_URL}/specials/${specialSlug(special)}" style="color:#ea580c;">View the special →</a></p>
+    `,
+  });
+
+  if (error) {
+    console.error("[mail] Failed to send new special email:", error);
   }
 }

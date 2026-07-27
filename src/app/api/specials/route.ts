@@ -4,11 +4,12 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { findDuplicateSpecials } from "@/lib/duplicateCheck";
 import { noProfanity, profanityMessage } from "@/lib/profanity";
+import { sendNewSpecialEmail } from "@/lib/mail";
 import { z } from "zod";
 
 const specialSchema = z
   .object({
-    title: z.string().min(5).max(200).refine(noProfanity, profanityMessage("Title")),
+    title: z.string().min(5).max(60).refine(noProfanity, profanityMessage("Title")),
     description: z.string().min(10).refine(noProfanity, profanityMessage("Description")),
     venueName: z.string().min(1),
     address: z.string().optional(),
@@ -177,6 +178,13 @@ export async function POST(req: NextRequest) {
           }
         : undefined,
     },
+  });
+
+  await sendNewSpecialEmail({
+    id: special.id,
+    title: special.title,
+    venueName: special.venueName,
+    authorName: session.user.name ?? "a user",
   });
 
   return NextResponse.json({ special }, { status: 201 });

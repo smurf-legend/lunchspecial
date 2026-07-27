@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { containsProfanity } from "@/lib/profanity";
+import { sendNewSignupEmail } from "@/lib/mail";
 
 const registerSchema = z.object({
   name: z
@@ -61,6 +62,8 @@ export async function POST(req: NextRequest) {
     },
     select: { id: true, name: true, email: true },
   });
+
+  await sendNewSignupEmail(user);
 
   return NextResponse.json({ user }, { status: 201 });
 }
