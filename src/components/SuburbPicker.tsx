@@ -8,43 +8,49 @@ type Suburb = { name: string; slug: string; postcode: string; state: string };
 // pattern as SuburbAutocomplete's single-suburb search, just allowing more
 // than one. Needed once a special (e.g. a chain deal at a few specific
 // locations) can belong to many suburbs instead of just one.
+//
+// Searches server-side (debounced, /api/suburbs/search) rather than
+// filtering a full suburb list client-side — see SuburbAutocomplete for why.
 export default function SuburbPicker({
-  suburbs,
   selected,
   onChange,
 }: {
-  suburbs: Suburb[];
-  selected: string[];
-  onChange: (slugs: string[]) => void;
+  selected: Suburb[];
+  onChange: (suburbs: Suburb[]) => void;
 }) {
   const [query, setQuery] = useState("");
-  const [localSuburbs, setLocalSuburbs] = useState(suburbs);
+  const [matches, setMatches] = useState<Suburb[]>([]);
   const [adding, setAdding] = useState(false);
   const [newPostcode, setNewPostcode] = useState("");
   const [newState, setNewState] = useState<string>(AU_STATES[0].code);
   const [addError, setAddError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => setLocalSuburbs(suburbs), [suburbs]);
+  const q = query.trim();
+  const selectedSlugs = new Set(selected.map((s) => s.slug));
 
-  const q = query.trim().toLowerCase();
-  const matches = q
-    ? localSuburbs
-        .filter((s) => !selected.includes(s.slug) && (s.name.toLowerCase().includes(q) || s.postcode.startsWith(q)))
-        .slice(0, 8)
-    : [];
+  useEffect(() => {
+    if (!q) {
+      setMatches([]);
+      return;
+    }
+    const timeout = setTimeout(() => {
+      fetch(`/api/suburbs/search?q=${encodeURIComponent(q)}`)
+        .then((res) => res.json())
+        .then((data) => setMatches((data.suburbs ?? []).filter((s: Suburb) => !selectedSlugs.has(s.slug))))
+        .catch(() => setMatches([]));
+    }, 200);
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q, selected]);
 
-  const selectedSuburbs = selected
-    .map((slug) => localSuburbs.find((s) => s.slug === slug))
-    .filter((s): s is Suburb => !!s);
-
-  function addSlug(slug: string) {
-    onChange([...selected, slug]);
+  function addSuburb(suburb: Suburb) {
+    onChange([...selected, suburb]);
     setQuery("");
   }
 
   function removeSlug(slug: string) {
-    onChange(selected.filter((s) => s !== slug));
+    onChange(selected.filter((s) => s.slug !== slug));
   }
 
   async function handleAddSuburb() {
@@ -66,17 +72,16 @@ export default function SuburbPicker({
     }
 
     const { suburb } = await res.json();
-    setLocalSuburbs((prev) => [...prev, suburb]);
-    addSlug(suburb.slug);
+    addSuburb(suburb);
     setAdding(false);
     setNewPostcode("");
   }
 
   return (
     <div className="border rounded p-3">
-      {selectedSuburbs.length > 0 && (
+      {selected.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-2">
-          {selectedSuburbs.map((s) => (
+          {selected.map((s) => (
             <span
               key={s.slug}
               className="flex items-center gap-1 bg-orange-50 text-orange-700 text-sm pl-2.5 pr-1.5 py-1 rounded-full"
@@ -111,7 +116,7 @@ export default function SuburbPicker({
               <button
                 key={s.slug}
                 type="button"
-                onClick={() => addSlug(s.slug)}
+                onClick={() => addSuburb(s)}
                 className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-50"
               >
                 {s.name} <span className="text-gray-400">({s.postcode}, {s.state})</span>

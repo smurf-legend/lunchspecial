@@ -13,9 +13,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [marketingOptIn, setMarketingOptIn] = useState(false);
-  const [preferredSuburbSlug, setPreferredSuburbSlug] = useState<string | null>(null);
+  const [preferredSuburb, setPreferredSuburb] = useState<Suburb | null>(null);
   const [preferredCategorySlugs, setPreferredCategorySlugs] = useState<string[]>([]);
-  const [suburbs, setSuburbs] = useState<Suburb[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -24,7 +23,6 @@ export default function RegisterPage() {
     fetch("/api/meta")
       .then((r) => r.json())
       .then((data) => {
-        setSuburbs(data.suburbs ?? []);
         setCategories(data.categories ?? []);
       });
   }, []);
@@ -33,7 +31,7 @@ export default function RegisterPage() {
     e.preventDefault();
     setError(null);
 
-    if (marketingOptIn && !preferredSuburbSlug) {
+    if (marketingOptIn && !preferredSuburb) {
       setError("Pick a suburb so we know where to send deals from.");
       return;
     }
@@ -46,7 +44,7 @@ export default function RegisterPage() {
       body: JSON.stringify({
         ...form,
         marketingOptIn,
-        preferredSuburbSlug: marketingOptIn ? preferredSuburbSlug : undefined,
+        preferredSuburbSlug: marketingOptIn ? preferredSuburb?.slug : undefined,
         preferredCategorySlugs: marketingOptIn ? preferredCategorySlugs : undefined,
       }),
     });
@@ -132,9 +130,8 @@ export default function RegisterPage() {
                 Which suburb do you want lunch deals from?
               </label>
               <SuburbAutocomplete
-                suburbs={suburbs}
-                value={preferredSuburbSlug}
-                onChange={setPreferredSuburbSlug}
+                value={preferredSuburb}
+                onChange={setPreferredSuburb}
               />
               <p className="text-xs text-gray-400 mt-1">
                 We'll email you the best specials near this suburb — you can change it anytime in

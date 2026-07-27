@@ -1,0 +1,2240 @@
+[
+  {
+    "slug": "alawa",
+    "name": "Alawa",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "brinkin",
+    "name": "Brinkin",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "casuarina-nt",
+    "name": "Casuarina",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "coconut-grove",
+    "name": "Coconut Grove",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "jingili",
+    "name": "Jingili",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "lee-point",
+    "name": "Lee Point",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "lyons-nt",
+    "name": "Lyons",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "millner",
+    "name": "Millner",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "moil",
+    "name": "Moil",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "muirhead",
+    "name": "Muirhead",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "nakara",
+    "name": "Nakara",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "nightcliff",
+    "name": "Nightcliff",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "rapid-creek",
+    "name": "Rapid Creek",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "tiwi",
+    "name": "Tiwi",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "wagaman",
+    "name": "Wagaman",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "wanguri",
+    "name": "Wanguri",
+    "postcode": "0810",
+    "region": "Darwin"
+  },
+  {
+    "slug": "anula",
+    "name": "Anula",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "buffalo-creek-nt",
+    "name": "Buffalo Creek",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "holmes",
+    "name": "Holmes",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "karama",
+    "name": "Karama",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "leanyer",
+    "name": "Leanyer",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "malak",
+    "name": "Malak",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "marrara",
+    "name": "Marrara",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "northlakes",
+    "name": "Northlakes",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "sanderson",
+    "name": "Sanderson",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "woodleigh-gardens",
+    "name": "Woodleigh Gardens",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "wulagi",
+    "name": "Wulagi",
+    "postcode": "0812",
+    "region": "Darwin"
+  },
+  {
+    "slug": "bagot",
+    "name": "Bagot",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "bayview-nt",
+    "name": "Bayview",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "charles-darwin",
+    "name": "Charles Darwin",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "coonawarra-nt",
+    "name": "Coonawarra",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "cullen-bay",
+    "name": "Cullen Bay",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "darwin-dc",
+    "name": "Darwin Dc",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "darwin-international-airport",
+    "name": "Darwin International Airport",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "darwin-mc",
+    "name": "Darwin Mc",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "east-point",
+    "name": "East Point",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "eaton-nt",
+    "name": "Eaton",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "fannie-bay",
+    "name": "Fannie Bay",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "larrakeyah",
+    "name": "Larrakeyah",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "ludmilla",
+    "name": "Ludmilla",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "parap",
+    "name": "Parap",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "raaf-base-darwin",
+    "name": "Raaf Base Darwin",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "stuart-park",
+    "name": "Stuart Park",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "the-gardens-nt",
+    "name": "The Gardens",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "the-narrows-nt",
+    "name": "The Narrows",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "winnellie",
+    "name": "Winnellie",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "woolner",
+    "name": "Woolner",
+    "postcode": "0820",
+    "region": "Darwin"
+  },
+  {
+    "slug": "acacia-hills-nt",
+    "name": "Acacia Hills",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "angurugu",
+    "name": "Angurugu",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "anindilyakwa",
+    "name": "Anindilyakwa",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "annie-river",
+    "name": "Annie River",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "bathurst-island",
+    "name": "Bathurst Island",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "bees-creek",
+    "name": "Bees Creek",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "belyuen",
+    "name": "Belyuen",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "black-jungle",
+    "name": "Black Jungle",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "blackmore",
+    "name": "Blackmore",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "border-store",
+    "name": "Border Store",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "burrundie",
+    "name": "Burrundie",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "bynoe",
+    "name": "Bynoe",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "bynoe-harbour",
+    "name": "Bynoe Harbour",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "camp-creek-nt",
+    "name": "Camp Creek",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "channel-island",
+    "name": "Channel Island",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "charlotte",
+    "name": "Charlotte",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "claravale",
+    "name": "Claravale",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "cobourg",
+    "name": "Cobourg",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "collett-creek",
+    "name": "Collett Creek",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "coomalie-creek",
+    "name": "Coomalie Creek",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "cox-peninsula",
+    "name": "Cox Peninsula",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "croker-island",
+    "name": "Croker Island",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "daly",
+    "name": "Daly",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "daly-river",
+    "name": "Daly River",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "darwin-river-dam",
+    "name": "Darwin River Dam",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "delissaville",
+    "name": "Delissaville",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "douglas-daly",
+    "name": "Douglas-Daly",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "east-arm",
+    "name": "East Arm",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "east-arnhem",
+    "name": "East Arnhem",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "elrundie",
+    "name": "Elrundie",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "eva-valley",
+    "name": "Eva Valley",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "finniss-valley",
+    "name": "Finniss Valley",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "fleming",
+    "name": "Fleming",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "fly-creek",
+    "name": "Fly Creek",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "freds-pass",
+    "name": "Freds Pass",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "galiwinku",
+    "name": "Galiwinku",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "glyde-point",
+    "name": "Glyde Point",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "goulbourn-island",
+    "name": "Goulbourn Island",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "goulburn-island",
+    "name": "Goulburn Island",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "gunbalanya",
+    "name": "Gunbalanya",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "gunn-point",
+    "name": "Gunn Point",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "hayes-creek",
+    "name": "Hayes Creek",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "hidden-valley-nt",
+    "name": "Hidden Valley",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "hotham",
+    "name": "Hotham",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "hughes",
+    "name": "Hughes",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "kakadu",
+    "name": "Kakadu",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "koolpinyah",
+    "name": "Koolpinyah",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "lake-bennett",
+    "name": "Lake Bennett",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "lambells-lagoon",
+    "name": "Lambells Lagoon",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "litchfield-park",
+    "name": "Litchfield Park",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "livingstone",
+    "name": "Livingstone",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "lloyd-creek",
+    "name": "Lloyd Creek",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mandorah",
+    "name": "Mandorah",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "maningrida",
+    "name": "Maningrida",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mapuru",
+    "name": "Mapuru",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "maranunga",
+    "name": "Maranunga",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "margaret-river-nt",
+    "name": "Margaret River",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "marrakai",
+    "name": "Marrakai",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mcminns-lagoon",
+    "name": "Mcminns Lagoon",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "micket-creek",
+    "name": "Micket Creek",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mickett-creek",
+    "name": "Mickett Creek",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "middle-point",
+    "name": "Middle Point",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "milikapiti",
+    "name": "Milikapiti",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "milingimbi",
+    "name": "Milingimbi",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "millwood-nt",
+    "name": "Millwood",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "milyakburra",
+    "name": "Milyakburra",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "minjilang",
+    "name": "Minjilang",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mount-bundey",
+    "name": "Mount Bundey",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "murrumujuk",
+    "name": "Murrumujuk",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nauiyu",
+    "name": "Nauiyu",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nemarluk",
+    "name": "Nemarluk",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nganmarriyanga",
+    "name": "Nganmarriyanga",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nguiu",
+    "name": "Nguiu",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "numbulwar",
+    "name": "Numbulwar",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "numburindi",
+    "name": "Numburindi",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "oenpelli",
+    "name": "Oenpelli",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "peppimenarti",
+    "name": "Peppimenarti",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "pirlangimpi",
+    "name": "Pirlangimpi",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "point-stephens",
+    "name": "Point Stephens",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "point-stuart",
+    "name": "Point Stuart",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "pularumpi",
+    "name": "Pularumpi",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "pulumpa",
+    "name": "Pulumpa",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "rakula",
+    "name": "Rakula",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ramingining",
+    "name": "Ramingining",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "robin-falls",
+    "name": "Robin Falls",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "rum-jungle",
+    "name": "Rum Jungle",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "sandpalms-roadhouse",
+    "name": "Sandpalms Roadhouse",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "southport-nt",
+    "name": "Southport",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "stapleton",
+    "name": "Stapleton",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "thamarrurr",
+    "name": "Thamarrurr",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tipperary-nt",
+    "name": "Tipperary",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tivendale",
+    "name": "Tivendale",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tiwi-islands",
+    "name": "Tiwi Islands",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tortilla-flats",
+    "name": "Tortilla Flats",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tumbling-waters",
+    "name": "Tumbling Waters",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "umbakumba",
+    "name": "Umbakumba",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "vernon-islands",
+    "name": "Vernon Islands",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "virginia-nt",
+    "name": "Virginia",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wadeye",
+    "name": "Wadeye",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wagait-beach",
+    "name": "Wagait Beach",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wak-wak",
+    "name": "Wak Wak",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "warruwi",
+    "name": "Warruwi",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "weddell",
+    "name": "Weddell",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "west-arnhem",
+    "name": "West Arnhem",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wickham-nt",
+    "name": "Wickham",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wishart-nt",
+    "name": "Wishart",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "woolaning",
+    "name": "Woolaning",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wurrumiyanga",
+    "name": "Wurrumiyanga",
+    "postcode": "0822",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "holtze",
+    "name": "Holtze",
+    "postcode": "0829",
+    "region": "Darwin"
+  },
+  {
+    "slug": "pinelands-nt",
+    "name": "Pinelands",
+    "postcode": "0829",
+    "region": "Darwin"
+  },
+  {
+    "slug": "archer",
+    "name": "Archer",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "driver",
+    "name": "Driver",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "durack-nt",
+    "name": "Durack",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "farrar",
+    "name": "Farrar",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "gray-nt",
+    "name": "Gray",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "marlow-lagoon",
+    "name": "Marlow Lagoon",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "moulden",
+    "name": "Moulden",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "palmerston-nt",
+    "name": "Palmerston",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "shoal-bay-nt",
+    "name": "Shoal Bay",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "woodroffe",
+    "name": "Woodroffe",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "yarrawonga-nt",
+    "name": "Yarrawonga",
+    "postcode": "0830",
+    "region": "Darwin"
+  },
+  {
+    "slug": "bakewell",
+    "name": "Bakewell",
+    "postcode": "0832",
+    "region": "Darwin"
+  },
+  {
+    "slug": "bellamack",
+    "name": "Bellamack",
+    "postcode": "0832",
+    "region": "Darwin"
+  },
+  {
+    "slug": "gunn",
+    "name": "Gunn",
+    "postcode": "0832",
+    "region": "Darwin"
+  },
+  {
+    "slug": "johnston",
+    "name": "Johnston",
+    "postcode": "0832",
+    "region": "Darwin"
+  },
+  {
+    "slug": "mitchell-nt",
+    "name": "Mitchell",
+    "postcode": "0832",
+    "region": "Darwin"
+  },
+  {
+    "slug": "rosebery-nt",
+    "name": "Rosebery",
+    "postcode": "0832",
+    "region": "Darwin"
+  },
+  {
+    "slug": "rosebery-heights",
+    "name": "Rosebery Heights",
+    "postcode": "0832",
+    "region": "Darwin"
+  },
+  {
+    "slug": "zuccoli",
+    "name": "Zuccoli",
+    "postcode": "0832",
+    "region": "Darwin"
+  },
+  {
+    "slug": "girraween-nt",
+    "name": "Girraween",
+    "postcode": "0836",
+    "region": "Darwin"
+  },
+  {
+    "slug": "herbert",
+    "name": "Herbert",
+    "postcode": "0836",
+    "region": "Darwin"
+  },
+  {
+    "slug": "humpty-doo",
+    "name": "Humpty Doo",
+    "postcode": "0836",
+    "region": "Darwin"
+  },
+  {
+    "slug": "manton-nt",
+    "name": "Manton",
+    "postcode": "0837",
+    "region": "Darwin"
+  },
+  {
+    "slug": "noonamah",
+    "name": "Noonamah",
+    "postcode": "0837",
+    "region": "Darwin"
+  },
+  {
+    "slug": "coolalinga",
+    "name": "Coolalinga",
+    "postcode": "0839",
+    "region": "Darwin"
+  },
+  {
+    "slug": "cossack-nt",
+    "name": "Cossack",
+    "postcode": "0850",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "emungalan",
+    "name": "Emungalan",
+    "postcode": "0850",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "katherine",
+    "name": "Katherine",
+    "postcode": "0850",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "katherine-east",
+    "name": "Katherine East",
+    "postcode": "0850",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "katherine-south",
+    "name": "Katherine South",
+    "postcode": "0850",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "lansdowne-nt",
+    "name": "Lansdowne",
+    "postcode": "0850",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "arnold-nt",
+    "name": "Arnold",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "baines",
+    "name": "Baines",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "barunga",
+    "name": "Barunga",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "beswick",
+    "name": "Beswick",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "beswick-creek",
+    "name": "Beswick Creek",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "binjari",
+    "name": "Binjari",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "birdum",
+    "name": "Birdum",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "bradshaw",
+    "name": "Bradshaw",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "buchanan-nt",
+    "name": "Buchanan",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "bulman-weemol",
+    "name": "Bulman Weemol",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "creswell",
+    "name": "Creswell",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "daguragu",
+    "name": "Daguragu",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "daly-waters",
+    "name": "Daly Waters",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "delamere-nt",
+    "name": "Delamere",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "dunmarra",
+    "name": "Dunmarra",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "edith-nt",
+    "name": "Edith",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "edith-river",
+    "name": "Edith River",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "elsey",
+    "name": "Elsey",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "elsey-station",
+    "name": "Elsey Station",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "florina",
+    "name": "Florina",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "flying-fox-nt",
+    "name": "Flying Fox",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "gregory-nt",
+    "name": "Gregory",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "gulung-mardrulk",
+    "name": "Gulung Mardrulk",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "gurindji",
+    "name": "Gurindji",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "helen-springs-station",
+    "name": "Helen Springs Station",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "jilkminggan",
+    "name": "Jilkminggan",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "kalkarindji",
+    "name": "Kalkarindji",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "kalkaringi",
+    "name": "Kalkaringi",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "lajamanu",
+    "name": "Lajamanu",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "larrimah",
+    "name": "Larrimah",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "limmen",
+    "name": "Limmen",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "manbulloo",
+    "name": "Manbulloo",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "maranboy",
+    "name": "Maranboy",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mataranka",
+    "name": "Mataranka",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mcarthur",
+    "name": "Mcarthur",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "miniyeri",
+    "name": "Miniyeri",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "miniyerri",
+    "name": "Miniyerri",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ngukurr",
+    "name": "Ngukurr",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nitjpurru",
+    "name": "Nitjpurru",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nitmiluk",
+    "name": "Nitmiluk",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nutwood-downs",
+    "name": "Nutwood Downs",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "pellew-islands",
+    "name": "Pellew Islands",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "pigeon-hole",
+    "name": "Pigeon Hole",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "robinson-river",
+    "name": "Robinson River",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "sturt-plateau",
+    "name": "Sturt Plateau",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tanami-east",
+    "name": "Tanami East",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "timber-creek",
+    "name": "Timber Creek",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "top-springs",
+    "name": "Top Springs",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "uralla-nt",
+    "name": "Uralla",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "venn",
+    "name": "Venn",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "victoria-river",
+    "name": "Victoria River",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "victoria-river-downs",
+    "name": "Victoria River Downs",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "warumungu",
+    "name": "Warumungu",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wave-hill",
+    "name": "Wave Hill",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wilton-nt",
+    "name": "Wilton",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wugularr",
+    "name": "Wugularr",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "yarralin",
+    "name": "Yarralin",
+    "postcode": "0852",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tindal",
+    "name": "Tindal",
+    "postcode": "0853",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tindal-raaf",
+    "name": "Tindal Raaf",
+    "postcode": "0853",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "borroloola",
+    "name": "Borroloola",
+    "postcode": "0854",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "king-ash-bay",
+    "name": "King Ash Bay",
+    "postcode": "0854",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "avon-downs",
+    "name": "Avon Downs",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "calvert-nt",
+    "name": "Calvert",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "cresswell-downs",
+    "name": "Cresswell Downs",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "elliott-nt",
+    "name": "Elliott",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "helen-springs",
+    "name": "Helen Springs",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "muckaty-station",
+    "name": "Muckaty Station",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "newcastle-waters",
+    "name": "Newcastle Waters",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nicholson-nt",
+    "name": "Nicholson",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "pamayu",
+    "name": "Pamayu",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "phillip-creek-station",
+    "name": "Phillip Creek Station",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "renner-springs",
+    "name": "Renner Springs",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tablelands-nt",
+    "name": "Tablelands",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tennant-creek",
+    "name": "Tennant Creek",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "three-ways",
+    "name": "Three Ways",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "warrego",
+    "name": "Warrego",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wollogorang-station",
+    "name": "Wollogorang Station",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wycliffe-well",
+    "name": "Wycliffe Well",
+    "postcode": "0862",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "alice-springs",
+    "name": "Alice Springs",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "araluen-nt",
+    "name": "Araluen",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "braitling",
+    "name": "Braitling",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ciccone",
+    "name": "Ciccone",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "desert-springs",
+    "name": "Desert Springs",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "east-side",
+    "name": "East Side",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "gillen",
+    "name": "Gillen",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "sadadeen",
+    "name": "Sadadeen",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "stuart-nt",
+    "name": "Stuart",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "the-gap-nt",
+    "name": "The Gap",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "white-gums",
+    "name": "White Gums",
+    "postcode": "0870",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "aherrenge",
+    "name": "Aherrenge",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ali-curung",
+    "name": "Ali Curung",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "amata",
+    "name": "Amata",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "amoonguna",
+    "name": "Amoonguna",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ampilatwatja",
+    "name": "Ampilatwatja",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "anangu-pitjantjatjara-yankunytjatjara",
+    "name": "Anangu Pitjantjatjara Yankunytjatjara",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "anatye",
+    "name": "Anatye",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "anmatjere",
+    "name": "Anmatjere",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "antewenegerrde",
+    "name": "Antewenegerrde",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "areyonga",
+    "name": "Areyonga",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "atitjere",
+    "name": "Atitjere",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ayers-range-south",
+    "name": "Ayers Range South",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ayers-rock",
+    "name": "Ayers Rock",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "barrow-creek",
+    "name": "Barrow Creek",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "burt-plain",
+    "name": "Burt Plain",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "canteen-creek",
+    "name": "Canteen Creek",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "chilla-well",
+    "name": "Chilla Well",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "costello",
+    "name": "Costello",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "davenport-nt",
+    "name": "Davenport",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "de-rose-hill",
+    "name": "De Rose Hill",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "docker-river",
+    "name": "Docker River",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "engawala",
+    "name": "Engawala",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "erldunda",
+    "name": "Erldunda",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ernabella",
+    "name": "Ernabella",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ernabella-pukatja",
+    "name": "Ernabella (Pukatja)",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "finke",
+    "name": "Finke",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "fregon",
+    "name": "Fregon",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ghan",
+    "name": "Ghan",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "haasts-bluff",
+    "name": "Haasts Bluff",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "hale",
+    "name": "Hale",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "hart-nt",
+    "name": "Hart",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "hart-range",
+    "name": "Hart Range",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "hermannsburg",
+    "name": "Hermannsburg",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "hugh",
+    "name": "Hugh",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "imampa",
+    "name": "Imampa",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "imanpa",
+    "name": "Imanpa",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ininti-store",
+    "name": "Ininti Store",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "jay-creek",
+    "name": "Jay Creek",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "kaltukatjara",
+    "name": "Kaltukatjara",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "kings-creek-station",
+    "name": "Kings Creek Station",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "kintore",
+    "name": "Kintore",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "kulgera",
+    "name": "Kulgera",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "kunparrka",
+    "name": "Kunparrka",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "lake-mackay",
+    "name": "Lake Mackay",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "laramba",
+    "name": "Laramba",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "macdonnell-range",
+    "name": "Macdonnell Range",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mereenie",
+    "name": "Mereenie",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mount-liebig",
+    "name": "Mount Liebig",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mount-zeil",
+    "name": "Mount Zeil",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mulga-bore",
+    "name": "Mulga Bore",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "murputja-homelands",
+    "name": "Murputja Homelands",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mutitjulu",
+    "name": "Mutitjulu",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "namatjira",
+    "name": "Namatjira",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "napperby-station",
+    "name": "Napperby Station",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nyirripi",
+    "name": "Nyirripi",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "papunya",
+    "name": "Papunya",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "petermann",
+    "name": "Petermann",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "pitjantjatjara-homelands",
+    "name": "Pitjantjatjara Homelands",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "sandover",
+    "name": "Sandover",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "santa-teresa",
+    "name": "Santa Teresa",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "simpson-nt",
+    "name": "Simpson",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tanami-nt",
+    "name": "Tanami",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "tara-nt",
+    "name": "Tara",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "telegraph-station",
+    "name": "Telegraph Station",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "thangkenharenge",
+    "name": "Thangkenharenge",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ti-tree",
+    "name": "Ti Tree",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "titjikala",
+    "name": "Titjikala",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "uluru",
+    "name": "Uluru",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "umpangara",
+    "name": "Umpangara",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "urapuntja",
+    "name": "Urapuntja",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wallace-rockhole",
+    "name": "Wallace Rockhole",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wanarn",
+    "name": "Wanarn",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "willowra",
+    "name": "Willowra",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wilora",
+    "name": "Wilora",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "wutunugurra",
+    "name": "Wutunugurra",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "yuelamu",
+    "name": "Yuelamu",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "yuendumu",
+    "name": "Yuendumu",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "yulara",
+    "name": "Yulara",
+    "postcode": "0872",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "arumbera",
+    "name": "Arumbera",
+    "postcode": "0873",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "connellan",
+    "name": "Connellan",
+    "postcode": "0873",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "heavitree-gap-cpa",
+    "name": "Heavitree Gap Cpa",
+    "postcode": "0873",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ilparpa",
+    "name": "Ilparpa",
+    "postcode": "0873",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "kilgariff",
+    "name": "Kilgariff",
+    "postcode": "0873",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ross-nt",
+    "name": "Ross",
+    "postcode": "0873",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "irlpme",
+    "name": "Irlpme",
+    "postcode": "0874",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "mount-johns",
+    "name": "Mount Johns",
+    "postcode": "0874",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "undoolya",
+    "name": "Undoolya",
+    "postcode": "0874",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "flynn-nt",
+    "name": "Flynn",
+    "postcode": "0875",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "larapinta-nt",
+    "name": "Larapinta",
+    "postcode": "0875",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "gapuwiyak",
+    "name": "Gapuwiyak",
+    "postcode": "0880",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "gove",
+    "name": "Gove",
+    "postcode": "0880",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "gunyangara",
+    "name": "Gunyangara",
+    "postcode": "0880",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "nhulunbuy",
+    "name": "Nhulunbuy",
+    "postcode": "0880",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "yirrkala",
+    "name": "Yirrkala",
+    "postcode": "0880",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "alyangula",
+    "name": "Alyangula",
+    "postcode": "0885",
+    "region": "Regional NT"
+  },
+  {
+    "slug": "ranken",
+    "name": "Ranken",
+    "postcode": "4825",
+    "region": "Regional NT"
+  }
+]

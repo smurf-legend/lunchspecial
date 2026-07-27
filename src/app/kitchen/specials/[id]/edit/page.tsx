@@ -28,16 +28,15 @@ export default async function EditSpecialPage({ params }: { params: { id: string
     );
   }
 
-  const [special, suburbs, categories] = await Promise.all([
+  const [special, categories] = await Promise.all([
     prisma.special.findUnique({
       where: { id: params.id },
       include: { suburbs: { include: { suburb: true } }, categories: { include: { category: true } } },
     }),
-    prisma.suburb.findMany({ orderBy: { name: "asc" }, select: { name: true, slug: true, postcode: true, region: true, state: true } }),
     prisma.category.findMany({ orderBy: { name: "asc" }, select: { name: true, slug: true } }),
   ]);
 
   if (!special) notFound();
 
-  return <EditSpecialForm special={special as any} suburbs={suburbs} categories={categories} />;
+  return <EditSpecialForm special={special as any} categories={categories} />;
 }

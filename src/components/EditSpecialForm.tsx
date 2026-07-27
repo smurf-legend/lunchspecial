@@ -9,7 +9,7 @@ import { specialSlug } from "@/lib/slugify";
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 type Option = { name: string; slug: string };
-type SuburbOption = { name: string; slug: string; postcode: string; region: string; state: string };
+type SuburbOption = { name: string; slug: string; postcode: string; state: string };
 type Photo = { key: string; kind: "existing"; url: string } | { key: string; kind: "new"; file: File; preview: string };
 
 type SpecialData = {
@@ -31,7 +31,7 @@ type SpecialData = {
   startTime: string | null;
   endTime: string | null;
   expiresAt: string | Date | null;
-  suburbs: { suburb: { slug: string } }[];
+  suburbs: { suburb: SuburbOption }[];
   chainWide: boolean;
   greatValue: boolean;
   membersOnly: boolean;
@@ -41,17 +41,18 @@ type SpecialData = {
 
 export default function EditSpecialForm({
   special,
-  suburbs,
   categories: initialCategories,
   apiBase = "/api/admin/specials",
 }: {
   special: SpecialData;
-  suburbs: SuburbOption[];
   categories: Option[];
   apiBase?: string;
 }) {
   const router = useRouter();
   const [categories, setCategories] = useState(initialCategories);
+  const [selectedSuburbs, setSelectedSuburbs] = useState<SuburbOption[]>(
+    special.suburbs.map((s) => s.suburb)
+  );
   const [newCategoryInput, setNewCategoryInput] = useState("");
   const [addingCategory, setAddingCategory] = useState(false);
   const [locationMode, setLocationMode] = useState<"single" | "chain" | "chainWide">(
@@ -71,7 +72,6 @@ export default function EditSpecialForm({
     address: special.address ?? "",
     url: special.url ?? "",
     couponCode: special.couponCode ?? "",
-    suburbSlugs: special.suburbs.map((s) => s.suburb.slug),
     usualPrice: special.usualPrice?.toString() ?? "",
     specialPrice: special.specialPrice?.toString() ?? "",
     discountPercent: special.discountPercent?.toString() ?? "",
@@ -232,7 +232,7 @@ export default function EditSpecialForm({
       address: form.address || undefined,
       url: form.url || undefined,
       couponCode: form.couponCode || undefined,
-      suburbSlugs: form.suburbSlugs,
+      suburbSlugs: selectedSuburbs.map((s) => s.slug),
       chainWide: locationMode === "chainWide",
       greatValue,
       membersOnly,
@@ -345,7 +345,7 @@ export default function EditSpecialForm({
                   checked={locationMode === opt.value}
                   onChange={() => {
                     setLocationMode(opt.value as typeof locationMode);
-                    setForm({ ...form, suburbSlugs: [] });
+                    setSelectedSuburbs([]);
                   }}
                 />
                 {opt.label}
@@ -355,16 +355,14 @@ export default function EditSpecialForm({
 
           {locationMode === "chain" && (
             <SuburbPicker
-              suburbs={suburbs}
-              selected={form.suburbSlugs}
-              onChange={(slugs) => setForm({ ...form, suburbSlugs: slugs })}
+              selected={selectedSuburbs}
+              onChange={setSelectedSuburbs}
             />
           )}
           {locationMode === "single" && (
             <SuburbAutocomplete
-              suburbs={suburbs}
-              value={form.suburbSlugs[0] ?? null}
-              onChange={(slug) => setForm({ ...form, suburbSlugs: slug ? [slug] : [] })}
+              value={selectedSuburbs[0] ?? null}
+              onChange={(suburb) => setSelectedSuburbs(suburb ? [suburb] : [])}
               allowAdd
             />
           )}

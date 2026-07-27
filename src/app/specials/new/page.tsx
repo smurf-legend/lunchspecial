@@ -11,12 +11,12 @@ import { specialSlug } from "@/lib/slugify";
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 type Option = { name: string; slug: string };
-type SuburbOption = { name: string; slug: string; postcode: string; region: string; state: string };
+type SuburbOption = { name: string; slug: string; postcode: string; state: string };
 
 export default function NewSpecialPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [suburbs, setSuburbs] = useState<SuburbOption[]>([]);
+  const [selectedSuburbs, setSelectedSuburbs] = useState<SuburbOption[]>([]);
   const [categories, setCategories] = useState<Option[]>([]);
   const [locationMode, setLocationMode] = useState<"single" | "chain" | "chainWide">("single");
   const [greatValue, setGreatValue] = useState(false);
@@ -31,7 +31,6 @@ export default function NewSpecialPage() {
     address: "",
     url: "",
     couponCode: "",
-    suburbSlugs: [] as string[],
     usualPrice: "",
     specialPrice: "",
     discountPercent: "",
@@ -70,7 +69,6 @@ export default function NewSpecialPage() {
     fetch("/api/meta")
       .then((r) => r.json())
       .then((data) => {
-        setSuburbs(data.suburbs ?? []);
         setCategories(data.categories ?? []);
       });
   }, []);
@@ -229,7 +227,7 @@ export default function NewSpecialPage() {
       address: form.address || undefined,
       url: form.url || undefined,
       couponCode: form.couponCode || undefined,
-      suburbSlugs: form.suburbSlugs,
+      suburbSlugs: selectedSuburbs.map((s) => s.slug),
       chainWide: locationMode === "chainWide",
       greatValue,
       membersOnly,
@@ -382,7 +380,7 @@ export default function NewSpecialPage() {
                   checked={locationMode === opt.value}
                   onChange={() => {
                     setLocationMode(opt.value as typeof locationMode);
-                    setForm({ ...form, suburbSlugs: [] });
+                    setSelectedSuburbs([]);
                   }}
                 />
                 {opt.label}
@@ -392,16 +390,14 @@ export default function NewSpecialPage() {
 
           {locationMode === "chain" && (
             <SuburbPicker
-              suburbs={suburbs}
-              selected={form.suburbSlugs}
-              onChange={(slugs) => setForm({ ...form, suburbSlugs: slugs })}
+              selected={selectedSuburbs}
+              onChange={setSelectedSuburbs}
             />
           )}
           {locationMode === "single" && (
             <SuburbAutocomplete
-              suburbs={suburbs}
-              value={form.suburbSlugs[0] ?? null}
-              onChange={(slug) => setForm({ ...form, suburbSlugs: slug ? [slug] : [] })}
+              value={selectedSuburbs[0] ?? null}
+              onChange={(suburb) => setSelectedSuburbs(suburb ? [suburb] : [])}
               allowAdd
             />
           )}

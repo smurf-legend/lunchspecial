@@ -28,7 +28,7 @@ export default async function AccountPage() {
       email: true,
       marketingOptIn: true,
       preferredSuburbId: true,
-      preferredSuburb: { select: { slug: true } },
+      preferredSuburb: { select: { name: true, slug: true, postcode: true, state: true } },
       preferredCategorySlugs: true,
     },
   });
@@ -42,7 +42,7 @@ export default async function AccountPage() {
         <AccountForm
           initialName={user.name}
           initialMarketingOptIn={user.marketingOptIn}
-          initialPreferredSuburbSlug={user.preferredSuburb?.slug ?? null}
+          initialPreferredSuburb={user.preferredSuburb}
           initialPreferredCategorySlugs={user.preferredCategorySlugs}
         />
       </div>

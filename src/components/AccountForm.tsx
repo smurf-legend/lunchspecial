@@ -11,25 +11,22 @@ type Category = { name: string; slug: string };
 export default function AccountForm({
   initialName,
   initialMarketingOptIn,
-  initialPreferredSuburbSlug,
+  initialPreferredSuburb,
   initialPreferredCategorySlugs,
 }: {
   initialName: string;
   initialMarketingOptIn: boolean;
-  initialPreferredSuburbSlug: string | null;
+  initialPreferredSuburb: Suburb | null;
   initialPreferredCategorySlugs: string[];
 }) {
   const { update } = useSession();
   const router = useRouter();
   const [name, setName] = useState(initialName);
   const [marketingOptIn, setMarketingOptIn] = useState(initialMarketingOptIn);
-  const [preferredSuburbSlug, setPreferredSuburbSlug] = useState<string | null>(
-    initialPreferredSuburbSlug
-  );
+  const [preferredSuburb, setPreferredSuburb] = useState<Suburb | null>(initialPreferredSuburb);
   const [preferredCategorySlugs, setPreferredCategorySlugs] = useState<string[]>(
     initialPreferredCategorySlugs
   );
-  const [suburbs, setSuburbs] = useState<Suburb[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -40,7 +37,6 @@ export default function AccountForm({
     fetch("/api/meta")
       .then((r) => r.json())
       .then((data) => {
-        setSuburbs(data.suburbs ?? []);
         setCategories(data.categories ?? []);
       });
   }, [marketingOptIn]);
@@ -49,7 +45,7 @@ export default function AccountForm({
     e.preventDefault();
     setError(null);
 
-    if (marketingOptIn && !preferredSuburbSlug) {
+    if (marketingOptIn && !preferredSuburb) {
       setError("Pick a suburb so we know where to send deals from.");
       return;
     }
@@ -65,7 +61,7 @@ export default function AccountForm({
         marketingOptIn,
         // Kept even while unchecked — so re-opting in later doesn't lose
         // the suburb/cuisine choice someone already made.
-        preferredSuburbSlug,
+        preferredSuburbSlug: preferredSuburb?.slug ?? null,
         preferredCategorySlugs,
       }),
     });
@@ -125,9 +121,8 @@ export default function AccountForm({
               Which suburb do you want lunch deals from?
             </label>
             <SuburbAutocomplete
-              suburbs={suburbs}
-              value={preferredSuburbSlug}
-              onChange={setPreferredSuburbSlug}
+              value={preferredSuburb}
+              onChange={setPreferredSuburb}
             />
           </div>
           <div>

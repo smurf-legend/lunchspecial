@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { specialSlug } from "@/lib/slugify";
 
@@ -11,23 +11,27 @@ export default function LocationSearch() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [location, setLocation] = useState(searchParams.get("location") ?? "");
-  const [suburbs, setSuburbs] = useState<Suburb[]>([]);
+  const [suburbMatches, setSuburbMatches] = useState<Suburb[]>([]);
   const [specialSuggestions, setSpecialSuggestions] = useState<SpecialSuggestion[]>([]);
   const [open, setOpen] = useState(false);
 
+  // Server-side suburb search rather than filtering a full client-side list
+  // — with 17.5k suburbs seeded nationwide, shipping the whole table to the
+  // browser just to filter it locally was a ~1.7MB payload on every visit.
   useEffect(() => {
-    fetch("/api/meta")
-      .then((res) => res.json())
-      .then((data) => setSuburbs(data.suburbs ?? []));
-  }, []);
-
-  const suburbMatches = useMemo(() => {
-    const q = location.trim().toLowerCase();
-    if (!q) return [];
-    return suburbs
-      .filter((s) => s.name.toLowerCase().includes(q) || s.postcode.startsWith(q))
-      .slice(0, 6);
-  }, [suburbs, location]);
+    const q = location.trim();
+    if (!q) {
+      setSuburbMatches([]);
+      return;
+    }
+    const timeout = setTimeout(() => {
+      fetch(`/api/suburbs/search?q=${encodeURIComponent(q)}`)
+        .then((res) => res.json())
+        .then((data) => setSuburbMatches(data.suburbs ?? []))
+        .catch(() => setSuburbMatches([]));
+    }, 200);
+    return () => clearTimeout(timeout);
+  }, [location]);
 
   // Keyword suggestions only matter once the typed text doesn't match a
   // known suburb/postcode — that case is already covered above.

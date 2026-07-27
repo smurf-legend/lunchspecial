@@ -1,0 +1,986 @@
+[
+  {
+    "slug": "hmas-creswell",
+    "name": "Hmas Creswell",
+    "postcode": "2540",
+    "region": "Other Territories"
+  },
+  {
+    "slug": "jervis-bay",
+    "name": "Jervis Bay",
+    "postcode": "2540",
+    "region": "Other Territories"
+  },
+  {
+    "slug": "wreck-bay",
+    "name": "Wreck Bay",
+    "postcode": "2540",
+    "region": "Other Territories"
+  },
+  {
+    "slug": "barton",
+    "name": "Barton",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "canberra",
+    "name": "Canberra",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "capital-hill",
+    "name": "Capital Hill",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "deakin",
+    "name": "Deakin",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "deakin-west",
+    "name": "Deakin West",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "duntroon",
+    "name": "Duntroon",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "fairbairn-raaf",
+    "name": "Fairbairn Raaf",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "harman",
+    "name": "Harman",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "hmas-harman",
+    "name": "Hmas Harman",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "parkes-act",
+    "name": "Parkes",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "parliament-house-act",
+    "name": "Parliament House",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "russell",
+    "name": "Russell",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "russell-hill",
+    "name": "Russell Hill",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "yarralumla",
+    "name": "Yarralumla",
+    "postcode": "2600",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "acton-act",
+    "name": "Acton",
+    "postcode": "2601",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "black-mountain-act",
+    "name": "Black Mountain",
+    "postcode": "2601",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "city",
+    "name": "City",
+    "postcode": "2601",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "ainslie",
+    "name": "Ainslie",
+    "postcode": "2602",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "dickson",
+    "name": "Dickson",
+    "postcode": "2602",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "downer",
+    "name": "Downer",
+    "postcode": "2602",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "hackett",
+    "name": "Hackett",
+    "postcode": "2602",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "lyneham",
+    "name": "Lyneham",
+    "postcode": "2602",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "o-connor-act",
+    "name": "O\u2019Connor",
+    "postcode": "2602",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "o-connor-act2",
+    "name": "O'Connor",
+    "postcode": "2602",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "watson",
+    "name": "Watson",
+    "postcode": "2602",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "forrest-act",
+    "name": "Forrest",
+    "postcode": "2603",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "griffith-act",
+    "name": "Griffith",
+    "postcode": "2603",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "manuka",
+    "name": "Manuka",
+    "postcode": "2603",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "red-hill-act",
+    "name": "Red Hill",
+    "postcode": "2603",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "causeway",
+    "name": "Causeway",
+    "postcode": "2604",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "kingston-act",
+    "name": "Kingston",
+    "postcode": "2604",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "narrabundah",
+    "name": "Narrabundah",
+    "postcode": "2604",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "curtin",
+    "name": "Curtin",
+    "postcode": "2605",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "garran",
+    "name": "Garran",
+    "postcode": "2605",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "hughes-act",
+    "name": "Hughes",
+    "postcode": "2605",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "chifley-act",
+    "name": "Chifley",
+    "postcode": "2606",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "lyons-act",
+    "name": "Lyons",
+    "postcode": "2606",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "o-malley",
+    "name": "O\u2019Malley",
+    "postcode": "2606",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "o-malley-act",
+    "name": "O'Malley",
+    "postcode": "2606",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "phillip",
+    "name": "Phillip",
+    "postcode": "2606",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "phillip-dc",
+    "name": "Phillip Dc",
+    "postcode": "2606",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "swinger-hill",
+    "name": "Swinger Hill",
+    "postcode": "2606",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "woden",
+    "name": "Woden",
+    "postcode": "2606",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "farrer",
+    "name": "Farrer",
+    "postcode": "2607",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "isaacs",
+    "name": "Isaacs",
+    "postcode": "2607",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "mawson-act",
+    "name": "Mawson",
+    "postcode": "2607",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "pearce",
+    "name": "Pearce",
+    "postcode": "2607",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "torrens",
+    "name": "Torrens",
+    "postcode": "2607",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "canberra-airport",
+    "name": "Canberra Airport",
+    "postcode": "2609",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "canberra-international-airport",
+    "name": "Canberra International Airport",
+    "postcode": "2609",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "fyshwick",
+    "name": "Fyshwick",
+    "postcode": "2609",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "majura",
+    "name": "Majura",
+    "postcode": "2609",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "pialligo",
+    "name": "Pialligo",
+    "postcode": "2609",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "symonston",
+    "name": "Symonston",
+    "postcode": "2609",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "chapman",
+    "name": "Chapman",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "coombs",
+    "name": "Coombs",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "coree-act",
+    "name": "Coree",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "denman-prospect",
+    "name": "Denman Prospect",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "duffy",
+    "name": "Duffy",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "fisher-act",
+    "name": "Fisher",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "holder-act",
+    "name": "Holder",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "molonglo",
+    "name": "Molonglo",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "mount-stromlo",
+    "name": "Mount Stromlo",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "pierces-creek-act",
+    "name": "Pierces Creek",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "rivett",
+    "name": "Rivett",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "stirling-act",
+    "name": "Stirling",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "stromlo",
+    "name": "Stromlo",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "uriarra-forest",
+    "name": "Uriarra Forest",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "uriarra-village",
+    "name": "Uriarra Village",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "waramanga",
+    "name": "Waramanga",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "weston-act",
+    "name": "Weston",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "weston-creek",
+    "name": "Weston Creek",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "whitlam",
+    "name": "Whitlam",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "wright",
+    "name": "Wright",
+    "postcode": "2611",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "braddon",
+    "name": "Braddon",
+    "postcode": "2612",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "campbell",
+    "name": "Campbell",
+    "postcode": "2612",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "reid-act",
+    "name": "Reid",
+    "postcode": "2612",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "turner",
+    "name": "Turner",
+    "postcode": "2612",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "aranda",
+    "name": "Aranda",
+    "postcode": "2614",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "cook-act",
+    "name": "Cook",
+    "postcode": "2614",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "hawker-act",
+    "name": "Hawker",
+    "postcode": "2614",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "jamison-centre",
+    "name": "Jamison Centre",
+    "postcode": "2614",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "macquarie-act",
+    "name": "Macquarie",
+    "postcode": "2614",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "page",
+    "name": "Page",
+    "postcode": "2614",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "scullin",
+    "name": "Scullin",
+    "postcode": "2614",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "weetangera",
+    "name": "Weetangera",
+    "postcode": "2614",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "charnwood",
+    "name": "Charnwood",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "dunlop",
+    "name": "Dunlop",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "florey",
+    "name": "Florey",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "flynn-act",
+    "name": "Flynn",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "fraser",
+    "name": "Fraser",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "higgins",
+    "name": "Higgins",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "holt",
+    "name": "Holt",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "kippax",
+    "name": "Kippax",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "kippax-centre",
+    "name": "Kippax Centre",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "latham-act",
+    "name": "Latham",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "macgregor-act",
+    "name": "Macgregor",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "macnamara",
+    "name": "Macnamara",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "melba",
+    "name": "Melba",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "spence-act",
+    "name": "Spence",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "strathnairn",
+    "name": "Strathnairn",
+    "postcode": "2615",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "belconnen",
+    "name": "Belconnen",
+    "postcode": "2617",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "belconnen-dc",
+    "name": "Belconnen Dc",
+    "postcode": "2617",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "bruce-act",
+    "name": "Bruce",
+    "postcode": "2617",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "evatt",
+    "name": "Evatt",
+    "postcode": "2617",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "giralang",
+    "name": "Giralang",
+    "postcode": "2617",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "kaleen",
+    "name": "Kaleen",
+    "postcode": "2617",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "lawson-act",
+    "name": "Lawson",
+    "postcode": "2617",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "mckellar",
+    "name": "Mckellar",
+    "postcode": "2617",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "university-of-canberra",
+    "name": "University Of Canberra",
+    "postcode": "2617",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "hall",
+    "name": "Hall",
+    "postcode": "2618",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "beard",
+    "name": "Beard",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "booth",
+    "name": "Booth",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "hume",
+    "name": "Hume",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "kowen",
+    "name": "Kowen",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "kowen-forest",
+    "name": "Kowen Forest",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "oaks-estate",
+    "name": "Oaks Estate",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "paddys-river-act",
+    "name": "Paddys River",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "tennent",
+    "name": "Tennent",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "tharwa",
+    "name": "Tharwa",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "top-naas",
+    "name": "Top Naas",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "williamsdale",
+    "name": "Williamsdale",
+    "postcode": "2620",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "greenway",
+    "name": "Greenway",
+    "postcode": "2900",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "tuggeranong",
+    "name": "Tuggeranong",
+    "postcode": "2900",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "kambah",
+    "name": "Kambah",
+    "postcode": "2902",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "kambah-village",
+    "name": "Kambah Village",
+    "postcode": "2902",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "erindale-centre",
+    "name": "Erindale Centre",
+    "postcode": "2903",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "oxley-act",
+    "name": "Oxley",
+    "postcode": "2903",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "wanniassa",
+    "name": "Wanniassa",
+    "postcode": "2903",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "fadden",
+    "name": "Fadden",
+    "postcode": "2904",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "gowrie-act",
+    "name": "Gowrie",
+    "postcode": "2904",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "macarthur-act",
+    "name": "Macarthur",
+    "postcode": "2904",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "monash-act",
+    "name": "Monash",
+    "postcode": "2904",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "bonython-act",
+    "name": "Bonython",
+    "postcode": "2905",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "calwell",
+    "name": "Calwell",
+    "postcode": "2905",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "chisholm-act",
+    "name": "Chisholm",
+    "postcode": "2905",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "gilmore-act",
+    "name": "Gilmore",
+    "postcode": "2905",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "isabella-plains",
+    "name": "Isabella Plains",
+    "postcode": "2905",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "richardson",
+    "name": "Richardson",
+    "postcode": "2905",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "theodore-act",
+    "name": "Theodore",
+    "postcode": "2905",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "banks",
+    "name": "Banks",
+    "postcode": "2906",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "conder",
+    "name": "Conder",
+    "postcode": "2906",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "gordon-act",
+    "name": "Gordon",
+    "postcode": "2906",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "crace",
+    "name": "Crace",
+    "postcode": "2911",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "kenny",
+    "name": "Kenny",
+    "postcode": "2911",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "mitchell-act",
+    "name": "Mitchell",
+    "postcode": "2911",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "gungahlin",
+    "name": "Gungahlin",
+    "postcode": "2912",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "casey-act",
+    "name": "Casey",
+    "postcode": "2913",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "franklin-act",
+    "name": "Franklin",
+    "postcode": "2913",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "ginninderra-village",
+    "name": "Ginninderra Village",
+    "postcode": "2913",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "ngunnawal",
+    "name": "Ngunnawal",
+    "postcode": "2913",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "nicholls",
+    "name": "Nicholls",
+    "postcode": "2913",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "palmerston-act",
+    "name": "Palmerston",
+    "postcode": "2913",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "taylor",
+    "name": "Taylor",
+    "postcode": "2913",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "amaroo-act",
+    "name": "Amaroo",
+    "postcode": "2914",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "bonner",
+    "name": "Bonner",
+    "postcode": "2914",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "forde",
+    "name": "Forde",
+    "postcode": "2914",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "harrison",
+    "name": "Harrison",
+    "postcode": "2914",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "jacka",
+    "name": "Jacka",
+    "postcode": "2914",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "moncrieff",
+    "name": "Moncrieff",
+    "postcode": "2914",
+    "region": "Australian Capital Territory"
+  },
+  {
+    "slug": "throsby",
+    "name": "Throsby",
+    "postcode": "2914",
+    "region": "Australian Capital Territory"
+  }
+]

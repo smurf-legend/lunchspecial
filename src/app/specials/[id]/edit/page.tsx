@@ -24,12 +24,11 @@ export default async function EditMySpecialPage({ params }: { params: { id: stri
   const userId = (session.user as any).id as string;
   const role = (session.user as any).role;
 
-  const [special, suburbs, categories] = await Promise.all([
+  const [special, categories] = await Promise.all([
     prisma.special.findUnique({
       where: { id },
       include: { suburbs: { include: { suburb: true } }, categories: { include: { category: true } } },
     }),
-    prisma.suburb.findMany({ orderBy: { name: "asc" }, select: { name: true, slug: true, postcode: true, region: true, state: true } }),
     prisma.category.findMany({ orderBy: { name: "asc" }, select: { name: true, slug: true } }),
   ]);
 
@@ -43,5 +42,5 @@ export default async function EditMySpecialPage({ params }: { params: { id: stri
     );
   }
 
-  return <EditSpecialForm special={special as any} suburbs={suburbs} categories={categories} apiBase="/api/specials" />;
+  return <EditSpecialForm special={special as any} categories={categories} apiBase="/api/specials" />;
 }

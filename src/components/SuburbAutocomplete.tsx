@@ -9,37 +9,47 @@ type Suburb = { name: string; slug: string; postcode: string; state: string };
 // SuburbPicker's multi-select checkbox list for a special's locations.
 // Matches on suburb name or postcode so a postcode can be typed directly
 // instead of scrolling/searching for the name.
+//
+// Searches server-side (debounced, /api/suburbs/search) rather than
+// filtering a full suburb list client-side — with 17.5k suburbs seeded
+// nationwide, shipping the whole table to the browser just to filter it
+// locally was a ~1.7MB payload on every page that used this component.
 export default function SuburbAutocomplete({
-  suburbs,
   value,
   onChange,
   placeholder = "Search by suburb name or postcode...",
   allowAdd = false,
 }: {
-  suburbs: Suburb[];
-  value: string | null;
-  onChange: (slug: string | null) => void;
+  value: Suburb | null;
+  onChange: (suburb: Suburb | null) => void;
   placeholder?: string;
   // Lets the user create a missing suburb inline (e.g. while posting a
   // special) rather than being stuck if it's not in the list yet.
   allowAdd?: boolean;
 }) {
   const [query, setQuery] = useState("");
-  const [localSuburbs, setLocalSuburbs] = useState(suburbs);
+  const [matches, setMatches] = useState<Suburb[]>([]);
   const [adding, setAdding] = useState(false);
   const [newPostcode, setNewPostcode] = useState("");
   const [newState, setNewState] = useState<string>(AU_STATES[0].code);
   const [addError, setAddError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => setLocalSuburbs(suburbs), [suburbs]);
+  const q = query.trim();
 
-  const selected = localSuburbs.find((s) => s.slug === value) ?? null;
-
-  const q = query.trim().toLowerCase();
-  const matches = q
-    ? localSuburbs.filter((s) => s.name.toLowerCase().includes(q) || s.postcode.startsWith(q)).slice(0, 8)
-    : [];
+  useEffect(() => {
+    if (!q) {
+      setMatches([]);
+      return;
+    }
+    const timeout = setTimeout(() => {
+      fetch(`/api/suburbs/search?q=${encodeURIComponent(q)}`)
+        .then((res) => res.json())
+        .then((data) => setMatches(data.suburbs ?? []))
+        .catch(() => setMatches([]));
+    }, 200);
+    return () => clearTimeout(timeout);
+  }, [q]);
 
   async function handleAddSuburb() {
     setSubmitting(true);
@@ -60,18 +70,17 @@ export default function SuburbAutocomplete({
     }
 
     const { suburb } = await res.json();
-    setLocalSuburbs((prev) => [...prev, suburb]);
-    onChange(suburb.slug);
+    onChange(suburb);
     setQuery("");
     setAdding(false);
     setNewPostcode("");
   }
 
-  if (selected) {
+  if (value) {
     return (
       <div className="flex items-center gap-2 border rounded px-3 py-2 bg-gray-50">
         <span className="text-sm">
-          {selected.name} <span className="text-gray-400">({selected.postcode}, {selected.state})</span>
+          {value.name} <span className="text-gray-400">({value.postcode}, {value.state})</span>
         </span>
         <button
           type="button"
@@ -103,7 +112,7 @@ export default function SuburbAutocomplete({
               key={s.slug}
               type="button"
               onClick={() => {
-                onChange(s.slug);
+                onChange(s);
                 setQuery("");
               }}
               className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-50"
