@@ -309,16 +309,21 @@ export default function NewSpecialPage() {
     <div className="max-w-xl mx-auto bg-white p-6 rounded-lg border">
       <h1 className="text-xl font-bold mb-4">Post a lunch special</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
-          type="text"
-          placeholder="Title (e.g. $12 banh mi + drink combo)"
-          required
-          minLength={5}
-          maxLength={60}
-          className="border rounded px-3 py-2"
-          value={form.title}
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
-        />
+        <div>
+          <input
+            type="text"
+            placeholder="Title (e.g. $12 banh mi + drink combo)"
+            required
+            minLength={5}
+            maxLength={60}
+            className="border rounded px-3 py-2 w-full"
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+          />
+          <p className={`text-xs text-right mt-0.5 ${form.title.length >= 60 ? "text-red-600" : "text-gray-400"}`}>
+            {form.title.length}/60
+          </p>
+        </div>
         <textarea
           placeholder="Description — what's included, anything to know"
           required
