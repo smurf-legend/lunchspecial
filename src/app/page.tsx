@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import LocationSearch from "@/components/LocationSearch";
-import { AU_STATES, stateCodeFromRegionName, stateName } from "@/lib/auStates";
+import { stateCodeFromRegionName } from "@/lib/auStates";
 import { getLiveStates } from "@/lib/liveStates";
 
 // Each tier also matches range-priced specials (a whole specials menu
@@ -218,46 +218,12 @@ export default async function HomePage({
         </span>
       </div>
 
-      {stateFilter && (
-        <div className="flex items-center gap-2 text-sm bg-orange-50 border border-orange-200 text-orange-800 rounded-lg px-3 py-2 mb-3">
-          <span>
-            📍 Showing specials in <strong>{stateName(stateFilter)}</strong>
-            {detectedState && " (near you)"}
-          </span>
-          <Link href={buildLink({ state: "all" })} className="underline hover:text-orange-900 ml-auto shrink-0">
-            View all states
-          </Link>
-        </div>
-      )}
-
-      <div className="flex flex-wrap gap-1.5 mb-3">
-        {AU_STATES.map(({ code, name }) => {
-          const active = stateFilter === code;
-          if (!liveStates.has(code)) {
-            return (
-              <span
-                key={code}
-                title={`${name} — coming soon`}
-                className="text-xs px-2.5 py-1 rounded-full bg-gray-50 text-gray-300 cursor-default"
-              >
-                {code}
-              </span>
-            );
-          }
-          return (
-            <Link
-              key={code}
-              href={buildLink({ state: active ? "all" : code })}
-              title={name}
-              className={`text-xs px-2.5 py-1 rounded-full font-medium ${
-                active ? "bg-orange-600 text-white" : "bg-white border text-gray-600 hover:bg-gray-50"
-              }`}
-            >
-              {code}
-            </Link>
-          );
-        })}
-      </div>
+      {/* State filter banner + state pills hidden while coverage is NSW-only
+          — no point announcing/offering a state switcher with nothing to
+          switch to yet. The underlying stateFilter/liveStates logic stays
+          intact (still drives geo-detection and ?state= filtering), this
+          just stops rendering the UI for it. Revisit once another state
+          actually has content. */}
 
       <div className="flex gap-3 flex-wrap items-center">
         <CategoryFilter categories={categories} />
