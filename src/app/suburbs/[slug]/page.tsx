@@ -16,12 +16,24 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const description = `Crowdsourced lunch specials near ${suburb.name}, ${suburb.state} — browse what's on, posted by the community.`;
   const canonical = `/suburbs/${suburb.slug}`;
 
+  // A suburb with no locally-posted special still renders a page (chain-wide
+  // deals like Rashays show up everywhere), but that body content is
+  // identical across every other suburb without a local listing — indexing
+  // it just duplicates thousands of near-identical pages. noindex until it
+  // earns its first real local special; follow stays true so link equity
+  // still flows through to pages that are worth indexing.
+  const hasLocalSpecial = await prisma.specialSuburb.findFirst({
+    where: { suburbId: suburb.id, special: { hidden: false } },
+    select: { specialId: true },
+  });
+
   return {
     title,
     description,
     alternates: { canonical },
     openGraph: { title, description, url: canonical, siteName: "LunchSpecial", type: "website" },
     twitter: { card: "summary_large_image", title, description },
+    robots: hasLocalSpecial ? undefined : { index: false, follow: true },
   };
 }
 

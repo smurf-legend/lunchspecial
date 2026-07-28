@@ -45,12 +45,11 @@ function entryXml(e: Entry): string {
 }
 
 export async function GET() {
-  const [specials, hasChainWide, posts, stateRegions] = await Promise.all([
+  const [specials, posts, stateRegions] = await Promise.all([
     prisma.special.findMany({
       where: { hidden: false },
       select: { id: true, title: true, venueName: true, createdAt: true, imageUrl: true, extraImageUrls: true },
     }),
-    prisma.special.count({ where: { hidden: false, chainWide: true } }).then((c) => c > 0),
     prisma.blogPost.findMany({
       where: { hidden: false },
       select: { id: true, title: true, updatedAt: true, imageUrl: true },
@@ -58,14 +57,16 @@ export async function GET() {
     prisma.suburb.findMany({ select: { state: true, region: true }, distinct: ["state", "region"] }),
   ]);
 
-  // A chain-wide special (e.g. a McDonald's deal) shows up on every suburb
-  // page regardless of that suburb's own specials, so it makes every page
-  // non-empty. Without one, only suburbs with a direct special have real
-  // content — with several thousand suburbs now loaded nationally (most
-  // with no locally-posted deals yet), including all of them unconditionally
-  // would flood the sitemap with thin/empty pages.
+  // A chain-wide special (e.g. a Rashays deal) shows up on every suburb page
+  // regardless of that suburb's own specials, so a suburb with no locally-
+  // posted deal still renders "non-empty" — but its body content is just the
+  // same chain-wide listings duplicated verbatim across thousands of other
+  // suburbs, not anything unique to that suburb. Only a direct local special
+  // (a real SpecialSuburb join row) makes a suburb page worth indexing —
+  // basing this on chain-wide presence was backwards and had been flooding
+  // the sitemap with ~17k near-duplicate pages.
   const suburbs = await prisma.suburb.findMany({
-    where: hasChainWide ? {} : { specials: { some: { special: { hidden: false } } } },
+    where: { specials: { some: { special: { hidden: false } } } },
     select: { slug: true },
   });
 
