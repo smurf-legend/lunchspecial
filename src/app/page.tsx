@@ -7,6 +7,7 @@ import SpecialCard from "@/components/SpecialCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import LocationSearch from "@/components/LocationSearch";
 import { AU_STATES, stateCodeFromRegionName, stateName } from "@/lib/auStates";
+import { getLiveStates } from "@/lib/liveStates";
 
 // Each tier also matches range-priced specials (a whole specials menu
 // rather than one item) — "under" tiers check the range's low end (does
@@ -67,19 +68,20 @@ export default async function HomePage({
       })
     : [];
 
+  const liveStates = await getLiveStates();
+
   // No explicit filters at all means a fresh visit — try to default to the
   // visitor's own state via Vercel's edge geolocation header, but only if
-  // that state actually has suburbs seeded, so nobody lands on an empty
-  // page just because we detected e.g. Queensland before it's rolled out.
+  // that state is actually live (has real local specials), so nobody lands
+  // on an empty page just because we detected e.g. Queensland — suburbs are
+  // seeded nationwide already, but content isn't, so seeding alone isn't
+  // enough to auto-select a state.
   const noExplicitFilter = !searchParams.state && !suburbSlug && !location && !categorySlug;
   let detectedState: string | null = null;
   if (noExplicitFilter) {
     const regionHeader = headers().get("x-vercel-ip-country-region");
     const candidate = stateCodeFromRegionName(regionHeader);
-    if (candidate) {
-      const hasSuburbs = await prisma.suburb.count({ where: { state: candidate } });
-      if (hasSuburbs > 0) detectedState = candidate;
-    }
+    if (candidate && liveStates.has(candidate)) detectedState = candidate;
   }
   const stateFilter = (searchParams.state?.toUpperCase() && searchParams.state !== "all"
     ? searchParams.state.toUpperCase()
@@ -126,7 +128,7 @@ export default async function HomePage({
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
 
-  const [specials, totalMatching, categories, favorites, suburbsByState] = await Promise.all([
+  const [specials, totalMatching, categories, favorites] = await Promise.all([
     prisma.special.findMany({
       where,
       orderBy: sort === "new" ? { createdAt: "desc" } : { score: "desc" },
@@ -141,10 +143,8 @@ export default async function HomePage({
     prisma.special.count({ where }),
     prisma.category.findMany({ orderBy: { name: "asc" } }),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
-    prisma.suburb.groupBy({ by: ["state"], _count: true }),
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
-  const stateCounts = new Map(suburbsByState.map((s) => [s.state, s._count]));
   const totalPages = Math.max(1, Math.ceil(totalMatching / PAGE_SIZE));
 
   // A keyword that doesn't substring-match anything (a typo, a plural, a
@@ -211,6 +211,13 @@ export default async function HomePage({
     <div>
       <LocationSearch />
 
+      <div className="flex items-start gap-2 text-sm bg-blue-50 border border-blue-200 text-blue-900 rounded-lg px-3 py-2 mb-3">
+        <span>
+          🇦🇺 The goal is to cover all of Australia — right now LunchSpecial is one person building this, starting
+          in Sydney/NSW. More states as it grows.
+        </span>
+      </div>
+
       {stateFilter && (
         <div className="flex items-center gap-2 text-sm bg-orange-50 border border-orange-200 text-orange-800 rounded-lg px-3 py-2 mb-3">
           <span>
@@ -225,9 +232,8 @@ export default async function HomePage({
 
       <div className="flex flex-wrap gap-1.5 mb-3">
         {AU_STATES.map(({ code, name }) => {
-          const count = stateCounts.get(code) ?? 0;
           const active = stateFilter === code;
-          if (count === 0) {
+          if (!liveStates.has(code)) {
             return (
               <span
                 key={code}

@@ -6,15 +6,25 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isValidStateCode, stateName } from "@/lib/auStates";
+import { getLiveStates } from "@/lib/liveStates";
 
 export async function generateMetadata({ params }: { params: { state: string } }): Promise<Metadata> {
   const stateParam = params.state.toUpperCase();
   if (!isValidStateCode(stateParam)) return {};
   const name = stateName(stateParam);
+
+  // Suburbs are seeded nationwide already, but real local specials aren't —
+  // a state with none renders the same generic "coming soon" body as every
+  // other not-yet-covered state, so it isn't worth indexing until it has
+  // something of its own to show.
+  const liveStates = await getLiveStates();
+  const isLive = liveStates.has(stateParam);
+
   return {
     title: `Lunch specials in ${name} | LunchSpecial`,
     description: `Find and share the best lunch specials in ${name}, posted by the community.`,
     alternates: { canonical: `/${params.state.toLowerCase()}` },
+    robots: isLive ? undefined : { index: false, follow: true },
   };
 }
 
@@ -22,6 +32,19 @@ export default async function StatePage({ params }: { params: { state: string } 
   const stateParam = params.state.toUpperCase();
   if (!isValidStateCode(stateParam)) notFound();
   const name = stateName(stateParam);
+
+  const liveStates = await getLiveStates();
+  if (!liveStates.has(stateParam)) {
+    return (
+      <div>
+        <h1 className="text-xl font-bold mb-1">Lunch specials in {name}</h1>
+        <p className="text-gray-500 text-center py-12 max-w-md mx-auto">
+          🇦🇺 Not here yet — LunchSpecial is one person building this, starting in Sydney/NSW. {name} is on the map
+          for later, but there's nothing real to show yet, so this page is holding off for now.
+        </p>
+      </div>
+    );
+  }
 
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
@@ -52,9 +75,7 @@ export default async function StatePage({ params }: { params: { state: string } 
     <div>
       <h1 className="text-xl font-bold mb-1">Lunch specials in {name}</h1>
       <p className="text-sm text-gray-500 mb-4">
-        {suburbs.length > 0
-          ? `Covering ${suburbs.length} suburbs across ${regions.size} regions.`
-          : `We haven't seeded suburbs for ${name} yet — check back soon, or be the first to post a chain-wide deal.`}
+        Covering {suburbs.length} suburbs across {regions.size} regions.
       </p>
 
       {regions.size > 0 && (

@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { specialSlug, blogPostSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
+import { getLiveStates } from "@/lib/liveStates";
 
 // Without this, Next treats the route as static (no dynamic APIs are used
 // in it) and generates it once at build/deploy time — new specials/articles
@@ -45,7 +46,7 @@ function entryXml(e: Entry): string {
 }
 
 export async function GET() {
-  const [specials, posts, stateRegions] = await Promise.all([
+  const [specials, posts, allStateRegions, liveStates] = await Promise.all([
     prisma.special.findMany({
       where: { hidden: false },
       select: { id: true, title: true, venueName: true, createdAt: true, imageUrl: true, extraImageUrls: true },
@@ -55,7 +56,15 @@ export async function GET() {
       select: { id: true, title: true, updatedAt: true, imageUrl: true },
     }),
     prisma.suburb.findMany({ select: { state: true, region: true }, distinct: ["state", "region"] }),
+    getLiveStates(),
   ]);
+
+  // Suburbs are seeded nationwide, but real local specials aren't — a state/
+  // region route with no live content renders the same generic "coming
+  // soon" body as every other one, same duplicate-content problem as the
+  // suburb-level fix above, just one level up. Only list what's actually
+  // indexable (matches the noindex decision in each page's generateMetadata).
+  const stateRegions = allStateRegions.filter((r) => liveStates.has(r.state));
 
   // A chain-wide special (e.g. a Rashays deal) shows up on every suburb page
   // regardless of that suburb's own specials, so a suburb with no locally-
