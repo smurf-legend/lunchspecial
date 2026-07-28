@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import crypto from "crypto";
 import { z } from "zod";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 
 const schema = z.object({ email: z.string().email() });
 
@@ -13,6 +14,14 @@ const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
 // can't be used to probe which emails have accounts (standard practice for
 // this kind of endpoint).
 export async function POST(req: NextRequest) {
+  const { allowed } = await checkRateLimit(`forgot-password:${getClientIp(req)}`, {
+    limit: 5,
+    windowMs: 60 * 60 * 1000,
+  });
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many requests — try again later" }, { status: 429 });
+  }
+
   const body = await req.json();
   const parsed = schema.safeParse(body);
   if (!parsed.success) {

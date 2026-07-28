@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { containsProfanity } from "@/lib/profanity";
 import { sendNewSignupEmail } from "@/lib/mail";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 
 const registerSchema = z.object({
   name: z
@@ -19,6 +20,11 @@ const registerSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const { allowed } = await checkRateLimit(`register:${getClientIp(req)}`, { limit: 5, windowMs: 60 * 60 * 1000 });
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many signups from this connection — try again later" }, { status: 429 });
+  }
+
   const body = await req.json();
   const parsed = registerSchema.safeParse(body);
   if (!parsed.success) {

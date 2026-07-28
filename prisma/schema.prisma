@@ -431,3 +431,17 @@ model DigestLog {
   paused        Boolean  @default(false)
   createdAt     DateTime @default(now())
 }
+
+// Backs a simple DB-based rate limiter (see src/lib/rateLimit.ts) for
+// unauthenticated, abuse-prone endpoints (login, register, forgot-password,
+// tip submission) — no Redis/external service needed at this scale. `key`
+// is typically "<endpoint>:<ip>". One row per attempt; rows older than the
+// window are opportunistically deleted on each check rather than needing a
+// separate cleanup job.
+model RateLimitHit {
+  id        String   @id @default(cuid())
+  key       String
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+}

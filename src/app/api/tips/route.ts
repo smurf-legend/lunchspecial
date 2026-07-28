@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { sendTipSubmissionEmail } from "@/lib/mail";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 
 const tipSchema = z.object({
   details: z.string().trim().min(1, "Tell us at least a little about it").max(2000),
@@ -13,6 +14,11 @@ const tipSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const { allowed } = await checkRateLimit(`tips:${getClientIp(req)}`, { limit: 10, windowMs: 60 * 60 * 1000 });
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many submissions — try again later" }, { status: 429 });
+  }
+
   const body = await req.json().catch(() => null);
   const parsed = tipSchema.safeParse(body);
   if (!parsed.success) {
