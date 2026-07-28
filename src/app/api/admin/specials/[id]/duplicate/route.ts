@@ -39,6 +39,7 @@ export async function POST(
       url: source.url,
       imageUrl: source.imageUrl,
       extraImageUrls: source.extraImageUrls,
+      videoUrls: source.videoUrls,
       couponCode: source.couponCode,
       usualPrice: source.usualPrice,
       specialPrice: source.specialPrice,

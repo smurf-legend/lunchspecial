@@ -14,6 +14,7 @@ import ContributorBadge from "@/components/ContributorBadge";
 import DeleteSpecialButton from "@/components/DeleteSpecialButton";
 import DuplicateSpecialButton from "@/components/DuplicateSpecialButton";
 import SpecialGallery from "@/components/SpecialGallery";
+import SpecialVideos from "@/components/SpecialVideos";
 import ShareButton from "@/components/ShareButton";
 import { buildCommentTree } from "@/lib/commentTree";
 import { idFromSlug, specialSlug } from "@/lib/slugify";
@@ -361,6 +362,8 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
           )}
         </div>
       </div>
+
+      <SpecialVideos urls={special.videoUrls} />
 
       <div className="bg-white rounded-lg border p-6">
         <CommentThread

@@ -98,6 +98,15 @@ model Special {
   extraImageUrls String[] @default([])
   couponCode   String?   // vendor-provided coupon/deal code, optional
 
+  // Embedded video/review links (YouTube, TikTok, Instagram, X, Facebook,
+  // Vimeo) showing the actual food — not just a text description. Multiple
+  // rather than one: a long-form YouTube review, a TikTok clip, and an
+  // Instagram Reel are all reasonable to have side by side for the same
+  // special. Raw URLs, resolved to an embeddable iframe src on render via
+  // socialEmbedUrl() in src/lib/articleBlocks.ts (same helper Table Talk
+  // article embeds use).
+  videoUrls    String[]  @default([])
+
   usualPrice   Float?    // optional "normally $X" comparison
   // A special has exactly one pricing mode, enforced at the API layer:
   // a fixed price (specialPrice), a percentage off (discountPercent, for

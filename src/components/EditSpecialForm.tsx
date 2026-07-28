@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { compressImage } from "@/lib/compressImage";
 import SuburbPicker from "@/components/SuburbPicker";
 import SuburbAutocomplete from "@/components/SuburbAutocomplete";
+import VideoLinksInput from "@/components/VideoLinksInput";
 import { specialSlug } from "@/lib/slugify";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -21,6 +22,7 @@ type SpecialData = {
   url: string | null;
   imageUrl: string | null;
   extraImageUrls: string[];
+  videoUrls: string[];
   couponCode: string | null;
   usualPrice: number | null;
   specialPrice: number | null;
@@ -91,6 +93,7 @@ export default function EditSpecialForm({
     return urls.map((url, i) => ({ key: `existing-${i}`, kind: "existing" as const, url }));
   });
   const [imageUrlInput, setImageUrlInput] = useState("");
+  const [videoUrls, setVideoUrls] = useState<string[]>(special.videoUrls);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [compressingImage, setCompressingImage] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -248,6 +251,7 @@ export default function EditSpecialForm({
       categorySlugs: form.categorySlugs,
       imageUrl: allImages[0] ?? null,
       extraImageUrls: allImages.slice(1),
+      videoUrls,
       expiresAt: form.expiresAt || undefined,
     };
 
@@ -630,6 +634,8 @@ export default function EditSpecialForm({
             </button>
           </div>
         </div>
+
+        <VideoLinksInput value={videoUrls} onChange={setVideoUrls} />
 
         <div>
           <p className="text-sm font-medium mb-1">Cuisine tags</p>

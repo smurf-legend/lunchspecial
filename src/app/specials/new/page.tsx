@@ -6,6 +6,7 @@ import Link from "next/link";
 import { compressImage } from "@/lib/compressImage";
 import SuburbPicker from "@/components/SuburbPicker";
 import SuburbAutocomplete from "@/components/SuburbAutocomplete";
+import VideoLinksInput from "@/components/VideoLinksInput";
 import { specialSlug } from "@/lib/slugify";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -47,6 +48,7 @@ export default function NewSpecialPage() {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [imageUrlInput, setImageUrlInput] = useState("");
+  const [videoUrls, setVideoUrls] = useState<string[]>([]);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [compressingImage, setCompressingImage] = useState(false);
   const [duplicates, setDuplicates] = useState<
@@ -243,6 +245,7 @@ export default function NewSpecialPage() {
       categorySlugs: form.categorySlugs,
       imageUrl: imageUrls[0],
       extraImageUrls: imageUrls.slice(1),
+      videoUrls,
       expiresAt: form.expiresAt || undefined,
       confirmDuplicate,
     };
@@ -671,6 +674,8 @@ export default function NewSpecialPage() {
             </div>
           )}
         </div>
+
+        <VideoLinksInput value={videoUrls} onChange={setVideoUrls} />
 
         <div>
           <p className="text-sm font-medium mb-1">Cuisine tags</p>
