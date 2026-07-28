@@ -5,7 +5,11 @@ import NavAuth from "@/components/NavAuth";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 const title = "LunchSpecial — Lunch specials near you, crowdsourced";
-const description = "Find and share the best lunch specials near you, posted by the community.";
+// Sydney-specific rather than generic "near you" — accurate now that
+// coverage is deliberately NSW-only (see liveStates.ts), and a more
+// specific description is also more likely to actually get used in search
+// results instead of Google substituting its own extracted snippet.
+const description = "Find and share the best lunch specials in Sydney, posted by the community.";
 
 export const metadata = {
   metadataBase: new URL("https://lunchspecial.com.au"),
@@ -17,6 +21,12 @@ export const metadata = {
     google: "3H9GppUjzAo1EO_QjQho5Php3072xTz5B-EaeZkkbz8",
     other: { "msvalidate.01": "70B4AE1710D721677B39FA3944956C82" },
   },
+};
+
+// Matches the brand red (#CD1C18) — the color mobile browser chrome/tab
+// bars pick up around the page.
+export const viewport = {
+  themeColor: "#CD1C18",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
