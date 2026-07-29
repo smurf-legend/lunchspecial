@@ -24,9 +24,17 @@ export default function SocialEmbed({ url, thumbnailUrl }: { url: string; thumbn
   // top-level navigation that breaks out of our iframe entirely, replacing
   // the whole lunchspecial.com.au tab with instagram.com. There's no bare
   // embed URL that avoids this — Meta doesn't offer inline autoplay to
-  // unauthenticated third-party embeds — so rather than promise playback
-  // we can't deliver, this links out honestly in a new tab and leaves the
-  // visitor's place on the site intact.
+  // unauthenticated third-party embeds. Rather than promise playback we
+  // can't deliver, the whole card links out honestly in a new tab — but we
+  // still show Instagram's own preview frame as the background, loaded in
+  // a sandboxed iframe with no allow-top-navigation/allow-popups, so the
+  // browser itself blocks the frame from hijacking navigation no matter
+  // what its embedded JS tries to do. pointer-events-none makes it purely
+  // decorative — every click lands on the <a> wrapping it. Loaded eagerly
+  // rather than click-to-load like the other platforms below: Instagram
+  // embeds only ever appear here, capped at MAX_SPECIAL_VIDEOS (2) per
+  // special, so it doesn't carry the same many-iframes-on-one-page cost
+  // that motivated click-to-load for TikTok.
   if (embed.platform === "instagram") {
     return (
       <a
@@ -35,22 +43,20 @@ export default function SocialEmbed({ url, thumbnailUrl }: { url: string; thumbn
         rel="noopener noreferrer"
         className={`${containerClass} relative rounded-lg border overflow-hidden bg-gray-900 group block`}
       >
-        {thumbnailUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={thumbnailUrl}
-            alt=""
-            className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-sm font-medium">
-            {PLATFORM_LABELS.instagram}
-          </div>
-        )}
-        <span className="absolute inset-0 flex items-center justify-center">
-          <span className="px-4 py-2 rounded-full bg-white/90 text-sm font-medium shadow-lg group-hover:scale-105 transition-transform">
+        <iframe
+          src={embed.embedUrl}
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          sandbox="allow-scripts allow-same-origin"
+          tabIndex={-1}
+          aria-hidden="true"
+        />
+        <span className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
+          <span className="px-4 py-2 rounded-full bg-white/90 text-sm font-medium shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
             View on Instagram ↗
           </span>
+        </span>
+        <span className="absolute bottom-2 left-2 text-xs font-medium bg-black/60 text-white px-2 py-0.5 rounded pointer-events-none">
+          {PLATFORM_LABELS.instagram}
         </span>
       </a>
     );
