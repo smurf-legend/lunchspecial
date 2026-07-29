@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { findDuplicateSpecials } from "@/lib/duplicateCheck";
 import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { sendNewSpecialEmail } from "@/lib/mail";
-import { socialEmbedUrl } from "@/lib/articleBlocks";
+import { socialEmbedUrl, MAX_SPECIAL_VIDEOS } from "@/lib/articleBlocks";
 import { z } from "zod";
 
 const specialSchema = z
@@ -17,9 +17,12 @@ const specialSchema = z
     url: z.string().url().optional(),
     imageUrl: z.string().url().optional(),
     extraImageUrls: z.array(z.string().url()).optional(),
-    videoUrls: z.array(z.string().url().refine((u) => socialEmbedUrl(u) !== null, {
-      message: "Must be a YouTube, TikTok, Instagram, X, Facebook, or Vimeo link",
-    })).optional(),
+    videoUrls: z
+      .array(z.string().url().refine((u) => socialEmbedUrl(u) !== null, {
+        message: "Must be a YouTube, TikTok, Instagram, X, Facebook, or Vimeo link",
+      }))
+      .max(MAX_SPECIAL_VIDEOS, `Up to ${MAX_SPECIAL_VIDEOS} videos — more than that isn't reliable across platforms`)
+      .optional(),
     couponCode: z.string().optional(),
     usualPrice: z.number().optional(),
     specialPrice: z.number().optional(),

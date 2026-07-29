@@ -8,6 +8,14 @@
 // Everything else renders as a plain paragraph, same as before.
 export type SocialPlatform = "youtube" | "vimeo" | "instagram" | "twitter" | "tiktok" | "facebook";
 
+// Hard cap on video/review links per Special. Confirmed in production:
+// loading 3 TikTok embeds on one page is unreliable even with click-to-load
+// deferring the iframe until clicked — one specific video would neither
+// autoplay nor start on click, apparently a genuine practical limit on
+// TikTok's side rather than a same-page-loading-order issue. Capping at 2
+// avoids the failure mode outright instead of trying to work around it.
+export const MAX_SPECIAL_VIDEOS = 2;
+
 export type ArticleBlock =
   | { type: "paragraph"; text: string }
   | { type: "image"; src: string; alt: string }

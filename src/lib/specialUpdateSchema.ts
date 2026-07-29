@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { noProfanity, profanityMessage } from "@/lib/profanity";
-import { socialEmbedUrl } from "@/lib/articleBlocks";
+import { socialEmbedUrl, MAX_SPECIAL_VIDEOS } from "@/lib/articleBlocks";
 
 // Shared between the admin edit route and the owner-facing edit route so
 // the two can never validate updates differently.
@@ -16,10 +16,14 @@ export const specialUpdateSchema = z
     // Each must actually resolve to a supported embed (YouTube/TikTok/
     // Instagram/X/Facebook/Vimeo) — a URL that can't be embedded would just
     // render nothing on the detail page, so reject it here rather than
-    // silently store a dead link.
-    videoUrls: z.array(z.string().url().refine((u) => socialEmbedUrl(u) !== null, {
-      message: "Must be a YouTube, TikTok, Instagram, X, Facebook, or Vimeo link",
-    })).optional(),
+    // silently store a dead link. Capped at MAX_SPECIAL_VIDEOS — see that
+    // constant for why more than 2 isn't reliable.
+    videoUrls: z
+      .array(z.string().url().refine((u) => socialEmbedUrl(u) !== null, {
+        message: "Must be a YouTube, TikTok, Instagram, X, Facebook, or Vimeo link",
+      }))
+      .max(MAX_SPECIAL_VIDEOS, `Up to ${MAX_SPECIAL_VIDEOS} videos — more than that isn't reliable across platforms`)
+      .optional(),
     couponCode: z.string().optional().nullable(),
     usualPrice: z.number().optional().nullable(),
     specialPrice: z.number().optional().nullable(),
