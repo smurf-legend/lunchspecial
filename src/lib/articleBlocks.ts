@@ -56,9 +56,12 @@ function twitterEmbedUrl(url: string): string | null {
 }
 
 // Same idea as Instagram/Twitter: TikTok's embed.js hydrates a blockquote
-// into an iframe pointing at this exact URL, so skip the script tag.
+// into an iframe pointing at this exact URL, so skip the script tag. Covers
+// both ordinary videos (/video/) and TikTok's photo-mode posts (/photo/) —
+// both are just an aweme id under the hood, so the same embed endpoint
+// handles either.
 function tiktokEmbedUrl(url: string): string | null {
-  const m = url.match(/tiktok\.com\/@[\w.-]+\/video\/(\d+)/);
+  const m = url.match(/tiktok\.com\/@[\w.-]+\/(?:video|photo)\/(\d+)/);
   return m ? `https://www.tiktok.com/embed/v2/${m[1]}` : null;
 }
 
