@@ -6,6 +6,7 @@ import { findDuplicateSpecials } from "@/lib/duplicateCheck";
 import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { sendNewSpecialEmail } from "@/lib/mail";
 import { socialEmbedUrl, MAX_SPECIAL_VIDEOS } from "@/lib/articleBlocks";
+import { resolveVideoUrls } from "@/lib/resolveVideoUrls";
 import { z } from "zod";
 
 const specialSchema = z
@@ -173,6 +174,7 @@ export async function POST(req: NextRequest) {
   const special = await prisma.special.create({
     data: {
       ...data,
+      videoUrls: data.videoUrls ? await resolveVideoUrls(data.videoUrls) : data.videoUrls,
       authorId: (session.user as any).id,
       suburbs: {
         create: suburbs.map((s) => ({ suburb: { connect: { id: s.id } } })),

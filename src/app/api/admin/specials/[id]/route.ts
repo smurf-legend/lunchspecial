@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { specialUpdateSchema } from "@/lib/specialUpdateSchema";
+import { resolveVideoUrls } from "@/lib/resolveVideoUrls";
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions);
@@ -46,6 +47,7 @@ export async function PATCH(
     where: { id: params.id },
     data: {
       ...data,
+      videoUrls: data.videoUrls ? await resolveVideoUrls(data.videoUrls) : data.videoUrls,
       url: url || null,
       imageUrl: imageUrl || null,
       couponCode: couponCode || null,
