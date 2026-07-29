@@ -94,22 +94,26 @@ export const PLATFORM_LABELS: Record<SocialPlatform, string> = {
 
 // Shared between ArticleBody (Table Talk embeds) and SocialEmbed (Special
 // video/review links) so both size embeds identically. YouTube/Vimeo are
-// always 16:9. TikTok embeds are tall (vertical video), so a 16:9 box would
-// crush them — cap their width instead of the aspect. Instagram/Twitter/
-// Facebook posts vary in height post-to-post (a photo vs. a long tweet
-// thread). A bare iframe src (no widgets.js/embed.js) never gets the
-// postMessage telling the parent to resize to fit content, so it needs an
-// explicit, generously tall fixed height — a *min*-height doesn't work
-// here, since percentage heights (the iframe's h-full) don't resolve
-// against a parent whose height is only a minimum, and the iframe silently
-// collapses instead of growing to fill it.
+// always exactly 16:9, so a fixed aspect-ratio box is correct for them.
+// TikTok/Instagram/Twitter/Facebook are not — TikTok's embed page has its
+// own username/caption/like-count chrome around the video, which is taller
+// than the raw 9:16 clip, and that height genuinely varies per post since
+// caption length differs. TikTok's own embed.js corrects for this with a
+// postMessage handshake that resizes the iframe to the actual content
+// height, but this codebase deliberately skips loading that script for a
+// single bare-iframe embed — so instead all four of these get the same
+// explicit, generously tall fixed height rather than an aspect-ratio box
+// that would crop or letterbox them. A *min*-height doesn't work here,
+// since percentage heights (the iframe's h-full) don't resolve against a
+// parent whose height is only a minimum, and the iframe silently collapses
+// instead of growing to fill it.
 export function embedContainerClass(platform: SocialPlatform): string {
   switch (platform) {
     case "youtube":
     case "vimeo":
       return "aspect-video w-full";
     case "tiktok":
-      return "aspect-[9/16] w-full max-w-sm mx-auto";
+      return "w-full h-[740px] max-w-sm mx-auto";
     case "instagram":
     case "twitter":
     case "facebook":
