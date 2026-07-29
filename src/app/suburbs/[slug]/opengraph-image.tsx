@@ -13,6 +13,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
     ? await prisma.special.count({
         where: {
           hidden: false,
+          needsReview: false,
           OR: [{ suburbs: { some: { suburbId: suburb.id } } }, { chainWide: true }],
         },
       })

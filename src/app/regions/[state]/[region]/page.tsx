@@ -71,6 +71,7 @@ export default async function RegionPage({ params }: { params: { state: string; 
     prisma.special.findMany({
       where: {
         hidden: false,
+        needsReview: false,
         OR: [
           { suburbs: { some: { suburb: { state: stateParam, region } } } },
           { chainWide: true },

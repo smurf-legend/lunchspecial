@@ -48,7 +48,7 @@ function entryXml(e: Entry): string {
 export async function GET() {
   const [specials, posts, allStateRegions, liveStates] = await Promise.all([
     prisma.special.findMany({
-      where: { hidden: false },
+      where: { hidden: false, needsReview: false },
       select: { id: true, title: true, venueName: true, createdAt: true, imageUrl: true, extraImageUrls: true },
     }),
     prisma.blogPost.findMany({
@@ -75,7 +75,7 @@ export async function GET() {
   // basing this on chain-wide presence was backwards and had been flooding
   // the sitemap with ~17k near-duplicate pages.
   const suburbs = await prisma.suburb.findMany({
-    where: { specials: { some: { special: { hidden: false } } } },
+    where: { specials: { some: { special: { hidden: false, needsReview: false } } } },
     select: { slug: true },
   });
 

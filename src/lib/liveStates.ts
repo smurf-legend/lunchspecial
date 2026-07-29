@@ -10,7 +10,7 @@ import { prisma } from "@/lib/prisma";
 // needed.
 export async function getLiveStates(): Promise<Set<string>> {
   const rows = await prisma.suburb.findMany({
-    where: { specials: { some: { special: { hidden: false } } } },
+    where: { specials: { some: { special: { hidden: false, needsReview: false } } } },
     select: { state: true },
     distinct: ["state"],
   });

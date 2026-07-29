@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   // earns its first real local special; follow stays true so link equity
   // still flows through to pages that are worth indexing.
   const hasLocalSpecial = await prisma.specialSuburb.findFirst({
-    where: { suburbId: suburb.id, special: { hidden: false } },
+    where: { suburbId: suburb.id, special: { hidden: false, needsReview: false } },
     select: { specialId: true },
   });
 
@@ -48,6 +48,7 @@ export default async function SuburbPage({ params }: { params: { slug: string } 
     prisma.special.findMany({
       where: {
         hidden: false,
+        needsReview: false,
         OR: [{ suburbs: { some: { suburbId: suburb.id } } }, { chainWide: true }],
       },
       orderBy: { score: "desc" },

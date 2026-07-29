@@ -47,6 +47,7 @@ export async function getRelatedSpecials(title: string, limit = 3) {
   return prisma.special.findMany({
     where: {
       hidden: false,
+      needsReview: false,
       OR: keywords.flatMap((kw) => [
         { title: { contains: kw, mode: "insensitive" as const } },
         { venueName: { contains: kw, mode: "insensitive" as const } },

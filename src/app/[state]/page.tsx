@@ -54,6 +54,7 @@ export default async function StatePage({ params }: { params: { state: string } 
     prisma.special.findMany({
       where: {
         hidden: false,
+        needsReview: false,
         OR: [{ suburbs: { some: { suburb: { state: stateParam } } } }, { chainWide: true }],
       },
       orderBy: { score: "desc" },

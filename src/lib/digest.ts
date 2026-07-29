@@ -20,7 +20,7 @@ export async function getDigestSpecialsForUser(
   mode: DigestMode
 ) {
   const and: any[] = [
-    { hidden: false },
+    { hidden: false, needsReview: false },
     { OR: [{ suburbs: { some: { suburbId: preferredSuburbId } } }, { chainWide: true }] },
     { OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }] },
   ];

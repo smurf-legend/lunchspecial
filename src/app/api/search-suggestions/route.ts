@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
   const specials = await prisma.special.findMany({
     where: {
       hidden: false,
+      needsReview: false,
       OR: [
         { title: { contains: q, mode: "insensitive" } },
         { venueName: { contains: q, mode: "insensitive" } },
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest) {
         similarity(unaccent("venueName"), unaccent(${q}))
       ) AS sim
       FROM "Special"
-      WHERE hidden = false
+      WHERE hidden = false AND "needsReview" = false
       ORDER BY sim DESC
       LIMIT 6
     `;

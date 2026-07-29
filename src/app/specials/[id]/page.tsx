@@ -43,7 +43,7 @@ const getSpecial = cache((id: string) =>
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const special = await getSpecial(idFromSlug(params.id));
-  if (!special || special.hidden) return {};
+  if (!special || special.hidden || special.needsReview) return {};
 
   const suburbNames = special.suburbs.map((s) => s.suburb.name).join(", ");
   const title = `${special.title} — ${special.venueName}${suburbNames ? ` (${suburbNames})` : ""} | LunchSpecial`;
@@ -90,10 +90,13 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
 
   if (!special) notFound();
   const isAuthor = userId != null && special.authorId === userId;
-  // Hidden specials 404 for everyone except admins and the post's own
-  // author, who see a banner below instead — the row still exists so it
-  // can be reviewed/unhidden (or fixed up and resubmitted) later.
-  if (special.hidden && !isAdmin && !isAuthor) notFound();
+  // Hidden or not-yet-reviewed specials 404 for everyone except admins and
+  // the post's own author, who see a banner below instead — the row still
+  // exists so it can be reviewed/unhidden (or fixed up and resubmitted)
+  // later. needsReview means "not yet confirmed accurate," so it stays
+  // unpublished the same way a hidden special does, just for a different
+  // reason — clearing the flag in /kitchen/needs-review is what makes it live.
+  if ((special.hidden || special.needsReview) && !isAdmin && !isAuthor) notFound();
 
   // Send old bare-id links and stale slugs (e.g. after a title edit) to the
   // current canonical URL, so there's only ever one indexable address per special.
@@ -153,6 +156,22 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
       {special.hidden && !isAdmin && isAuthor && (
         <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
           This special is hidden by moderation — only you can see it. You can still edit it below.
+        </div>
+      )}
+
+      {special.needsReview && isAdmin && (
+        <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
+          This special is pending review — only admins can see it.{" "}
+          <Link href="/kitchen/needs-review" className="underline">
+            Review queue
+          </Link>
+        </div>
+      )}
+
+      {special.needsReview && !isAdmin && isAuthor && (
+        <div className="bg-gray-800 text-white rounded-lg px-4 py-3 text-sm font-medium">
+          This special is pending review before it goes live — only you can see it. You can still
+          edit it below.
         </div>
       )}
 

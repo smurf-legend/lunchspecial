@@ -87,7 +87,7 @@ export default async function HomePage({
     ? searchParams.state.toUpperCase()
     : detectedState) as string | null;
 
-  const and: any[] = [{ hidden: false }];
+  const and: any[] = [{ hidden: false, needsReview: false }];
   if (suburbSlug) {
     and.push({ OR: [{ suburbs: { some: { suburb: { slug: suburbSlug } } } }, { chainWide: true }] });
   }
@@ -169,7 +169,7 @@ export default async function HomePage({
         similarity(unaccent("venueName"), unaccent(${location}))
       ) AS sim
       FROM "Special"
-      WHERE hidden = false
+      WHERE hidden = false AND "needsReview" = false
       ORDER BY sim DESC
       LIMIT 5
     `;
