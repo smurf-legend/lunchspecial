@@ -18,6 +18,44 @@ export default function SocialEmbed({ url, thumbnailUrl }: { url: string; thumbn
 
   const containerClass = embedContainerClass(embed.platform);
 
+  // Instagram's own embed page for both Reels and feed posts is a
+  // click-through preview, not a real inline player — its "Watch on
+  // Instagram" button (and the fallback for anyone not logged in) uses a
+  // top-level navigation that breaks out of our iframe entirely, replacing
+  // the whole lunchspecial.com.au tab with instagram.com. There's no bare
+  // embed URL that avoids this — Meta doesn't offer inline autoplay to
+  // unauthenticated third-party embeds — so rather than promise playback
+  // we can't deliver, this links out honestly in a new tab and leaves the
+  // visitor's place on the site intact.
+  if (embed.platform === "instagram") {
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${containerClass} relative rounded-lg border overflow-hidden bg-gray-900 group block`}
+      >
+        {thumbnailUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={thumbnailUrl}
+            alt=""
+            className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-sm font-medium">
+            {PLATFORM_LABELS.instagram}
+          </div>
+        )}
+        <span className="absolute inset-0 flex items-center justify-center">
+          <span className="px-4 py-2 rounded-full bg-white/90 text-sm font-medium shadow-lg group-hover:scale-105 transition-transform">
+            View on Instagram ↗
+          </span>
+        </span>
+      </a>
+    );
+  }
+
   if (loaded) {
     return (
       <div className={containerClass}>
