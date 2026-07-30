@@ -90,9 +90,21 @@ export default function SocialEmbed({ url, thumbnailUrl }: { url: string; thumbn
           className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity"
         />
       ) : (
-        <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white text-sm font-medium">
-          {PLATFORM_LABELS[embed.platform]}
-        </div>
+        // No thumbnail API available (Facebook has none without a Meta app
+        // token; TikTok's oEmbed 400s on photo-mode posts specifically) —
+        // fall back to the platform's own embed page as a purely decorative
+        // preview, same trick as the Instagram card above: sandboxed with no
+        // allow-top-navigation/allow-popups so it can't hijack the page, and
+        // pointer-events-none so clicks pass through to this button instead
+        // of interacting with it. Still click-to-load below it — this is
+        // only ever the lightweight preview, not the real player.
+        <iframe
+          src={embed.embedUrl}
+          className="absolute inset-0 w-full h-full pointer-events-none opacity-80 group-hover:opacity-60 transition-opacity"
+          sandbox="allow-scripts allow-same-origin"
+          tabIndex={-1}
+          aria-hidden="true"
+        />
       )}
       <span className="absolute inset-0 flex items-center justify-center">
         <span className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform">
