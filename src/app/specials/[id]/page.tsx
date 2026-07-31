@@ -114,6 +114,38 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   const primarySuburb = suburbList[0];
   const chainWide = special.chainWide;
 
+  // Other physical locations of the same chain — e.g. Osso or Park Bong Sook,
+  // which get one Special row per address rather than one row covering every
+  // suburb (better for local SEO: each location gets its own indexable,
+  // suburb-specific page instead of one generic page diluted across several
+  // suburbs). Matched by sharing this special's source url with a different
+  // address, since venueName formatting for the location suffix isn't
+  // consistent across venues (some use "(Suburb)", some just append the
+  // suburb, some don't differ at all). Only looked up for single-address
+  // rows — chainWide and already-multi-suburb rows don't need it.
+  const sameChainRows =
+    !chainWide && suburbList.length <= 1 && special.url
+      ? await prisma.special.findMany({
+          where: {
+            url: special.url,
+            id: { not: special.id },
+            hidden: false,
+            needsReview: false,
+          },
+          select: { id: true, address: true, suburbs: { include: { suburb: true } } },
+        })
+      : [];
+  // Dedupe to one row per distinct other address — a chain location often has
+  // more than one Special (e.g. a "2 Courses" and "3 Courses" row), and this
+  // link should only ever list each physical location once.
+  const otherLocations = Array.from(
+    new Map(
+      sameChainRows
+        .filter((s) => s.address && s.address !== special.address)
+        .map((s) => [s.address, s])
+    ).values()
+  );
+
   const offerJsonLd = buildOfferJsonLd({
     url: `${SITE_URL}/specials/${canonical}`,
     title: special.title,
@@ -340,6 +372,23 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
               {suburbList.length > 12 && (
                 <span className="text-gray-400"> and {suburbList.length - 12} more</span>
               )}
+            </p>
+          )}
+
+          {otherLocations.length > 0 && (
+            <p className="text-sm text-gray-500 mt-2">
+              Also available in:{" "}
+              {otherLocations.map((loc, i) => (
+                <span key={loc.id}>
+                  <Link
+                    href={`/specials/${specialSlug({ id: loc.id, title: special.title, venueName: special.venueName })}`}
+                    className="text-gray-600 hover:text-orange-600 underline"
+                  >
+                    {loc.suburbs[0]?.suburb.name ?? "another location"}
+                  </Link>
+                  {i < otherLocations.length - 1 ? ", " : ""}
+                </span>
+              ))}
             </p>
           )}
 
