@@ -84,12 +84,16 @@ export default function LocationSearch() {
 
   return (
     <div className="relative mb-4">
+      {/* Input gets its own full-width row on mobile (sm:flex-1 only kicks in
+          once there's room to share a row with both buttons) — three items
+          competing for one narrow row was squeezing the input down to
+          barely a few characters wide. */}
       <form onSubmit={handleSubmit} className="flex flex-wrap gap-2">
         <input
           type="text"
           maxLength={40}
           placeholder="Suburb, postcode, or keyword (e.g. Newtown, 2042, or banh mi)"
-          className="border rounded px-3 py-2 flex-1 min-w-0"
+          className="border rounded px-3 py-2 w-full sm:flex-1 sm:min-w-0"
           value={location}
           onChange={(e) => {
             setLocation(e.target.value);
@@ -98,13 +102,23 @@ export default function LocationSearch() {
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
         />
-        <button className="bg-orange-600 text-white px-4 py-2 rounded font-medium">Find</button>
-        <Link
-          href="/post"
-          className="bg-white border-2 border-orange-600 text-orange-600 px-4 py-2 rounded font-medium hover:bg-orange-50 whitespace-nowrap"
-        >
-          + Add a Special
-        </Link>
+        <div className="flex gap-2 w-full sm:w-auto">
+          {/* Solid orange used to work fine on the page's white background,
+              but this component now only ever renders inside the orange
+              header — same-color-on-same-color made the button invisible,
+              just floating white text with no visible shape. Matched to the
+              "Add a Special" button's white/bordered style so it actually
+              reads as a button against the header. */}
+          <button className="bg-white border-2 border-orange-600 text-orange-600 px-4 py-2 rounded font-medium hover:bg-orange-50 flex-1 sm:flex-none">
+            Find
+          </button>
+          <Link
+            href="/post"
+            className="bg-white border-2 border-orange-600 text-orange-600 px-4 py-2 rounded font-medium hover:bg-orange-50 whitespace-nowrap flex-1 sm:flex-none text-center"
+          >
+            + Add a Special
+          </Link>
+        </div>
       </form>
 
       {showDropdown && (
