@@ -1,7 +1,9 @@
 import "./globals.css";
+import { Suspense } from "react";
 import Link from "next/link";
 import Providers from "./providers";
 import NavAuth from "@/components/NavAuth";
+import LocationSearch from "@/components/LocationSearch";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 const title = "LunchSpecial — Lunch specials near you, crowdsourced";
@@ -48,6 +50,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/post">Add a Special</Link>
                 <NavAuth />
               </nav>
+            </div>
+            {/* Suspense boundary because LocationSearch reads useSearchParams()
+                client-side — without it, every page using this layout (not
+                just the homepage, which was already dynamic from reading
+                searchParams server-side) would be forced out of static
+                rendering just to show the search bar. */}
+            <div className="max-w-5xl mx-auto px-4 pb-3">
+              <Suspense fallback={<div className="h-[42px]" />}>
+                <LocationSearch />
+              </Suspense>
             </div>
           </header>
           <main className="max-w-5xl mx-auto px-4 py-6">{children}</main>

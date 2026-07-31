@@ -5,7 +5,6 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import CategoryFilter from "@/components/CategoryFilter";
-import LocationSearch from "@/components/LocationSearch";
 import { stateCodeFromRegionName } from "@/lib/auStates";
 import { getLiveStates } from "@/lib/liveStates";
 
@@ -209,8 +208,6 @@ export default async function HomePage({
 
   return (
     <div>
-      <LocationSearch />
-
       <div className="flex items-start gap-2 text-sm bg-blue-50 border border-blue-200 text-blue-900 rounded-lg px-3 py-2 mb-3">
         <span>
           🇦🇺 The goal is to cover all of Australia — right now LunchSpecial is one person building this, starting
