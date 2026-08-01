@@ -146,6 +146,26 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
     ).values()
   );
 
+  // Other specials at this exact physical venue — e.g. The Flynn's separate
+  // Monday/Tuesday/Wednesday/Thursday Special rows, or Elements' "2 Courses"
+  // and "3 Courses" pair. Matched on venueName + address both equal (not
+  // just venueName) so two unrelated venues that happen to share a name
+  // don't get cross-linked. Requires a real address to match on — without
+  // one there's no reliable way to confirm it's the same physical place.
+  const sameVenueSpecials = special.address
+    ? await prisma.special.findMany({
+        where: {
+          venueName: special.venueName,
+          address: special.address,
+          id: { not: special.id },
+          hidden: false,
+          needsReview: false,
+        },
+        select: { id: true, title: true },
+        orderBy: { createdAt: "asc" },
+      })
+    : [];
+
   const offerJsonLd = buildOfferJsonLd({
     url: `${SITE_URL}/specials/${canonical}`,
     title: special.title,
@@ -372,6 +392,23 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
               {suburbList.length > 12 && (
                 <span className="text-gray-400"> and {suburbList.length - 12} more</span>
               )}
+            </p>
+          )}
+
+          {sameVenueSpecials.length > 0 && (
+            <p className="text-sm text-gray-500 mt-2">
+              More at {special.venueName}:{" "}
+              {sameVenueSpecials.map((s, i) => (
+                <span key={s.id}>
+                  <Link
+                    href={`/specials/${specialSlug({ id: s.id, title: s.title, venueName: special.venueName })}`}
+                    className="text-gray-600 hover:text-orange-600 underline"
+                  >
+                    {s.title}
+                  </Link>
+                  {i < sameVenueSpecials.length - 1 ? ", " : ""}
+                </span>
+              ))}
             </p>
           )}
 
