@@ -25,6 +25,31 @@ async function resolveFacebookShareLink(url: string): Promise<string> {
   }
 }
 
+// Same idea as Facebook's share links — vt.tiktok.com/{code}/ short links
+// (the form TikTok's own share sheet generates) redirect fine for a normal
+// browser visit, but tiktokEmbedUrl in articleBlocks.ts matches on the
+// canonical tiktok.com/@user/video/{id} path, which a short link never
+// contains. Resolving first means a pasted share link embeds correctly
+// instead of getting rejected as unrecognized.
+async function resolveTikTokShortLink(url: string): Promise<string> {
+  if (!/vt\.tiktok\.com\//.test(url)) return url;
+
+  try {
+    const res = await fetch(url, { redirect: "manual" });
+    const location = res.headers.get("location");
+    if (!location) return url;
+    const resolved = new URL(location, url);
+    resolved.search = "";
+    return resolved.toString();
+  } catch {
+    return url;
+  }
+}
+
+async function resolveVideoUrl(url: string): Promise<string> {
+  return resolveTikTokShortLink(await resolveFacebookShareLink(url));
+}
+
 export async function resolveVideoUrls(urls: string[]): Promise<string[]> {
-  return Promise.all(urls.map(resolveFacebookShareLink));
+  return Promise.all(urls.map(resolveVideoUrl));
 }
