@@ -128,7 +128,12 @@ export default function LocationSearch() {
       </form>
 
       {showDropdown && (
-        <div className="absolute z-10 top-full left-0 right-0 sm:right-auto sm:w-96 bg-white border rounded mt-1 shadow-md max-h-72 overflow-y-auto">
+        // text-gray-900 for the same reason as the input above: this
+        // dropdown is a descendant of the header's text-white, and neither
+        // the suburb buttons nor the suggestion links set their own color
+        // (only the secondary postcode/venue spans do, via text-gray-400),
+        // so the primary text was inheriting white-on-white here too.
+        <div className="absolute z-10 top-full left-0 right-0 sm:right-auto sm:w-96 bg-white border rounded mt-1 shadow-md max-h-72 overflow-y-auto text-gray-900">
           {suburbMatches.length > 0
             ? suburbMatches.map((s) => (
                 <button
