@@ -93,7 +93,13 @@ export default function LocationSearch() {
           type="text"
           maxLength={40}
           placeholder="Suburb, postcode, or keyword (e.g. Newtown, 2042, or banh mi)"
-          className="border rounded px-3 py-2 w-full sm:flex-1 sm:min-w-0"
+          // text-gray-900 bg-white explicitly, not inherited: this input
+          // lives inside the orange header, which sets text-white for its
+          // nav links — Tailwind's Preflight resets input color to inherit
+          // rather than the browser's own default field text color, so
+          // without this override the typed text was white-on-white,
+          // invisible until you already knew it was there.
+          className="border rounded px-3 py-2 w-full sm:flex-1 sm:min-w-0 text-gray-900 bg-white"
           value={location}
           onChange={(e) => {
             setLocation(e.target.value);

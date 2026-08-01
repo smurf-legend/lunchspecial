@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* The site is entirely light-themed — no dark mode is built. Without this,
+   a browser in OS dark mode (mobile Safari especially) auto-styles form
+   controls with its own dark-mode colors, since none of our inputs set an
+   explicit text/background color of their own. That produces white text on
+   a white input: invisible until you already know it's there (confirmed on
+   the header search bar, but it's not input-specific — every text input
+   site-wide inherits from the same missing declaration). */
+:root {
+  color-scheme: light;
+}
