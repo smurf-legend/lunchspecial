@@ -17,6 +17,7 @@ import { blogPostSlug, idFromSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
 import { buildBlogPostingJsonLd, buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
 import { getRelatedSpecials } from "@/lib/relatedSpecials";
+import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 
 const authorSelect = {
   select: {
@@ -103,6 +104,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
+  const showVoteCounts = await shouldShowVoteCounts();
 
   const blogPostingJsonLd = buildBlogPostingJsonLd({
     url: `${SITE_URL}/table-talk/${canonical}`,
@@ -137,7 +139,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       )}
 
       <div className="bg-white rounded-lg border p-6 flex gap-5">
-        <VoteButtons voteEndpoint={`/api/blog/${post.id}/vote`} initialScore={post.score} />
+        <VoteButtons
+          voteEndpoint={`/api/blog/${post.id}/vote`}
+          initialScore={post.score}
+          showCount={showVoteCounts}
+        />
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
@@ -182,6 +188,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 key={special.id}
                 special={special as any}
                 isFavorited={favoritedIds.has(special.id)}
+                showVoteCounts={showVoteCounts}
               />
             ))}
           </div>

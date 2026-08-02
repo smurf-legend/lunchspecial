@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isValidStateCode, stateName } from "@/lib/auStates";
 import { getLiveStates } from "@/lib/liveStates";
+import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 
 export async function generateMetadata({ params }: { params: { state: string } }): Promise<Metadata> {
   const stateParam = params.state.toUpperCase();
@@ -68,6 +69,7 @@ export default async function StatePage({ params }: { params: { state: string } 
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
+  const showVoteCounts = await shouldShowVoteCounts();
 
   const regions = new Map<string, number>();
   for (const s of suburbs) regions.set(s.region, (regions.get(s.region) ?? 0) + 1);
@@ -97,7 +99,12 @@ export default async function StatePage({ params }: { params: { state: string } 
 
       <div className="flex flex-col gap-3">
         {specials.map((special) => (
-          <SpecialCard key={special.id} special={special as any} isFavorited={favoritedIds.has(special.id)} />
+          <SpecialCard
+            key={special.id}
+            special={special as any}
+            isFavorited={favoritedIds.has(special.id)}
+            showVoteCounts={showVoteCounts}
+          />
         ))}
         {specials.length === 0 && (
           <p className="text-gray-500 text-center py-12">

@@ -12,3 +12,37 @@
 :root {
   color-scheme: light;
 }
+
+/* Vote button feedback (VoteButtons.tsx) — with counts hidden pre-launch
+   (see lib/voteVisibility.ts), a click had no visible confirmation at all
+   beyond a network request finishing silently. A one-shot pop + a floating
+   +1/-1 gives the same "yep, that registered" feeling a visible count
+   would, without needing the count itself. */
+@keyframes vote-pop {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  45% {
+    transform: scale(1.6) rotate(-10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+.animate-vote-pop {
+  animation: vote-pop 0.4s ease-out;
+}
+
+@keyframes vote-float {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -1.5rem) scale(1.15);
+  }
+}
+.animate-vote-float {
+  animation: vote-float 0.6s ease-out forwards;
+}

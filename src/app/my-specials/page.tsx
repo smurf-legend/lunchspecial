@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import DeleteSpecialButton from "@/components/DeleteSpecialButton";
+import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 
 export default async function MySpecialsPage() {
   const session = await getServerSession(authOptions);
@@ -30,6 +31,7 @@ export default async function MySpecialsPage() {
       _count: { select: { comments: true } },
     },
   });
+  const showVoteCounts = await shouldShowVoteCounts();
 
   return (
     <div>
@@ -59,7 +61,7 @@ export default async function MySpecialsPage() {
               </Link>
               <DeleteSpecialButton specialId={special.id} title={special.title} apiBase="/api/specials" />
             </div>
-            <SpecialCard special={special as any} />
+            <SpecialCard special={special as any} showVoteCounts={showVoteCounts} />
           </div>
         ))}
         {specials.length === 0 && (

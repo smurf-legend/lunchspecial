@@ -7,6 +7,7 @@ import SpecialCard from "@/components/SpecialCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import { stateCodeFromRegionName } from "@/lib/auStates";
 import { getLiveStates } from "@/lib/liveStates";
+import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 
 // Each tier also matches range-priced specials (a whole specials menu
 // rather than one item) — "under" tiers check the range's low end (does
@@ -37,6 +38,7 @@ export default async function HomePage({
 }) {
   const PAGE_SIZE = 20;
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
+  const showVoteCounts = await shouldShowVoteCounts();
   // No sort param at all is a genuine neutral state (neither toggle shown as
   // active) — distinct from "hot", which is an explicit choice that happens
   // to use the same underlying order. Using undefined rather than a "none"
@@ -296,6 +298,7 @@ export default async function HomePage({
             special={special as any}
             isFavorited={favoritedIds.has(special.id)}
             contextSuburbSlug={suburbSlug ?? matchedSuburbs[0]?.slug}
+            showVoteCounts={showVoteCounts}
           />
         ))}
         {displaySpecials.length === 0 && (

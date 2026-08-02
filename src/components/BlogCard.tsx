@@ -17,19 +17,28 @@ type BlogPostCardType = {
   _count?: { comments: number };
 };
 
-export default function BlogCard({ post }: { post: BlogPostCardType }) {
+export default function BlogCard({
+  post,
+  showVoteCounts = false,
+}: {
+  post: BlogPostCardType;
+  // Defaults to hidden — see shouldShowVoteCounts in lib/voteVisibility.ts.
+  showVoteCounts?: boolean;
+}) {
   return (
     <div className="flex gap-4 bg-white rounded-lg border p-4 hover:shadow-md transition-shadow">
-      <div className="flex flex-col items-center w-14 shrink-0 gap-1">
-        <span className="flex items-center gap-1">
-          <span aria-hidden="true">😋</span>
-          <span className="font-bold text-green-600">{post.upvoteCount}</span>
-        </span>
-        <span className="flex items-center gap-1">
-          <span aria-hidden="true">🤢</span>
-          <span className="font-bold text-red-600">{post.downvoteCount}</span>
-        </span>
-      </div>
+      {showVoteCounts && (
+        <div className="flex flex-col items-center w-14 shrink-0 gap-1">
+          <span className="flex items-center gap-1">
+            <span aria-hidden="true">😋</span>
+            <span className="font-bold text-green-600">{post.upvoteCount}</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span aria-hidden="true">🤢</span>
+            <span className="font-bold text-red-600">{post.downvoteCount}</span>
+          </span>
+        </div>
+      )}
 
       <SpecialImage
         src={post.imageUrl}

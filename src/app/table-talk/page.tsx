@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import BlogCard from "@/components/BlogCard";
+import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 
 // This page touches no dynamic API (no searchParams, no getServerSession),
 // so Next.js has no automatic signal to render it per-request — without
@@ -24,6 +25,7 @@ export default async function BlogPage() {
     (a, b) =>
       new Date(b.publishAt ?? b.createdAt).getTime() - new Date(a.publishAt ?? a.createdAt).getTime()
   );
+  const showVoteCounts = await shouldShowVoteCounts();
 
   return (
     <div className="flex flex-col gap-4">
@@ -34,7 +36,7 @@ export default async function BlogPage() {
 
       <div className="flex flex-col gap-3">
         {posts.map((post) => (
-          <BlogCard key={post.id} post={post as any} />
+          <BlogCard key={post.id} post={post as any} showVoteCounts={showVoteCounts} />
         ))}
         {posts.length === 0 && (
           <p className="text-gray-500 text-center py-12">No articles yet — check back soon.</p>

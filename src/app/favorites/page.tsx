@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
+import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 
 export default async function FavoritesPage() {
   const session = await getServerSession(authOptions);
@@ -37,6 +38,7 @@ export default async function FavoritesPage() {
   // A favorited special can later be hidden by moderation — skip those
   // rather than showing a broken/inaccessible card in someone's own list.
   const specials = favorites.map((f) => f.special).filter((s) => !s.hidden);
+  const showVoteCounts = await shouldShowVoteCounts();
 
   return (
     <div>
@@ -46,7 +48,7 @@ export default async function FavoritesPage() {
       </p>
       <div className="flex flex-col gap-3">
         {specials.map((special) => (
-          <SpecialCard key={special.id} special={special as any} isFavorited />
+          <SpecialCard key={special.id} special={special as any} isFavorited showVoteCounts={showVoteCounts} />
         ))}
         {specials.length === 0 && (
           <p className="text-gray-500 text-center py-12">
