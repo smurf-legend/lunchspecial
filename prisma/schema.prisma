@@ -441,6 +441,17 @@ model DigestLog {
   createdAt     DateTime @default(now())
 }
 
+// One row per weekly analytics digest cron run — same reasoning as
+// DigestLog: without this, there's no way to tell whether the cron actually
+// fired versus silently failing (the exact confusion the lunch-deals digest
+// had until this got checked directly against its own log table).
+model AnalyticsDigestLog {
+  id        String   @id @default(cuid())
+  success   Boolean
+  error     String?
+  createdAt DateTime @default(now())
+}
+
 // Backs a simple DB-based rate limiter (see src/lib/rateLimit.ts) for
 // unauthenticated, abuse-prone endpoints (login, register, forgot-password,
 // tip submission) — no Redis/external service needed at this scale. `key`

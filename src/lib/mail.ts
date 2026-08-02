@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import { specialSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
+import type { AnalyticsReport } from "@/lib/analyticsReport";
 
 const FROM = "LunchSpecial <team@lunchspecial.com.au>";
 // Where anonymous "suggest a special" tips get emailed for review — no admin
@@ -176,4 +177,52 @@ export async function sendNewSpecialEmail(special: {
   if (error) {
     console.error("[mail] Failed to send new special email:", error);
   }
+}
+
+export async function sendAnalyticsDigestEmail(report: AnalyticsReport): Promise<boolean> {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[mail] RESEND_API_KEY is not set — skipping analytics digest email");
+    return false;
+  }
+
+  const pagesHtml = report.topPages
+    .map((p) => `<li>${p.path} — ${p.sessions} session${p.sessions === 1 ? "" : "s"}</li>`)
+    .join("");
+  const sourcesHtml = report.topSources
+    .map((s) => `<li>${s.source} — ${s.sessions} session${s.sessions === 1 ? "" : "s"}</li>`)
+    .join("");
+  const queriesHtml = report.topQueries
+    .map(
+      (q) =>
+        `<li>"${q.query}" — ${q.clicks} click${q.clicks === 1 ? "" : "s"}, ${q.impressions} impression${
+          q.impressions === 1 ? "" : "s"
+        }, avg position ${q.position.toFixed(1)}</li>`
+    )
+    .join("");
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: "Weekly LunchSpecial analytics digest",
+    html: `
+      <p><strong>Last 7 days:</strong> ${report.sessions} sessions, ${report.activeUsers} active users.</p>
+
+      <h3 style="margin-top:24px;">Top pages</h3>
+      <ul style="padding-left:20px;">${pagesHtml || "<li>No data</li>"}</ul>
+
+      <h3 style="margin-top:24px;">Top traffic sources</h3>
+      <ul style="padding-left:20px;">${sourcesHtml || "<li>No data</li>"}</ul>
+
+      <h3 style="margin-top:24px;">Search Console (last 7 days, ~3-day reporting lag)</h3>
+      <p>${report.searchClicks} clicks, ${report.searchImpressions} impressions.</p>
+      <ul style="padding-left:20px;">${queriesHtml || "<li>No data</li>"}</ul>
+    `,
+  });
+
+  if (error) {
+    console.error("[mail] Failed to send analytics digest email:", error);
+    return false;
+  }
+  return true;
 }
