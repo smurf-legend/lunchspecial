@@ -50,7 +50,7 @@ export default async function AdminPage({
       }
     : {};
 
-  const [specials, totalMatching, suburbs, categories, userCount, totalSpecials, totalComments, totalBlogPosts, needsReviewCount, pendingTipCount] =
+  const [specials, totalMatching, suburbs, categories, userCount, totalSpecials, totalComments, totalBlogPosts, needsReviewCount, pendingTipCount, googleOAuthCredential] =
     await Promise.all([
       prisma.special.findMany({
         where,
@@ -72,6 +72,7 @@ export default async function AdminPage({
       prisma.blogPost.count(),
       prisma.special.count({ where: { needsReview: true } }),
       prisma.specialSubmission.count({ where: { status: "pending" } }),
+      prisma.googleOAuthCredential.findUnique({ where: { id: 1 }, select: { updatedAt: true } }),
     ]);
 
   const totalPages = Math.max(1, Math.ceil(totalMatching / PAGE_SIZE));
@@ -108,6 +109,12 @@ export default async function AdminPage({
           <Link href="/kitchen/mailing-list" className="text-orange-600 hover:underline">
             Mailing list
           </Link>
+          {" · "}
+          <a href="/api/admin/google-oauth/start" className="text-orange-600 hover:underline">
+            {googleOAuthCredential
+              ? `Google account connected (${googleOAuthCredential.updatedAt.toLocaleDateString()}) — reconnect`
+              : "Connect Google account"}
+          </a>
         </p>
       </div>
 

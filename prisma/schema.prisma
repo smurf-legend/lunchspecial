@@ -427,6 +427,21 @@ model DigestSettings {
   updatedAt     DateTime @updatedAt
 }
 
+// Single-row, same pattern as DigestSettings — holds the refresh token from
+// the one-time "Connect Google Account" OAuth flow (src/app/api/admin/
+// google-oauth/), used for Drive/Docs/Sheets actions that need to run as
+// the actual account owner rather than the zero-quota service account (see
+// googleUserAuth.ts for why: a service account can't create files even in
+// a folder shared with it, only edit files that already exist there).
+// Stored in the DB rather than an env var so reconnecting (e.g. after a
+// revoke) never needs a redeploy.
+model GoogleOAuthCredential {
+  id           Int      @id @default(1)
+  refreshToken String
+  scope        String
+  updatedAt    DateTime @updatedAt
+}
+
 // One row per digest run — scheduled (mode "friday"/"monday") or an
 // on-demand admin test send (mode "test") — so the kitchen panel can show a
 // history of what actually went out without re-deriving it from email logs.
