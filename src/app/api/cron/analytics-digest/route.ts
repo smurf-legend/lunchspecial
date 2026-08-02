@@ -17,7 +17,9 @@ export async function GET(req: NextRequest) {
   try {
     const report = await getWeeklyAnalyticsReport();
     const ok = await sendAnalyticsDigestEmail(report);
-    await prisma.analyticsDigestLog.create({ data: { success: ok } });
+    // suburbsCovered is stored here (not just used from the report) so next
+    // week's run has a baseline to diff against — see getWeeklyAnalyticsReport.
+    await prisma.analyticsDigestLog.create({ data: { success: ok, suburbsCovered: report.suburbsCovered.value } });
     return NextResponse.json({ success: ok, report });
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);

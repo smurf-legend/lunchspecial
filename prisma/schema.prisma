@@ -461,10 +461,16 @@ model DigestLog {
 // fired versus silently failing (the exact confusion the lunch-deals digest
 // had until this got checked directly against its own log table).
 model AnalyticsDigestLog {
-  id        String   @id @default(cuid())
-  success   Boolean
-  error     String?
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  success        Boolean
+  error          String?
+  // Suburb coverage has no GA4/Search Console equivalent to compare
+  // against (it's purely our own DB), so unlike sessions/clicks/etc — which
+  // get their week-over-week trend for free from a 2-date-range GA4/GSC
+  // query — this needs its own history to diff against. Nullable because
+  // rows logged before this field existed, and failed runs, won't have it.
+  suburbsCovered Int?
+  createdAt      DateTime @default(now())
 }
 
 // Backs a simple DB-based rate limiter (see src/lib/rateLimit.ts) for
