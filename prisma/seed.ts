@@ -27,6 +27,7 @@ const CATEGORIES = [
   "Middle Eastern",
   "Sandwiches/Rolls",
   "Poke/Salad Bowls",
+  "Buffet",
 ];
 
 function slugify(s: string) {
