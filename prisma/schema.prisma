@@ -78,6 +78,14 @@ model Suburb {
   region   String @default("Central") // "Central" | "North" | "East" | "South" | "West"
   slug     String @unique // e.g. "surry-hills"
 
+  // Backfilled from a public postcode/locality dataset, not user input —
+  // null for the handful of rows (mostly non-standard delivery-centre
+  // entries) that didn't match cleanly. Used for "specials near me"
+  // (nearest-suburb matching against the browser Geolocation API), not
+  // for precise mapping.
+  latitude  Float?
+  longitude Float?
+
   specials SpecialSuburb[]
   usersPreferring User[]
 
