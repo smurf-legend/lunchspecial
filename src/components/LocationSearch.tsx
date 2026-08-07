@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { specialSlug } from "@/lib/slugify";
 import CategoryFilter from "@/components/CategoryFilter";
+import PriceFilter from "@/components/PriceFilter";
 import { PRICE_TIER_LABELS } from "@/lib/priceTiers";
 
 type Suburb = { name: string; slug: string; postcode: string; state: string };
@@ -164,21 +165,6 @@ export default function LocationSearch({ categories }: { categories: Category[] 
     searchParams.get("state")
   );
 
-  // Real <Link> hrefs (not onClick/router.push) throughout, same as the
-  // rest of the site's filter pills — that keeps every filter combination
-  // a genuine crawlable URL rather than something only reachable via JS,
-  // which matters for these specifically since price/cuisine combos are
-  // real long-tail search-landing pages.
-  function buildLink(overrides: Record<string, string | undefined>) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("page"); // changing a filter should land back on page 1
-    Object.entries(overrides).forEach(([k, v]) => {
-      if (v) params.set(k, v);
-      else params.delete(k);
-    });
-    return `/?${params.toString()}`;
-  }
-
   return (
     <div className="relative mb-4">
       {/* Input gets its own full-width row on mobile (sm:flex-1 only kicks in
@@ -206,8 +192,9 @@ export default function LocationSearch({ categories }: { categories: Category[] 
           onBlur={() => setTimeout(() => setOpen(false), 150)}
         />
         {isHomePage && (
-          <div className="flex gap-2 items-center w-full sm:w-auto">
+          <div className="flex gap-2 items-center w-full sm:w-auto flex-wrap">
             <CategoryFilter categories={categories} />
+            <PriceFilter />
             {hasActiveFilters && (
               <Link href="/" className="text-sm text-white underline decoration-white/60 hover:decoration-white whitespace-nowrap">
                 ✕ Reset filters
@@ -233,30 +220,6 @@ export default function LocationSearch({ categories }: { categories: Category[] 
           </Link>
         </div>
       </form>
-
-      {isHomePage && (
-        <div className="flex gap-2 mt-2 flex-wrap">
-          <Link
-            href={buildLink({ greatValue: greatValueOnly ? undefined : "1" })}
-            className={`px-3 py-1 rounded-full text-sm font-medium ${
-              greatValueOnly ? "bg-orange-900 text-white" : "bg-white text-orange-700 hover:bg-orange-50"
-            }`}
-          >
-            💎 Everyday Value
-          </Link>
-          {Object.entries(PRICE_TIER_LABELS).map(([key, label]) => (
-            <Link
-              key={key}
-              href={priceTier === key ? buildLink({ price: undefined }) : buildLink({ price: key })}
-              className={`px-3 py-1 rounded-full text-sm font-medium ${
-                priceTier === key ? "bg-orange-900 text-white" : "bg-white text-orange-700 hover:bg-orange-50"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-      )}
 
       {showDropdown && (
         // text-gray-900 for the same reason as the input above: this
