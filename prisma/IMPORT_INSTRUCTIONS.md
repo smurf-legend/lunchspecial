@@ -18,7 +18,7 @@ You're researching **real, currently-advertised lunch specials** at real venues 
 ```json
 [
   {
-    "title": "$17 chicken parma & chips",
+    "title": "Chicken Parma & Chips",
     "description": "A classic chicken parmigiana with chips and salad, part of the pub's weekday lunch menu.",
     "venueName": "The Example Hotel",
     "address": "123 Main St, Suburbtown",
@@ -39,7 +39,7 @@ You're researching **real, currently-advertised lunch specials** at real venues 
 ```
 
 **Field notes:**
-- `title` — 5-200 chars, short and specific (e.g. "$17 chicken parma & chips", not just "Lunch special").
+- `title` — 5-200 chars, short and specific, but **no price or discount value in it** (e.g. "Chicken Parma & Chips", not "$17 chicken parma & chips" or "40% off"). `specialPrice`/`usualPrice` already render prominently next to the title and feed the page's JSON-LD `Offer` data, so repeating the number in `title` is redundant and wastes characters in a title tag that's already truncated once `venueName`/suburb are appended. Name the dish/deal itself, not "Lunch special" generically either.
 - `description` — at least 10 chars, your own words.
 - `venueName` — the business name only, not the suburb.
 - `address` — optional, street address if known.
