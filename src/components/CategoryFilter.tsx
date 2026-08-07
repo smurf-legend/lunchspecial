@@ -16,7 +16,11 @@ export default function CategoryFilter({ categories }: { categories: Category[] 
 
   return (
     <select
-      className="border rounded px-3 py-1.5 text-sm bg-white"
+      // text-gray-900 bg-white explicit, not inherited: this now only ever
+      // renders inside the orange header (see LocationSearch), which sets
+      // text-white for its nav links — same white-on-white bug the header's
+      // search input already had a fix for, above.
+      className="border rounded px-3 py-1.5 text-sm bg-white text-gray-900"
       value={searchParams.get("category") ?? ""}
       onChange={(e) => updateParam("category", e.target.value)}
     >

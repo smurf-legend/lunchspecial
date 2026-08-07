@@ -3,9 +3,12 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { specialSlug } from "@/lib/slugify";
+import CategoryFilter from "@/components/CategoryFilter";
+import { PRICE_TIER_LABELS } from "@/lib/priceTiers";
 
 type Suburb = { name: string; slug: string; postcode: string; state: string };
 type SpecialSuggestion = { id: string; title: string; venueName: string };
+type Category = { name: string; slug: string };
 
 // Only auto-geolocate once per browser session, and only into a genuinely
 // blank homepage visit — not on a suburb/category page or a search someone
@@ -13,9 +16,14 @@ type SpecialSuggestion = { id: string; title: string; venueName: string };
 // be worse than not having the feature at all.
 const GEO_SESSION_KEY = "lunchspecial:geo-attempted";
 
-export default function LocationSearch() {
+export default function LocationSearch({ categories }: { categories: Category[] }) {
   const router = useRouter();
   const pathname = usePathname();
+  // The cuisine dropdown, price-tier pills, and reset link only make sense
+  // as a filter on the results listing itself — every other page (a
+  // special's detail page, Table Talk, etc.) still renders this component
+  // for the location search box, just without the homepage-only filter row.
+  const isHomePage = pathname === "/";
   const searchParams = useSearchParams();
   const [location, setLocation] = useState(searchParams.get("location") ?? "");
   const [suburbMatches, setSuburbMatches] = useState<Suburb[]>([]);
@@ -139,6 +147,38 @@ export default function LocationSearch() {
   const showDropdown =
     open && location.trim().length > 0 && (suburbMatches.length > 0 || specialSuggestions.length > 0);
 
+  // Real Prisma query logic for these lives in page.tsx (which needs the
+  // `where`/`rangeField` per tier) — this component only needs the label
+  // text to render the pill links, via the shared PRICE_TIER_LABELS.
+  const priceTier = searchParams.get("price") && PRICE_TIER_LABELS[searchParams.get("price")!]
+    ? searchParams.get("price")!
+    : undefined;
+  const greatValueOnly = searchParams.get("greatValue") === "1";
+  const hasActiveFilters = !!(
+    searchParams.get("suburb") ||
+    searchParams.get("category") ||
+    searchParams.get("location") ||
+    priceTier ||
+    greatValueOnly ||
+    searchParams.get("sort") ||
+    searchParams.get("state")
+  );
+
+  // Real <Link> hrefs (not onClick/router.push) throughout, same as the
+  // rest of the site's filter pills — that keeps every filter combination
+  // a genuine crawlable URL rather than something only reachable via JS,
+  // which matters for these specifically since price/cuisine combos are
+  // real long-tail search-landing pages.
+  function buildLink(overrides: Record<string, string | undefined>) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page"); // changing a filter should land back on page 1
+    Object.entries(overrides).forEach(([k, v]) => {
+      if (v) params.set(k, v);
+      else params.delete(k);
+    });
+    return `/?${params.toString()}`;
+  }
+
   return (
     <div className="relative mb-4">
       {/* Input gets its own full-width row on mobile (sm:flex-1 only kicks in
@@ -165,6 +205,16 @@ export default function LocationSearch() {
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
         />
+        {isHomePage && (
+          <div className="flex gap-2 items-center w-full sm:w-auto">
+            <CategoryFilter categories={categories} />
+            {hasActiveFilters && (
+              <Link href="/" className="text-sm text-white underline decoration-white/60 hover:decoration-white whitespace-nowrap">
+                ✕ Reset filters
+              </Link>
+            )}
+          </div>
+        )}
         <div className="flex gap-2 w-full sm:w-auto">
           {/* Solid orange used to work fine on the page's white background,
               but this component now only ever renders inside the orange
@@ -183,6 +233,30 @@ export default function LocationSearch() {
           </Link>
         </div>
       </form>
+
+      {isHomePage && (
+        <div className="flex gap-2 mt-2 flex-wrap">
+          <Link
+            href={buildLink({ greatValue: greatValueOnly ? undefined : "1" })}
+            className={`px-3 py-1 rounded-full text-sm font-medium ${
+              greatValueOnly ? "bg-orange-900 text-white" : "bg-white text-orange-700 hover:bg-orange-50"
+            }`}
+          >
+            💎 Everyday Value
+          </Link>
+          {Object.entries(PRICE_TIER_LABELS).map(([key, label]) => (
+            <Link
+              key={key}
+              href={priceTier === key ? buildLink({ price: undefined }) : buildLink({ price: key })}
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                priceTier === key ? "bg-orange-900 text-white" : "bg-white text-orange-700 hover:bg-orange-50"
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {showDropdown && (
         // text-gray-900 for the same reason as the input above: this

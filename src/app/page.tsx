@@ -4,20 +4,20 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
-import CategoryFilter from "@/components/CategoryFilter";
 import { stateCodeFromRegionName } from "@/lib/auStates";
 import { getLiveStates } from "@/lib/liveStates";
 import { shouldShowVoteCounts } from "@/lib/voteVisibility";
+import { PRICE_TIER_LABELS } from "@/lib/priceTiers";
 
 // Each tier also matches range-priced specials (a whole specials menu
 // rather than one item) — "under" tiers check the range's low end (does
 // it have anything that cheap), "over" checks the high end.
 const PRICE_TIERS: Record<string, { label: string; where: any; rangeField: "priceRangeMin" | "priceRangeMax" }> = {
-  under10: { label: "Under $10", where: { lt: 10 }, rangeField: "priceRangeMin" },
-  under15: { label: "Under $15", where: { lt: 15 }, rangeField: "priceRangeMin" },
-  under20: { label: "Under $20", where: { lt: 20 }, rangeField: "priceRangeMin" },
-  under25: { label: "Under $25", where: { lt: 25 }, rangeField: "priceRangeMin" },
-  over25: { label: "Over $25", where: { gte: 25 }, rangeField: "priceRangeMax" },
+  under10: { label: PRICE_TIER_LABELS.under10, where: { lt: 10 }, rangeField: "priceRangeMin" },
+  under15: { label: PRICE_TIER_LABELS.under15, where: { lt: 15 }, rangeField: "priceRangeMin" },
+  under20: { label: PRICE_TIER_LABELS.under20, where: { lt: 20 }, rangeField: "priceRangeMin" },
+  under25: { label: PRICE_TIER_LABELS.under25, where: { lt: 25 }, rangeField: "priceRangeMin" },
+  over25: { label: PRICE_TIER_LABELS.over25, where: { gte: 25 }, rangeField: "priceRangeMax" },
 };
 
 const OLDIE_MIN_AGE_DAYS = 30;
@@ -129,7 +129,7 @@ export default async function HomePage({
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
 
-  const [specials, totalMatching, categories, favorites] = await Promise.all([
+  const [specials, totalMatching, favorites] = await Promise.all([
     prisma.special.findMany({
       where,
       orderBy: sort === "new" ? { createdAt: "desc" } : { score: "desc" },
@@ -142,7 +142,6 @@ export default async function HomePage({
       },
     }),
     prisma.special.count({ where }),
-    prisma.category.findMany({ orderBy: { name: "asc" } }),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
@@ -224,10 +223,6 @@ export default async function HomePage({
           just stops rendering the UI for it. Revisit once another state
           actually has content. */}
 
-      <div className="flex gap-3 flex-wrap items-center">
-        <CategoryFilter categories={categories} />
-      </div>
-
       {location && (
         <div className="flex flex-wrap items-center gap-2 mt-2 text-xs">
           <span className="bg-gray-100 text-gray-700 pl-2.5 pr-1.5 py-1 rounded-full flex items-center gap-1.5">
@@ -245,29 +240,7 @@ export default async function HomePage({
         </div>
       )}
 
-      <div className="flex gap-2 mb-2 mt-3 flex-wrap">
-        <Link
-          href={buildLink({ greatValue: greatValueOnly ? undefined : "1" })}
-          className={`px-3 py-1 rounded-full text-sm font-medium ${
-            greatValueOnly ? "bg-orange-600 text-white" : "bg-white border"
-          }`}
-        >
-          💎 Everyday Value
-        </Link>
-        {Object.entries(PRICE_TIERS).map(([key, { label }]) => (
-          <Link
-            key={key}
-            href={priceTier === key ? buildLink({ price: undefined }) : buildLink({ price: key })}
-            className={`px-3 py-1 rounded-full text-sm font-medium ${
-              priceTier === key ? "bg-orange-600 text-white" : "bg-white border"
-            }`}
-          >
-            {label}
-          </Link>
-        ))}
-      </div>
-
-      <div className="flex gap-2 mb-4 mt-1">
+      <div className="flex gap-2 mb-4 mt-3">
         <Link
           href={buildLink({ sort: sort === "hot" ? undefined : "hot" })}
           className={`px-3 py-1 rounded-full text-sm font-medium ${

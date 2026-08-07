@@ -5,6 +5,7 @@ import Providers from "./providers";
 import NavAuth from "@/components/NavAuth";
 import LocationSearch from "@/components/LocationSearch";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { prisma } from "@/lib/prisma";
 
 const title = "LunchSpecial — Lunch specials near you, crowdsourced";
 // Sydney-specific rather than generic "near you" — accurate now that
@@ -31,7 +32,12 @@ export const viewport = {
   themeColor: "#CD1C18",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Fetched here (not just on the homepage) so the cuisine dropdown can live
+  // in the header search bar, which every page renders via this layout —
+  // the dropdown itself only actually shows on "/" (see LocationSearch),
+  // but the data has to be available wherever the client component mounts.
+  const categories = await prisma.category.findMany({ orderBy: { name: "asc" } });
   return (
     <html lang="en">
       <body className="bg-gray-50 text-gray-900">
@@ -63,7 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 rendering just to show the search bar. */}
             <div className="max-w-5xl mx-auto px-4 pb-3">
               <Suspense fallback={<div className="h-[42px]" />}>
-                <LocationSearch />
+                <LocationSearch categories={categories} />
               </Suspense>
             </div>
           </header>
