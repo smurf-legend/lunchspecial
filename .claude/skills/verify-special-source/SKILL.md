@@ -248,24 +248,34 @@ would actually want to compare. This shows up two ways:
   image each time rather than rebuilding the whole form from scratch. This
   feature exists specifically for this same-venue-different-day pattern.
 
-**Not every multi-item list is Case C — a themed set of named dishes at
-different prices under one menu section is usually one Special with a price
-range, not one row per dish.** Ayada Rhodes' "Street Dishes" section (9 named
-dishes, $17–$20 each, one Mon–Fri lunch-menu page) and Employees Only's four
-lunch mains ($32–$39, choice of one) both fit this: real per-item prices
-exist, but they're options *within one deal*, not separately-run offers on
-different days or tiers. User feedback on the Ayada case: "I think the street
-dishes should be one line and not 9." The distinction from genuine Case C:
-- **Split into separate rows (Case C)** when the offers are actually run
-  independently — a different dish on a different day, or a course-count
-  tier ("2 courses or 3 courses") that changes what's included.
-- **One row with `priceRangeMin`/`priceRangeMax`** when it's a single printed
-  "choose one of these" menu/section and the only thing varying per item is
-  the price — set the range to the lowest and highest price in the group,
-  list every item with its individual price in `description` (one per line,
-  `\n\n`-separated, same formatting as a rotating pool), and use the venue's
-  own menu photo or general promo image as `imageUrl` since no single item
-  represents the whole set.
+**Not every multi-item list is Case C — but whether a themed list of named
+dishes becomes one Special (with a price range) or several is an SEO
+judgment call each time, not a mechanical rule.** First pass at this section
+said "themed set = one line," which the user corrected: "always do what's
+best for SEO, for ayada it just made more sense to have one line for the 9
+street dishes than 9 lines each with a separate dish" — i.e. one line won
+*on the merits for that case*, not because themed lists are always one row.
+Weigh it:
+- **Genuine Case C still splits**, full stop — a different dish on a
+  different day, or a course-count tier ("2 courses or 3 courses") that
+  changes what's included, are separately-run offers regardless of SEO
+  (Club Hotel Mount Druitt's day-of-week dishes are also good SEO *because*
+  each day is real distinct search intent, not despite it).
+- **For a same-deal themed list (not Case C) with real per-item prices**
+  (Ayada Rhodes' 9 "Street Dishes," $17–$20; Employees Only's 4 lunch mains,
+  $32–$39): ask whether each item is likely to capture distinct search
+  intent on its own. Nine similar Thai wok-dish names at a suburban
+  restaurant aren't each a meaningful search target, and splitting them
+  risks thin, near-duplicate pages competing with each other instead of one
+  page ranking well — one row with `priceRangeMin`/`priceRangeMax` wins
+  there. A list where people plausibly *do* search per-item by name could
+  cut the other way toward separate rows even without being Case C — decide
+  per venue, don't default either way.
+- When one row wins: set the range to the lowest/highest price in the
+  group, list every item with its individual price in `description` (one
+  per line, `\n\n`-separated, same formatting as a rotating pool), and use
+  the venue's own menu photo or general promo image as `imageUrl` since no
+  single item represents the whole set.
 - `priceRangeMin`/`priceRangeMax` aren't in `import-specials.ts`'s schema
   (which only takes a flat `specialPrice`) — create/update these directly
   with a one-off `prisma.special.create`/`update` script instead, following
