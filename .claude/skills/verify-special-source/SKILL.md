@@ -248,6 +248,29 @@ would actually want to compare. This shows up two ways:
   image each time rather than rebuilding the whole form from scratch. This
   feature exists specifically for this same-venue-different-day pattern.
 
+**Not every multi-item list is Case C — a themed set of named dishes at
+different prices under one menu section is usually one Special with a price
+range, not one row per dish.** Ayada Rhodes' "Street Dishes" section (9 named
+dishes, $17–$20 each, one Mon–Fri lunch-menu page) and Employees Only's four
+lunch mains ($32–$39, choice of one) both fit this: real per-item prices
+exist, but they're options *within one deal*, not separately-run offers on
+different days or tiers. User feedback on the Ayada case: "I think the street
+dishes should be one line and not 9." The distinction from genuine Case C:
+- **Split into separate rows (Case C)** when the offers are actually run
+  independently — a different dish on a different day, or a course-count
+  tier ("2 courses or 3 courses") that changes what's included.
+- **One row with `priceRangeMin`/`priceRangeMax`** when it's a single printed
+  "choose one of these" menu/section and the only thing varying per item is
+  the price — set the range to the lowest and highest price in the group,
+  list every item with its individual price in `description` (one per line,
+  `\n\n`-separated, same formatting as a rotating pool), and use the venue's
+  own menu photo or general promo image as `imageUrl` since no single item
+  represents the whole set.
+- `priceRangeMin`/`priceRangeMax` aren't in `import-specials.ts`'s schema
+  (which only takes a flat `specialPrice`) — create/update these directly
+  with a one-off `prisma.special.create`/`update` script instead, following
+  the same suburb/category/author connect shape the import script uses.
+
 ## When there's no current special — delete, don't force a fix (e.g. It's Time For Thai, Newtown)
 
 Sometimes the honest conclusion is that the deal doesn't exist anymore, and
