@@ -1,10 +1,21 @@
-import { RegExpMatcher, englishDataset, englishRecommendedTransformers } from "obscenity";
+import { RegExpMatcher, DataSet, englishDataset, englishRecommendedTransformers } from "obscenity";
+
+// "ass"/"arse" (which also covers "arsed" — the pattern matches from the
+// word boundary, not the whole word) are mild-enough Australian vernacular
+// ("can't be arsed") that Table Talk's voice needs them available, unlike
+// the words still blocked below. Full phrase removal via removePhrasesIf
+// rather than whitelisting specific terms — whitelisting only suppresses
+// individual false-positive words (the Scunthorpe problem this dataset's
+// whitelist below still handles), it can't un-block the words themselves.
+const baseDataset = new DataSet<{ originalWord: string }>()
+  .addAll(englishDataset)
+  .removePhrasesIf((phrase) => phrase.metadata?.originalWord === "ass" || phrase.metadata?.originalWord === "arse");
 
 // Built once per warm instance — the matcher's own setup (compiling the
 // blacklist into regexes) is the expensive part, so it isn't worth redoing
 // per call.
 const matcher = new RegExpMatcher({
-  ...englishDataset.build(),
+  ...baseDataset.build(),
   ...englishRecommendedTransformers,
   // Real words that happen to contain a blacklisted substring (the
   // "Scunthorpe problem") — verified against the actual matcher, not just
@@ -16,7 +27,6 @@ const matcher = new RegExpMatcher({
   whitelistedTerms: [
     "shiitake",
     "cumberland",
-    "assortment",
     "cumin",
     "cumquat",
     "fagioli",
