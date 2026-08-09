@@ -31,6 +31,11 @@ export async function PATCH(
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
   const body = await req.json();
+  // Resolve share/short links before validating — see the matching comment
+  // in /api/specials/route.ts for why this has to happen before parsing.
+  if (Array.isArray(body.videoUrls)) {
+    body.videoUrls = await resolveVideoUrls(body.videoUrls);
+  }
   const parsed = specialUpdateSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
@@ -47,7 +52,6 @@ export async function PATCH(
     where: { id: params.id },
     data: {
       ...data,
-      videoUrls: data.videoUrls ? await resolveVideoUrls(data.videoUrls) : data.videoUrls,
       url: url || null,
       imageUrl: imageUrl || null,
       couponCode: couponCode || null,

@@ -19,27 +19,48 @@ export default function VideoLinksInput({
 }) {
   const [input, setInput] = useState("");
   const [inputError, setInputError] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
   const atLimit = value.length >= MAX_SPECIAL_VIDEOS;
 
-  function addLink() {
+  // Async because a share/short link (vt.tiktok.com, facebook.com/share/...)
+  // needs a server-side redirect resolve before it's recognizable —
+  // socialEmbedUrl alone only matches canonical URLs, so checking client-side
+  // only would reject a real, working share link on sight.
+  async function addLink() {
     const url = input.trim();
     if (!url) return;
     if (atLimit) {
       setInputError(`Up to ${MAX_SPECIAL_VIDEOS} videos — remove one first to add another`);
       return;
     }
-    const embed = socialEmbedUrl(url);
-    if (!embed) {
-      setInputError("Not a recognized YouTube, TikTok, Instagram, X, Facebook, or Vimeo link");
-      return;
-    }
     if (value.includes(url)) {
       setInputError("That link's already added");
       return;
     }
-    onChange([...value, url]);
-    setInput("");
+    setChecking(true);
     setInputError(null);
+    try {
+      const res = await fetch("/api/resolve-video-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setInputError(data.error ?? "Not a recognized video link");
+        return;
+      }
+      if (value.includes(data.resolvedUrl)) {
+        setInputError("That link's already added");
+        return;
+      }
+      onChange([...value, data.resolvedUrl]);
+      setInput("");
+    } catch {
+      setInputError("Couldn't check that link — try again");
+    } finally {
+      setChecking(false);
+    }
   }
 
   function removeLink(url: string) {
@@ -104,10 +125,10 @@ export default function VideoLinksInput({
           <button
             type="button"
             onClick={addLink}
-            disabled={!input.trim()}
+            disabled={!input.trim() || checking}
             className="text-sm border px-3 py-1 rounded font-medium disabled:opacity-50 shrink-0"
           >
-            Add
+            {checking ? "Checking…" : "Add"}
           </button>
         </div>
       )}

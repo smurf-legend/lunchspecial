@@ -131,6 +131,13 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
+  // Resolve share/short links (vt.tiktok.com, facebook.com/share/...)
+  // *before* validating — socialEmbedUrl only recognizes canonical URLs, so
+  // a short link would otherwise fail validation here and never reach the
+  // resolution step that runs after parsing below.
+  if (Array.isArray(body.videoUrls)) {
+    body.videoUrls = await resolveVideoUrls(body.videoUrls);
+  }
   const parsed = specialSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
@@ -174,7 +181,6 @@ export async function POST(req: NextRequest) {
   const special = await prisma.special.create({
     data: {
       ...data,
-      videoUrls: data.videoUrls ? await resolveVideoUrls(data.videoUrls) : data.videoUrls,
       authorId: (session.user as any).id,
       suburbs: {
         create: suburbs.map((s) => ({ suburb: { connect: { id: s.id } } })),
