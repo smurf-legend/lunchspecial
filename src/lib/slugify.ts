@@ -1,5 +1,13 @@
 export function slugify(s: string) {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  // Apostrophes are dropped rather than collapsed to a hyphen like other
+  // non-alnum runs — otherwise "Macca's" becomes "macca-s" and "aren't"
+  // becomes "aren-t", which is what every venue/title with a possessive or
+  // contraction (Nando's, Domino's, Hungry Jack's, ...) used to produce.
+  return s
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
 
 // SEO-friendly URL for a special's detail page — a readable slug with the
