@@ -145,6 +145,28 @@ export default function LocationSearch({ categories }: { categories: Category[] 
     submit(suburb.name);
   }
 
+  // The old <Link href="/"> reset navigated correctly but left the
+  // location input showing whatever was last typed — its value is local
+  // React state, never synced back when the URL's own "location" param
+  // goes away, so the box looked untouched after a reset (and would
+  // silently resubmit the old text if Find was pressed again). This clears
+  // that state directly instead of hoping a navigation-triggered re-render
+  // does it.
+  //
+  // Kept as a real <a href="/"> rather than switched to a <button> — this
+  // onClick doesn't call preventDefault, so Link's own handler still runs
+  // the normal client-side transition, but the href stays real too, which
+  // means the browser's native "follow this link" action is still there as
+  // a fallback if the click is ever delivered to the DOM without a working
+  // React handler attached (e.g. mid-hydration) — a bare button has no
+  // such fallback.
+  function resetFilters() {
+    setLocation("");
+    setSuburbMatches([]);
+    setSpecialSuggestions([]);
+    setOpen(false);
+  }
+
   const showDropdown =
     open && location.trim().length > 0 && (suburbMatches.length > 0 || specialSuggestions.length > 0);
 
@@ -196,7 +218,15 @@ export default function LocationSearch({ categories }: { categories: Category[] 
             <CategoryFilter categories={categories} />
             <PriceFilter />
             {hasActiveFilters && (
-              <Link href="/" className="text-sm text-white underline decoration-white/60 hover:decoration-white whitespace-nowrap">
+              // onClick clears local state (see resetFilters) but doesn't
+              // preventDefault — Link's own handler still runs after it for
+              // the normal client-side transition, and href stays real so a
+              // click that never reaches React still navigates natively.
+              <Link
+                href="/"
+                onClick={resetFilters}
+                className="text-sm text-white underline decoration-white/60 hover:decoration-white whitespace-nowrap"
+              >
                 ✕ Reset filters
               </Link>
             )}
