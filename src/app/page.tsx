@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { getServerSession } from "next-auth";
+import { Metadata } from "next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
@@ -21,6 +22,44 @@ const PRICE_TIERS: Record<string, { label: string; where: any; rangeField: "pric
 };
 
 const OLDIE_MIN_AGE_DAYS = 30;
+
+type HomeSearchParams = {
+  sort?: string;
+  suburb?: string;
+  category?: string;
+  location?: string;
+  price?: string;
+  greatValue?: string;
+  state?: string;
+  page?: string;
+};
+
+// Without this, every filter/sort combination (?sort=hot, ?category=pizza,
+// ...) is a separate indexable URL with no canonical pointing back — the
+// same duplicate-content problem already fixed for suburb/state/region
+// pages, just missed on the homepage. Most of these combos aren't even in
+// a crawlable href (the category/price dropdowns use router.push), but
+// sort is a real link, and ?sort=hot in particular renders byte-identical
+// content to "/" since both default to score-desc order. Pagination is
+// left alone (no canonical override, i.e. each page is self-referencing)
+// rather than pointed at "/?page=N" — Next.js's alternates.canonical
+// silently strips query strings on resolution (confirmed against a local
+// dev server: a canonical of "/?page=4" rendered as bare
+// "https://lunchspecial.com.au" with no query at all), so there's no way
+// to express a real per-page canonical here; omitting it is closer to
+// correct than a canonical that's silently wrong.
+export function generateMetadata({ searchParams }: { searchParams: HomeSearchParams }): Metadata {
+  const hasFilters = !!(
+    searchParams.suburb ||
+    searchParams.category ||
+    searchParams.location ||
+    searchParams.price ||
+    searchParams.greatValue ||
+    (searchParams.state && searchParams.state !== "all") ||
+    searchParams.sort
+  );
+  return hasFilters ? { alternates: { canonical: "/" } } : {};
+}
 
 export default async function HomePage({
   searchParams,
