@@ -56,6 +56,13 @@ export async function POST(req: NextRequest) {
     preferredSuburbId = suburb.id;
   }
 
+  if (marketingOptIn && !preferredSuburbId) {
+    return NextResponse.json(
+      { error: "Pick a suburb so we know where to send deals from." },
+      { status: 400 }
+    );
+  }
+
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
     data: {

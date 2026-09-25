@@ -55,6 +55,24 @@ export async function PATCH(req: NextRequest) {
     preferredSuburbId = suburb.id;
   }
 
+  let willOptIn = parsed.data.marketingOptIn;
+  let willHaveSuburb = preferredSuburbId !== undefined ? preferredSuburbId !== null : undefined;
+  if (willOptIn === undefined || willHaveSuburb === undefined) {
+    const current = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { marketingOptIn: true, preferredSuburbId: true },
+    });
+    willOptIn ??= current?.marketingOptIn;
+    willHaveSuburb ??= !!current?.preferredSuburbId;
+  }
+
+  if (willOptIn && !willHaveSuburb) {
+    return NextResponse.json(
+      { error: "Pick a suburb so we know where to send deals from." },
+      { status: 400 }
+    );
+  }
+
   const user = await prisma.user.update({
     where: { id: userId },
     data: { ...rest, preferredSuburbId },
