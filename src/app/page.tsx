@@ -6,9 +6,9 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import { stateCodeFromRegionName } from "@/lib/auStates";
-import { getLiveStates } from "@/lib/liveStates";
 import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 import { PRICE_TIER_LABELS } from "@/lib/priceTiers";
+import { getHomeSpecialsCached, getLiveStatesCached } from "@/lib/cachedQueries";
 
 // Each tier also matches range-priced specials (a whole specials menu
 // rather than one item) — "under" tiers check the range's low end (does
@@ -108,7 +108,7 @@ export default async function HomePage({
       })
     : [];
 
-  const liveStates = await getLiveStates();
+  const liveStates = new Set(await getLiveStatesCached());
 
   // No explicit filters at all means a fresh visit — try to default to the
   // visitor's own state via Vercel's edge geolocation header, but only if
@@ -168,19 +168,13 @@ export default async function HomePage({
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
 
-  const [specials, totalMatching, favorites] = await Promise.all([
-    prisma.special.findMany({
+  const [{ specials, totalMatching }, favorites] = await Promise.all([
+    getHomeSpecialsCached(
       where,
-      orderBy: sort === "new" ? { createdAt: "desc" } : { score: "desc" },
-      skip: (page - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
-      include: {
-        suburbs: { include: { suburb: true } },
-        categories: { include: { category: true } },
-        _count: { select: { comments: true } },
-      },
-    }),
-    prisma.special.count({ where }),
+      sort === "new" ? { createdAt: "desc" } : { score: "desc" },
+      (page - 1) * PAGE_SIZE,
+      PAGE_SIZE
+    ),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));

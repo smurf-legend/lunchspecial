@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isValidStateCode, stateName } from "@/lib/auStates";
-import { getLiveStates } from "@/lib/liveStates";
 import { shouldShowVoteCounts } from "@/lib/voteVisibility";
+import { getLiveStatesCached, getStateSuburbsCached, getStateSpecialsCached } from "@/lib/cachedQueries";
 
 export async function generateMetadata({ params }: { params: { state: string } }): Promise<Metadata> {
   const stateParam = params.state.toUpperCase();
@@ -18,8 +18,8 @@ export async function generateMetadata({ params }: { params: { state: string } }
   // a state with none renders the same generic "coming soon" body as every
   // other not-yet-covered state, so it isn't worth indexing until it has
   // something of its own to show.
-  const liveStates = await getLiveStates();
-  const isLive = liveStates.has(stateParam);
+  const liveStates = await getLiveStatesCached();
+  const isLive = liveStates.includes(stateParam);
 
   return {
     title: `Lunch specials in ${name} | LunchSpecial`,
@@ -34,8 +34,8 @@ export default async function StatePage({ params }: { params: { state: string } 
   if (!isValidStateCode(stateParam)) notFound();
   const name = stateName(stateParam);
 
-  const liveStates = await getLiveStates();
-  if (!liveStates.has(stateParam)) {
+  const liveStates = await getLiveStatesCached();
+  if (!liveStates.includes(stateParam)) {
     return (
       <div>
         <h1 className="text-xl font-bold mb-1">Lunch specials in {name}</h1>
@@ -51,21 +51,8 @@ export default async function StatePage({ params }: { params: { state: string } 
   const userId = (session?.user as any)?.id as string | undefined;
 
   const [suburbs, specials, favorites] = await Promise.all([
-    prisma.suburb.findMany({ where: { state: stateParam }, orderBy: { name: "asc" } }),
-    prisma.special.findMany({
-      where: {
-        hidden: false,
-        needsReview: false,
-        OR: [{ suburbs: { some: { suburb: { state: stateParam } } } }, { chainWide: true }],
-      },
-      orderBy: { score: "desc" },
-      take: 20,
-      include: {
-        suburbs: { include: { suburb: true } },
-        categories: { include: { category: true } },
-        _count: { select: { comments: true } },
-      },
-    }),
+    getStateSuburbsCached(stateParam),
+    getStateSpecialsCached(stateParam),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));

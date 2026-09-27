@@ -1,4 +1,3 @@
-import { cache } from "react";
 import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
@@ -21,29 +20,15 @@ import { idFromSlug, specialSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
 import { buildOfferJsonLd, buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
 import { shouldShowVoteCounts } from "@/lib/voteVisibility";
-
-const authorSelect = {
-  select: {
-    name: true,
-    _count: { select: { specials: true, comments: true } },
-  },
-};
-
-// Shared between generateMetadata and the page body so the two don't issue
-// duplicate queries for the same special within one request.
-const getSpecial = cache((id: string) =>
-  prisma.special.findUnique({
-    where: { id },
-    include: {
-      author: authorSelect,
-      suburbs: { include: { suburb: true } },
-      categories: { include: { category: true } },
-    },
-  })
-);
+import {
+  getSpecialDetailCached,
+  getSpecialCommentsCached,
+  getSameChainRowsCached,
+  getSameVenueSpecialsCached,
+} from "@/lib/cachedQueries";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const special = await getSpecial(idFromSlug(params.id));
+  const special = await getSpecialDetailCached(idFromSlug(params.id));
   if (!special || special.hidden || special.needsReview) return {};
 
   const suburbNames = special.suburbs.map((s) => s.suburb.name).join(", ");
@@ -78,14 +63,10 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   const userId = (session?.user as any)?.id as string | undefined;
 
   const [special, flatComments, favorite] = await Promise.all([
-    getSpecial(id),
+    getSpecialDetailCached(id),
     // Fetched flat (not nested) since replies can nest to any depth — the
     // tree is assembled in commentTree.ts instead of a fixed-depth include.
-    prisma.comment.findMany({
-      where: { specialId: id },
-      include: { author: authorSelect },
-      orderBy: { createdAt: "asc" },
-    }),
+    getSpecialCommentsCached(id),
     userId ? prisma.favorite.findUnique({ where: { userId_specialId: { userId, specialId: id } } }) : null,
   ]);
 
@@ -127,15 +108,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   // rows — chainWide and already-multi-suburb rows don't need it.
   const sameChainRows =
     !chainWide && suburbList.length <= 1 && special.url
-      ? await prisma.special.findMany({
-          where: {
-            url: special.url,
-            id: { not: special.id },
-            hidden: false,
-            needsReview: false,
-          },
-          select: { id: true, address: true, suburbs: { include: { suburb: true } } },
-        })
+      ? await getSameChainRowsCached(special.url, special.id)
       : [];
   // Dedupe to one row per distinct other address — a chain location often has
   // more than one Special (e.g. a "2 Courses" and "3 Courses" row), and this
@@ -155,17 +128,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   // don't get cross-linked. Requires a real address to match on — without
   // one there's no reliable way to confirm it's the same physical place.
   const sameVenueSpecials = special.address
-    ? await prisma.special.findMany({
-        where: {
-          venueName: special.venueName,
-          address: special.address,
-          id: { not: special.id },
-          hidden: false,
-          needsReview: false,
-        },
-        select: { id: true, title: true },
-        orderBy: { createdAt: "asc" },
-      })
+    ? await getSameVenueSpecialsCached(special.venueName, special.address, special.id)
     : [];
 
   const offerJsonLd = buildOfferJsonLd({

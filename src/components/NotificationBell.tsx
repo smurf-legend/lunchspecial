@@ -11,11 +11,22 @@ type Notification = {
   special: { id: string; title: string };
 };
 
+// Notifications aren't urgent, so polling doesn't need to be frequent or
+// constant. POLL_MS is the tick while the tab is open and someone is
+// actually there; IDLE_MS stops it even in a frontmost, visible tab once
+// nobody has touched the mouse or keyboard for a while — a monitor left on
+// all day showing the site otherwise polls forever, since the Page
+// Visibility API alone can't tell "open" apart from "actually being used."
+const POLL_MS = 4 * 60_000;
+const IDLE_MS = 5 * 60_000;
+
 export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const lastActivityRef = useRef(Date.now());
+  const lastFetchRef = useRef(0);
 
   async function fetchNotifications() {
     const res = await fetch("/api/notifications");
@@ -23,12 +34,38 @@ export default function NotificationBell() {
     const data = await res.json();
     setNotifications(data.notifications);
     setUnreadCount(data.unreadCount);
+    lastFetchRef.current = Date.now();
   }
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 60_000); // light polling, no infra needed
-    return () => clearInterval(interval);
+
+    const markActive = () => {
+      lastActivityRef.current = Date.now();
+    };
+    const activityEvents = ["mousemove", "keydown", "click", "scroll", "touchstart"] as const;
+    activityEvents.forEach((e) => window.addEventListener(e, markActive, { passive: true }));
+
+    // Catch up right away when the tab regains focus after being away for
+    // longer than one poll interval, instead of waiting for the next tick.
+    function handleVisibility() {
+      if (!document.hidden) {
+        markActive();
+        if (Date.now() - lastFetchRef.current > POLL_MS) fetchNotifications();
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    const interval = setInterval(() => {
+      const idle = Date.now() - lastActivityRef.current > IDLE_MS;
+      if (!document.hidden && !idle) fetchNotifications();
+    }, POLL_MS);
+
+    return () => {
+      clearInterval(interval);
+      activityEvents.forEach((e) => window.removeEventListener(e, markActive));
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, []);
 
   useEffect(() => {

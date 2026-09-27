@@ -8,9 +8,10 @@ import { SITE_URL } from "@/lib/site";
 import { buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
 import { stateName } from "@/lib/auStates";
 import { shouldShowVoteCounts } from "@/lib/voteVisibility";
+import { getSuburbBySlugCached, getSuburbHasLocalSpecialCached, getSuburbSpecialsCached } from "@/lib/cachedQueries";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const suburb = await prisma.suburb.findUnique({ where: { slug: params.slug } });
+  const suburb = await getSuburbBySlugCached(params.slug);
   if (!suburb) return {};
 
   const title = `Lunch specials in ${suburb.name} | LunchSpecial`;
@@ -23,10 +24,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   // it just duplicates thousands of near-identical pages. noindex until it
   // earns its first real local special; follow stays true so link equity
   // still flows through to pages that are worth indexing.
-  const hasLocalSpecial = await prisma.specialSuburb.findFirst({
-    where: { suburbId: suburb.id, special: { hidden: false, needsReview: false } },
-    select: { specialId: true },
-  });
+  const hasLocalSpecial = await getSuburbHasLocalSpecialCached(suburb.id);
 
   return {
     title,
@@ -39,27 +37,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function SuburbPage({ params }: { params: { slug: string } }) {
-  const suburb = await prisma.suburb.findUnique({ where: { slug: params.slug } });
+  const suburb = await getSuburbBySlugCached(params.slug);
   if (!suburb) notFound();
 
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
 
   const [specials, favorites] = await Promise.all([
-    prisma.special.findMany({
-      where: {
-        hidden: false,
-        needsReview: false,
-        OR: [{ suburbs: { some: { suburbId: suburb.id } } }, { chainWide: true }],
-      },
-      orderBy: { score: "desc" },
-      take: 20,
-      include: {
-        suburbs: { include: { suburb: true } },
-        categories: { include: { category: true } },
-        _count: { select: { comments: true } },
-      },
-    }),
+    getSuburbSpecialsCached(suburb.id),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
