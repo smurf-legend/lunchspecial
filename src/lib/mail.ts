@@ -289,3 +289,53 @@ export async function sendAnalyticsDigestEmail(report: AnalyticsReport): Promise
   }
   return true;
 }
+
+export type NeonUsageRow = {
+  label: string;
+  used: string;
+  limit: string;
+  pct: number;
+  projectedPct: number;
+};
+
+export async function sendNeonUsageAlertEmail(opts: {
+  urgent: boolean;
+  rows: NeonUsageRow[];
+  periodEnd: string;
+  isTest: boolean;
+}): Promise<boolean> {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[mail] RESEND_API_KEY is not set, skipping Neon usage alert");
+    return false;
+  }
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const tableRows = opts.rows
+    .map(
+      (r) => `
+    <tr>
+      <td style="padding:6px 12px 6px 0;">${r.label}</td>
+      <td style="padding:6px 12px;">${r.used} of ${r.limit}</td>
+      <td style="padding:6px 12px;font-weight:bold;">${r.pct.toFixed(0)}%</td>
+      <td style="padding:6px 0;color:#555;">on track for ${r.projectedPct.toFixed(0)}% by month end</td>
+    </tr>`
+    )
+    .join("");
+
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: `${opts.isTest ? "[Test] " : ""}${opts.urgent ? "Urgent: " : ""}LunchSpecial database usage is high`,
+    html: `
+      <p>The Neon database is using a large share of this month's plan limits. If a limit is passed, the site goes down until the month resets (${opts.periodEnd}).</p>
+      <table style="border-collapse:collapse;">${tableRows}</table>
+      <p style="color:#555;font-size:13px;">Compute is what runs out first. Fewer page loads and background jobs waking the database will slow it down.</p>
+    `,
+  });
+
+  if (error) {
+    console.error("[mail] Failed to send Neon usage alert:", error);
+    return false;
+  }
+  return true;
+}
