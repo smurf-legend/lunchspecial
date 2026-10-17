@@ -169,7 +169,7 @@ export default async function HomePage({
   const [{ specials, totalMatching }, favorites] = await Promise.all([
     getHomeSpecialsCached(
       where,
-      sort === "new" ? { createdAt: "desc" } : { score: "desc" },
+      sort === "new" ? { createdAt: "desc" } : [{ score: "desc" }, { createdAt: "desc" }],
       (page - 1) * PAGE_SIZE,
       PAGE_SIZE
     ),
@@ -272,14 +272,6 @@ export default async function HomePage({
       )}
 
       <div className="flex gap-2 mb-4 mt-3">
-        <Link
-          href={buildLink({ sort: sort === "hot" ? undefined : "hot" })}
-          className={`px-3 py-1 rounded-full text-sm font-medium ${
-            sort === "hot" ? "bg-orange-600 text-white" : "bg-white border"
-          }`}
-        >
-          🔥 Most Popular
-        </Link>
         <Link
           href={buildLink({ sort: sort === "new" ? undefined : "new" })}
           className={`px-3 py-1 rounded-full text-sm font-medium ${

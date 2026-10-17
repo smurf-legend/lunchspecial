@@ -110,7 +110,7 @@ export async function GET(req: NextRequest) {
 
   const specials = await prisma.special.findMany({
     where,
-    orderBy: sort === "new" ? { createdAt: "desc" } : { score: "desc" },
+    orderBy: sort === "new" ? { createdAt: "desc" } : [{ score: "desc" }, { createdAt: "desc" }],
     skip: (page - 1) * pageSize,
     take: pageSize,
     include: {

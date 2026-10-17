@@ -77,7 +77,7 @@ export default async function RegionPage({ params }: { params: { state: string; 
           { chainWide: true },
         ],
       },
-      orderBy: { score: "desc" },
+      orderBy: [{ score: "desc" }, { createdAt: "desc" }],
       take: 20,
       include: {
         suburbs: { include: { suburb: true } },
