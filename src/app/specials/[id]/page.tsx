@@ -3,7 +3,6 @@ import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import VoteButtons from "@/components/VoteButtons";
 import FavoriteButton from "@/components/FavoriteButton";
 import CommentThread from "@/components/CommentThread";
 import Link from "next/link";
@@ -19,7 +18,6 @@ import { buildCommentTree } from "@/lib/commentTree";
 import { idFromSlug, specialSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
 import { buildOfferJsonLd, buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
-import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 import {
   getSpecialDetailCached,
   getSpecialCommentsCached,
@@ -95,7 +93,6 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
   const suburbList = special.suburbs.map((s) => s.suburb);
   const primarySuburb = suburbList[0];
   const chainWide = special.chainWide;
-  const showVoteCounts = await shouldShowVoteCounts();
 
   // Other physical locations of the same chain — e.g. Osso or Park Bong Sook,
   // which get one Special row per address rather than one row covering every
@@ -199,12 +196,6 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
       )}
 
       <div className={`bg-white rounded-lg border p-6 flex gap-5 ${expired ? "opacity-70" : ""}`}>
-        <VoteButtons
-          voteEndpoint={`/api/specials/${special.id}/vote`}
-          initialScore={special.score}
-          showCount={showVoteCounts}
-        />
-
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-bold">{special.title}</h1>

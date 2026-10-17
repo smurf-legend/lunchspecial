@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isValidStateCode, stateName } from "@/lib/auStates";
-import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 import { getLiveStatesCached, getStateSuburbsCached, getStateSpecialsCached } from "@/lib/cachedQueries";
 
 export async function generateMetadata({ params }: { params: { state: string } }): Promise<Metadata> {
@@ -56,7 +55,6 @@ export default async function StatePage({ params }: { params: { state: string } 
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
-  const showVoteCounts = await shouldShowVoteCounts();
 
   const regions = new Map<string, number>();
   for (const s of suburbs) regions.set(s.region, (regions.get(s.region) ?? 0) + 1);
@@ -90,7 +88,6 @@ export default async function StatePage({ params }: { params: { state: string } 
             key={special.id}
             special={special as any}
             isFavorited={favoritedIds.has(special.id)}
-            showVoteCounts={showVoteCounts}
           />
         ))}
         {specials.length === 0 && (

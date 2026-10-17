@@ -7,7 +7,6 @@ import { notFound } from "next/navigation";
 import { SITE_URL } from "@/lib/site";
 import { buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
 import { stateName } from "@/lib/auStates";
-import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 import { getSuburbBySlugCached, getSuburbHasLocalSpecialCached, getSuburbSpecialsCached } from "@/lib/cachedQueries";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -48,7 +47,6 @@ export default async function SuburbPage({ params }: { params: { slug: string } 
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));
-  const showVoteCounts = await shouldShowVoteCounts();
 
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: "Home", url: SITE_URL },
@@ -72,7 +70,6 @@ export default async function SuburbPage({ params }: { params: { slug: string } 
             special={special as any}
             contextSuburbSlug={suburb.slug}
             isFavorited={favoritedIds.has(special.id)}
-            showVoteCounts={showVoteCounts}
           />
         ))}
         {specials.length === 0 && (

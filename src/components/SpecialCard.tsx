@@ -20,8 +20,6 @@ type SpecialCardType = {
   usualPrice?: number | null;
   availableDays: string;
   score: number;
-  upvoteCount?: number;
-  downvoteCount?: number;
   imageUrl?: string | null;
   expiresAt?: string | Date | null;
   suburbs: { suburb: { name: string; slug: string } }[];
@@ -38,7 +36,6 @@ export default function SpecialCard({
   special,
   contextSuburbSlug,
   isFavorited = false,
-  showVoteCounts = false,
 }: {
   special: SpecialCardType;
   // Which suburb this card is being shown "for" — e.g. the suburb page or
@@ -47,11 +44,6 @@ export default function SpecialCard({
   // Falls back to the first suburb when not viewing within one suburb's context.
   contextSuburbSlug?: string;
   isFavorited?: boolean;
-  // Defaults to hidden — see shouldShowVoteCounts in lib/voteVisibility.ts
-  // for why. Every call site should really pass this explicitly, but a
-  // false default means a call site that forgets never accidentally shows
-  // a wall of zeros.
-  showVoteCounts?: boolean;
 }) {
   const discount =
     special.usualPrice && special.specialPrice != null && special.usualPrice > special.specialPrice
@@ -68,19 +60,6 @@ export default function SpecialCard({
         expired ? "border-gray-200 opacity-60" : "border-gray-200"
       }`}
     >
-      {showVoteCounts && (
-        <div className="flex flex-col items-center w-14 shrink-0 gap-1">
-          <span className="flex items-center gap-1">
-            <span aria-hidden="true">😋</span>
-            <span className="font-bold text-green-600">{special.upvoteCount ?? 0}</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span aria-hidden="true">🤢</span>
-            <span className="font-bold text-red-600">{special.downvoteCount ?? 0}</span>
-          </span>
-        </div>
-      )}
-
       <Link href={`/specials/${specialSlug(special)}`} prefetch={false} className="shrink-0">
         <SpecialImage
           src={special.imageUrl}

@@ -7,7 +7,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isValidStateCode, stateName } from "@/lib/auStates";
 import { getLiveStates } from "@/lib/liveStates";
-import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 
 export async function generateMetadata({
   params,
@@ -65,7 +64,6 @@ export default async function RegionPage({ params }: { params: { state: string; 
     );
   }
 
-  const showVoteCounts = await shouldShowVoteCounts();
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
 
@@ -121,7 +119,6 @@ export default async function RegionPage({ params }: { params: { state: string; 
             key={special.id}
             special={special as any}
             isFavorited={favoritedIds.has(special.id)}
-            showVoteCounts={showVoteCounts}
           />
         ))}
         {specials.length === 0 && (

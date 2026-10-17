@@ -6,7 +6,6 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
 import { stateCodeFromRegionName } from "@/lib/auStates";
-import { shouldShowVoteCounts } from "@/lib/voteVisibility";
 import { PRICE_TIER_LABELS } from "@/lib/priceTiers";
 import { getHomeSpecialsCached, getLiveStatesCached } from "@/lib/cachedQueries";
 
@@ -77,7 +76,6 @@ export default async function HomePage({
 }) {
   const PAGE_SIZE = 20;
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
-  const showVoteCounts = await shouldShowVoteCounts();
   // No sort param at all is a genuine neutral state (neither toggle shown as
   // active) — distinct from "hot", which is an explicit choice that happens
   // to use the same underlying order. Using undefined rather than a "none"
@@ -304,7 +302,6 @@ export default async function HomePage({
             special={special as any}
             isFavorited={favoritedIds.has(special.id)}
             contextSuburbSlug={suburbSlug ?? matchedSuburbs[0]?.slug}
-            showVoteCounts={showVoteCounts}
           />
         ))}
         {displaySpecials.length === 0 && (
