@@ -8,17 +8,19 @@
 // database load. User-specific reads (favorites, isAdmin, isAuthor) stay
 // uncached and outside these functions.
 //
-// 24 hours, because Neon suspends compute after ~5 idle minutes and every
-// cache miss wakes it: a short lifetime kept it awake around the clock. That
-// is only safe because every write made through the app busts the matching
-// tag (see bustCache.ts). Writes made by scripts straight to the database
-// do not, so call /api/revalidate afterwards.
+// 7 days, because Neon suspends compute after ~5 idle minutes and every cache
+// miss wakes it: crawlers asking for a different page each time kept it awake
+// around the clock even with a 24-hour lifetime. This is only safe because
+// every write made through the app busts the matching tag (see bustCache.ts),
+// and a nightly job (/api/cron/warm-cache) refills the cache in one burst.
+// Writes made by scripts straight to the database do not bust, so call
+// /api/revalidate?warm=1 afterwards.
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { idFromSlug } from "@/lib/slugify";
 
-const REVALIDATE_SECONDS = 86400;
-const CATEGORIES_REVALIDATE_SECONDS = 86400;
+const REVALIDATE_SECONDS = 604800;
+const CATEGORIES_REVALIDATE_SECONDS = 604800;
 
 const specialCardInclude = {
   suburbs: { include: { suburb: true } },
