@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { bustSpecialsCache } from "@/lib/bustCache";
 
 const suburbSchema = z.object({
   name: z.string().min(1).max(60),
@@ -52,5 +53,6 @@ export async function POST(req: NextRequest) {
     create: { name: name.trim(), postcode, state: state.toUpperCase(), region: "Other", slug },
   });
 
+  bustSpecialsCache();
   return NextResponse.json({ suburb }, { status: 201 });
 }

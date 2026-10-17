@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { bustBlogCache } from "@/lib/bustCache";
 
 const hiddenSchema = z.object({ hidden: z.boolean() });
 
@@ -31,5 +32,6 @@ export async function PATCH(
     data: { hidden: parsed.data.hidden },
   });
 
+  bustBlogCache();
   return NextResponse.json({ post });
 }

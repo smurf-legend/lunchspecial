@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { z } from "zod";
+import { bustBlogCache } from "@/lib/bustCache";
 
 const blogPostUpdateSchema = z.object({
   title: z.string().min(3).max(200).refine(noProfanity, profanityMessage("Title")),
@@ -59,6 +60,7 @@ export async function PATCH(
     },
   });
 
+  bustBlogCache();
   return NextResponse.json({ post });
 }
 
@@ -70,5 +72,6 @@ export async function DELETE(
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
   await prisma.blogPost.delete({ where: { id: params.id } });
+  bustBlogCache();
   return NextResponse.json({ success: true });
 }

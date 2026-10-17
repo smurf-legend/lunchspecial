@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { bustCategoriesCache } from "@/lib/bustCache";
 
 const categorySchema = z.object({
   name: z.string().min(1).max(40),
@@ -40,5 +41,6 @@ export async function POST(req: NextRequest) {
     create: { name: name.trim(), slug },
   });
 
+  bustCategoriesCache();
   return NextResponse.json({ category }, { status: 201 });
 }

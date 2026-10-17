@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { deleteCommentAndDescendants } from "@/lib/commentTree";
 import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { z } from "zod";
+import { bustSpecialsCache } from "@/lib/bustCache";
 
 const commentUpdateSchema = z.object({
   body: z
@@ -41,6 +42,7 @@ export async function PATCH(
     data: parsed.data,
   });
 
+  bustSpecialsCache();
   return NextResponse.json({ comment });
 }
 
@@ -55,5 +57,6 @@ export async function DELETE(
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
   await deleteCommentAndDescendants(params.id);
+  bustSpecialsCache();
   return NextResponse.json({ success: true });
 }

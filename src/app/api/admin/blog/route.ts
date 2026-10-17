@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slugify";
 import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { z } from "zod";
+import { bustBlogCache } from "@/lib/bustCache";
 
 const blogPostSchema = z.object({
   title: z.string().min(3).max(200).refine(noProfanity, profanityMessage("Title")),
@@ -75,5 +76,6 @@ export async function POST(req: NextRequest) {
     },
   });
 
+  bustBlogCache();
   return NextResponse.json({ post }, { status: 201 });
 }

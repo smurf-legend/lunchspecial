@@ -8,16 +8,17 @@
 // database load. User-specific reads (favorites, isAdmin, isAuthor) stay
 // uncached and outside these functions.
 //
-// 15 minutes keeps the database asleep between visits (Neon suspends compute
-// after ~5 idle minutes, and every cache miss wakes it). Writes made through
-// the app bust the "specials" tag (see bustCache.ts); writes made by scripts
-// straight to the database don't, so call /api/revalidate afterwards.
+// 24 hours, because Neon suspends compute after ~5 idle minutes and every
+// cache miss wakes it: a short lifetime kept it awake around the clock. That
+// is only safe because every write made through the app busts the matching
+// tag (see bustCache.ts). Writes made by scripts straight to the database
+// do not, so call /api/revalidate afterwards.
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { idFromSlug } from "@/lib/slugify";
 
-const REVALIDATE_SECONDS = 900;
-const CATEGORIES_REVALIDATE_SECONDS = 3600;
+const REVALIDATE_SECONDS = 86400;
+const CATEGORIES_REVALIDATE_SECONDS = 86400;
 
 const specialCardInclude = {
   suburbs: { include: { suburb: true } },
@@ -188,5 +189,5 @@ export const getBlogPostForShareImageCached = unstable_cache(
     return prisma.blogPost.findUnique({ where: { slug: slugParam }, select });
   },
   ["blog-post-share-image"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["blog"] }
 );

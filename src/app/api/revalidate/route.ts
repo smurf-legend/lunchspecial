@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { bustCategoriesCache, bustSpecialsCache } from "@/lib/bustCache";
+import { bustBlogCache, bustCategoriesCache, bustSpecialsCache } from "@/lib/bustCache";
 
 // GET /api/revalidate — clears the shared page-data cache. Needed after
 // changing the database directly (import scripts), since those writes don't
@@ -10,5 +10,6 @@ export async function GET(req: NextRequest) {
   }
   bustSpecialsCache();
   bustCategoriesCache();
-  return NextResponse.json({ revalidated: ["specials", "categories"] });
+  bustBlogCache();
+  return NextResponse.json({ revalidated: ["specials", "categories", "blog"] });
 }

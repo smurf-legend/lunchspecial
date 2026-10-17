@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { containsProfanity } from "@/lib/profanity";
+import { bustSpecialsCache } from "@/lib/bustCache";
 
 const accountUpdateSchema = z.object({
   name: z
@@ -79,6 +80,7 @@ export async function PATCH(req: NextRequest) {
     select: { id: true, name: true, email: true, marketingOptIn: true },
   });
 
+  bustSpecialsCache();
   return NextResponse.json({ user });
 }
 
@@ -204,5 +206,6 @@ export async function DELETE(req: NextRequest) {
     { timeout: 20000 }
   );
 
+  bustSpecialsCache();
   return NextResponse.json({ success: true });
 }

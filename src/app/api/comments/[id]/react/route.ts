@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { bustSpecialsCache } from "@/lib/bustCache";
 
 // POST /api/comments/:id/react  body: { value: 1 | -1 }
 // Posting the same value again removes the reaction (toggle); posting the
@@ -56,5 +57,6 @@ export async function POST(
     },
   });
 
+  bustSpecialsCache();
   return NextResponse.json({ likeCount: comment.likeCount, dislikeCount: comment.dislikeCount });
 }
