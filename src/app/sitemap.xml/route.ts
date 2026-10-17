@@ -7,7 +7,9 @@ import { getLiveStates } from "@/lib/liveStates";
 // in it) and generates it once at build/deploy time — new specials/articles
 // posted by users between deploys would never show up. Revalidating hourly
 // keeps it fresh without hitting the DB on every single crawler request.
-export const revalidate = 3600;
+// Now 7 days: an hourly refresh woke the database about once an hour, and the
+// app clears this entry itself (bustCache.ts) whenever a special or post changes.
+export const revalidate = 604800;
 
 // A plain route handler rather than the sitemap.ts file convention — the
 // convention's MetadataRoute.Sitemap type has no field for the Google image
