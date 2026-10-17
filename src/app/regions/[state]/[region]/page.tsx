@@ -17,7 +17,7 @@ export async function generateMetadata({
   if (!isValidStateCode(stateParam)) return {};
 
   const regionMatch = await prisma.suburb.findFirst({
-    where: { state: stateParam, region: { equals: params.region, mode: "insensitive" } },
+    where: { state: stateParam, region: { equals: decodeURIComponent(params.region), mode: "insensitive" } },
     select: { region: true },
   });
   if (!regionMatch) return {};
@@ -42,7 +42,7 @@ export default async function RegionPage({ params }: { params: { state: string; 
   // Region names are freeform per state (seeded per rollout), so the valid
   // set is whatever's actually in the DB for this state, not a fixed list.
   const regionMatch = await prisma.suburb.findFirst({
-    where: { state: stateParam, region: { equals: params.region, mode: "insensitive" } },
+    where: { state: stateParam, region: { equals: decodeURIComponent(params.region), mode: "insensitive" } },
     select: { region: true },
   });
   if (!regionMatch) notFound();
