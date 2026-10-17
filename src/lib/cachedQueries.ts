@@ -14,6 +14,7 @@
 // straight to the database don't, so call /api/revalidate afterwards.
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { idFromSlug } from "@/lib/slugify";
 
 const REVALIDATE_SECONDS = 900;
 const CATEGORIES_REVALIDATE_SECONDS = 3600;
@@ -162,4 +163,30 @@ export const getCategoriesCached = unstable_cache(
   () => prisma.category.findMany({ orderBy: { name: "asc" } }),
   ["categories-all"],
   { revalidate: CATEGORIES_REVALIDATE_SECONDS, tags: ["categories"] }
+);
+
+export const getSuburbDealCountCached = unstable_cache(
+  (suburbId: string) =>
+    prisma.special.count({
+      where: {
+        hidden: false,
+        needsReview: false,
+        OR: [{ suburbs: { some: { suburbId } } }, { chainWide: true }],
+      },
+    }),
+  ["suburb-deal-count"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
+);
+
+// Table Talk post fields the share image needs. Falls back to the old slug
+// column for legacy links with no id suffix, same as the post page itself.
+export const getBlogPostForShareImageCached = unstable_cache(
+  async (slugParam: string) => {
+    const select = { title: true, excerpt: true, imageUrl: true, hidden: true } as const;
+    const post = await prisma.blogPost.findUnique({ where: { id: idFromSlug(slugParam) }, select });
+    if (post) return post;
+    return prisma.blogPost.findUnique({ where: { slug: slugParam }, select });
+  },
+  ["blog-post-share-image"],
+  { revalidate: REVALIDATE_SECONDS }
 );

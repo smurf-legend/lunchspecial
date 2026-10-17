@@ -1,23 +1,16 @@
 import { ImageResponse } from "next/og";
-import { prisma } from "@/lib/prisma";
+import { getSuburbBySlugCached, getSuburbDealCountCached } from "@/lib/cachedQueries";
 
 export const runtime = "nodejs";
 export const alt = "LunchSpecial";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const revalidate = 3600;
 
 export default async function Image({ params }: { params: { slug: string } }) {
-  const suburb = await prisma.suburb.findUnique({ where: { slug: params.slug } });
+  const suburb = await getSuburbBySlugCached(params.slug);
 
-  const dealCount = suburb
-    ? await prisma.special.count({
-        where: {
-          hidden: false,
-          needsReview: false,
-          OR: [{ suburbs: { some: { suburbId: suburb.id } } }, { chainWide: true }],
-        },
-      })
-    : 0;
+  const dealCount = suburb ? await getSuburbDealCountCached(suburb.id) : 0;
 
   return new ImageResponse(
     (

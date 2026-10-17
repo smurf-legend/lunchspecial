@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { prisma } from "@/lib/prisma";
+import { getSpecialDetailCached } from "@/lib/cachedQueries";
 import { idFromSlug } from "@/lib/slugify";
 
 // Prisma needs the Node runtime, not edge (the default for this file convention).
@@ -7,20 +7,11 @@ export const runtime = "nodejs";
 export const alt = "LunchSpecial";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+// The finished image is cached too, so repeat requests skip rendering and the database.
+export const revalidate = 3600;
 
 export default async function Image({ params }: { params: { id: string } }) {
-  const special = await prisma.special.findUnique({
-    where: { id: idFromSlug(params.id) },
-    select: {
-      title: true,
-      venueName: true,
-      imageUrl: true,
-      specialPrice: true,
-      discountPercent: true,
-      chainWide: true,
-      suburbs: { include: { suburb: true } },
-    },
-  });
+  const special = await getSpecialDetailCached(idFromSlug(params.id));
 
   const priceText =
     special?.specialPrice != null

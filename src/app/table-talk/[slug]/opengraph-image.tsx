@@ -1,29 +1,15 @@
 import { ImageResponse } from "next/og";
-import { prisma } from "@/lib/prisma";
-import { idFromSlug } from "@/lib/slugify";
+import { getBlogPostForShareImageCached } from "@/lib/cachedQueries";
 
 // Prisma needs the Node runtime, not edge (the default for this file convention).
 export const runtime = "nodejs";
 export const alt = "LunchSpecial";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-
-async function getPost(slugParam: string) {
-  const post = await prisma.blogPost.findUnique({
-    where: { id: idFromSlug(slugParam) },
-    select: { title: true, excerpt: true, imageUrl: true, hidden: true },
-  });
-  // Legacy links from before the id-based URL scheme have no id suffix to
-  // extract — fall back to the old slug column, same as the page itself.
-  if (post) return post;
-  return prisma.blogPost.findUnique({
-    where: { slug: slugParam },
-    select: { title: true, excerpt: true, imageUrl: true, hidden: true },
-  });
-}
+export const revalidate = 3600;
 
 export default async function Image({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
+  const post = await getBlogPostForShareImageCached(params.slug);
   const hasImage = !!post?.imageUrl;
 
   return new ImageResponse(
