@@ -5,7 +5,7 @@ import Providers from "./providers";
 import NavAuth from "@/components/NavAuth";
 import LocationSearch from "@/components/LocationSearch";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { prisma } from "@/lib/prisma";
+import { getCategoriesCached } from "@/lib/cachedQueries";
 
 const title = "LunchSpecial — Lunch specials near you, crowdsourced";
 // Sydney-specific rather than generic "near you" — accurate now that
@@ -37,7 +37,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // in the header search bar, which every page renders via this layout —
   // the dropdown itself only actually shows on "/" (see LocationSearch),
   // but the data has to be available wherever the client component mounts.
-  const categories = await prisma.category.findMany({ orderBy: { name: "asc" } });
+  const categories = await getCategoriesCached();
   return (
     <html lang="en">
       <body className="bg-gray-50 text-gray-900">

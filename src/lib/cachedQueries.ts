@@ -8,14 +8,15 @@
 // database load. User-specific reads (favorites, isAdmin, isAuthor) stay
 // uncached and outside these functions.
 //
-// 120s balances staleness against load: a brand-new special can take up to
-// two minutes to show up on someone else's suburb page, but nothing here
-// revalidates on write (no admin action calls revalidateTag), so don't
-// lower this without also wiring that up.
+// 15 minutes keeps the database asleep between visits (Neon suspends compute
+// after ~5 idle minutes, and every cache miss wakes it). Writes made through
+// the app bust the "specials" tag (see bustCache.ts); writes made by scripts
+// straight to the database don't, so call /api/revalidate afterwards.
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
-const REVALIDATE_SECONDS = 120;
+const REVALIDATE_SECONDS = 900;
+const CATEGORIES_REVALIDATE_SECONDS = 3600;
 
 const specialCardInclude = {
   suburbs: { include: { suburb: true } },
@@ -33,22 +34,13 @@ export const getLiveStatesCached = unstable_cache(
     return rows.map((r) => r.state);
   },
   ["live-states"],
-  { revalidate: REVALIDATE_SECONDS }
-);
-
-export const getShouldShowVoteCountsCached = unstable_cache(
-  async () => {
-    const userCount = await prisma.user.count();
-    return userCount >= 5; // matches MIN_USERS_TO_SHOW_VOTE_COUNTS in voteVisibility.ts
-  },
-  ["show-vote-counts"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 export const getSuburbBySlugCached = unstable_cache(
   (slug: string) => prisma.suburb.findUnique({ where: { slug } }),
   ["suburb-by-slug"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 export const getSuburbHasLocalSpecialCached = unstable_cache(
@@ -60,7 +52,7 @@ export const getSuburbHasLocalSpecialCached = unstable_cache(
     return !!row;
   },
   ["suburb-has-local-special"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 export const getSuburbSpecialsCached = unstable_cache(
@@ -76,13 +68,13 @@ export const getSuburbSpecialsCached = unstable_cache(
       include: specialCardInclude,
     }),
   ["suburb-specials"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 export const getStateSuburbsCached = unstable_cache(
   (state: string) => prisma.suburb.findMany({ where: { state }, orderBy: { name: "asc" } }),
   ["state-suburbs"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 export const getStateSpecialsCached = unstable_cache(
@@ -98,7 +90,7 @@ export const getStateSpecialsCached = unstable_cache(
       include: specialCardInclude,
     }),
   ["state-specials"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 // Home page filters vary a lot (sort/suburb/category/location/price/state),
@@ -115,7 +107,7 @@ export const getHomeSpecialsCached = unstable_cache(
     return { specials, totalMatching };
   },
   ["home-specials"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 export const getSpecialDetailCached = unstable_cache(
@@ -129,7 +121,7 @@ export const getSpecialDetailCached = unstable_cache(
       },
     }),
   ["special-detail"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 export const getSpecialCommentsCached = unstable_cache(
@@ -142,7 +134,7 @@ export const getSpecialCommentsCached = unstable_cache(
       orderBy: { createdAt: "asc" },
     }),
   ["special-comments"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 export const getSameChainRowsCached = unstable_cache(
@@ -152,7 +144,7 @@ export const getSameChainRowsCached = unstable_cache(
       select: { id: true, address: true, suburbs: { include: { suburb: true } } },
     }),
   ["same-chain-rows"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
 export const getSameVenueSpecialsCached = unstable_cache(
@@ -163,5 +155,11 @@ export const getSameVenueSpecialsCached = unstable_cache(
       orderBy: { createdAt: "asc" },
     }),
   ["same-venue-specials"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
+);
+
+export const getCategoriesCached = unstable_cache(
+  () => prisma.category.findMany({ orderBy: { name: "asc" } }),
+  ["categories-all"],
+  { revalidate: CATEGORIES_REVALIDATE_SECONDS, tags: ["categories"] }
 );

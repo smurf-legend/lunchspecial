@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { bustCategoriesCache } from "@/lib/bustCache";
 
 const categorySchema = z.object({
   name: z.string().min(1).max(40),
@@ -38,6 +39,7 @@ export async function POST(req: NextRequest) {
   }
 
   const category = await prisma.category.create({ data: { name, slug } });
+  bustCategoriesCache();
   return NextResponse.json({ category }, { status: 201 });
 }
 
@@ -58,5 +60,6 @@ export async function DELETE(req: NextRequest) {
   }
 
   await prisma.category.delete({ where: { id } });
+  bustCategoriesCache();
   return NextResponse.json({ success: true });
 }

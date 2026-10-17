@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { bustSpecialsCache } from "@/lib/bustCache";
 
 const needsReviewSchema = z.object({
   needsReview: z.boolean(),
@@ -37,5 +38,6 @@ export async function PATCH(
     },
   });
 
+  bustSpecialsCache();
   return NextResponse.json({ special });
 }

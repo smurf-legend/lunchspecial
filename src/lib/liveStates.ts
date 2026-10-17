@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { getLiveStatesCached } from "@/lib/cachedQueries";
 
 // States considered "live" right now — has at least one suburb with a real
 // local special (chain-wide deals don't count, since those show up
@@ -9,10 +9,5 @@ import { prisma } from "@/lib/prisma";
 // get posted in a new state, it lights up on its own, no code change
 // needed.
 export async function getLiveStates(): Promise<Set<string>> {
-  const rows = await prisma.suburb.findMany({
-    where: { specials: { some: { special: { hidden: false, needsReview: false } } } },
-    select: { state: true },
-    distinct: ["state"],
-  });
-  return new Set(rows.map((r) => r.state));
+  return new Set(await getLiveStatesCached());
 }

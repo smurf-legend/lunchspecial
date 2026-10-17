@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { bustSpecialsCache } from "@/lib/bustCache";
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions);
@@ -60,5 +61,6 @@ export async function POST(
     },
   });
 
+  bustSpecialsCache();
   return NextResponse.json({ special: duplicate }, { status: 201 });
 }

@@ -8,6 +8,7 @@ import { sendNewSpecialEmail } from "@/lib/mail";
 import { socialEmbedUrl, MAX_SPECIAL_VIDEOS } from "@/lib/articleBlocks";
 import { resolveVideoUrls } from "@/lib/resolveVideoUrls";
 import { z } from "zod";
+import { bustSpecialsCache } from "@/lib/bustCache";
 
 const specialSchema = z
   .object({
@@ -202,5 +203,6 @@ export async function POST(req: NextRequest) {
     authorName: session.user.name ?? "a user",
   });
 
+  bustSpecialsCache();
   return NextResponse.json({ special }, { status: 201 });
 }

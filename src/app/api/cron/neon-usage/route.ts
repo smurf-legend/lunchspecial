@@ -98,6 +98,7 @@ export async function GET(req: NextRequest) {
       pct: Math.round(pct),
       projectedPct: Math.round(projectedPct),
     })),
+    activeHours: Math.round(((p.active_time_seconds ?? 0) / 3600) * 10) / 10,
     urgent,
     emailed,
   });

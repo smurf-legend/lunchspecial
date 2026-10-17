@@ -1,4 +1,4 @@
-import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 // Voting requires a logged-in account (see /api/specials/[id]/vote), so at
@@ -9,7 +9,13 @@ import { prisma } from "@/lib/prisma";
 // until there's a real base of users who could plausibly have cast them.
 const MIN_USERS_TO_SHOW_VOTE_COUNTS = 50;
 
-export const shouldShowVoteCounts = cache(async () => {
-  const userCount = await prisma.user.count();
-  return userCount >= MIN_USERS_TO_SHOW_VOTE_COUNTS;
-});
+// Cached across requests, not just within one: this runs on nearly every
+// page, and a per-request user count was waking the database on each visit.
+export const shouldShowVoteCounts = unstable_cache(
+  async () => {
+    const userCount = await prisma.user.count();
+    return userCount >= MIN_USERS_TO_SHOW_VOTE_COUNTS;
+  },
+  ["show-vote-counts"],
+  { revalidate: 3600 }
+);

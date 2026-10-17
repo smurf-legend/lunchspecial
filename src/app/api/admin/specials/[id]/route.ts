@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { specialUpdateSchema } from "@/lib/specialUpdateSchema";
 import { resolveVideoUrls } from "@/lib/resolveVideoUrls";
+import { bustSpecialsCache } from "@/lib/bustCache";
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions);
@@ -20,6 +21,7 @@ export async function DELETE(
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
   await prisma.special.delete({ where: { id: params.id } });
+  bustSpecialsCache();
   return NextResponse.json({ success: true });
 }
 
@@ -70,5 +72,6 @@ export async function PATCH(
     },
   });
 
+  bustSpecialsCache();
   return NextResponse.json({ special });
 }

@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { specialUpdateSchema } from "@/lib/specialUpdateSchema";
 import { resolveVideoUrls } from "@/lib/resolveVideoUrls";
+import { bustSpecialsCache } from "@/lib/bustCache";
 
 export async function GET(
   _req: NextRequest,
@@ -100,6 +101,7 @@ export async function PATCH(
     },
   });
 
+  bustSpecialsCache();
   return NextResponse.json({ special });
 }
 
@@ -111,5 +113,6 @@ export async function DELETE(
   if (auth.error) return auth.error;
 
   await prisma.special.delete({ where: { id: params.id } });
+  bustSpecialsCache();
   return NextResponse.json({ success: true });
 }
