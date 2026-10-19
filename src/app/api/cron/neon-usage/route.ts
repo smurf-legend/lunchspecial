@@ -34,6 +34,36 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  // ?ops=1 returns Neon's own log of compute start/suspend operations and the
+  // endpoint settings, to see how often and when the database is woken.
+  if (req.nextUrl.searchParams.get("ops") === "1") {
+    const headers = { Authorization: `Bearer ${apiKey}`, Accept: "application/json" };
+    const base = `https://console.neon.tech/api/v2/projects/${encodeURIComponent(projectId)}`;
+    const [opsRes, epRes] = await Promise.all([
+      fetch(`${base}/operations?limit=500`, { headers, cache: "no-store" }),
+      fetch(`${base}/endpoints`, { headers, cache: "no-store" }),
+    ]);
+    const ops = (await opsRes.json().catch(() => null))?.operations ?? [];
+    const endpoints = (await epRes.json().catch(() => null))?.endpoints ?? [];
+    return NextResponse.json({
+      endpoints: endpoints.map((e: any) => ({
+        type: e.type,
+        state: e.current_state,
+        suspendTimeoutSeconds: e.suspend_timeout_seconds,
+        minCu: e.autoscaling_limit_min_cu,
+        maxCu: e.autoscaling_limit_max_cu,
+        lastActive: e.last_active,
+        poolerEnabled: e.pooler_enabled,
+      })),
+      operations: ops.map((o: any) => ({
+        action: o.action,
+        status: o.status,
+        at: o.created_at,
+        ms: o.total_duration_ms,
+      })),
+    });
+  }
+
   const p = body?.project ?? {};
   const start = new Date(p.consumption_period_start).getTime();
   const end = new Date(p.consumption_period_end).getTime();
