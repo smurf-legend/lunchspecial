@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { bustBlogCache } from "@/lib/bustCache";
 
 // POST /api/blog-comments/:id/react  body: { value: 1 | -1 }
 // Mirrors /api/comments/:id/react for Special comments.
@@ -55,5 +56,6 @@ export async function POST(
     },
   });
 
+  bustBlogCache();
   return NextResponse.json({ likeCount: comment.likeCount, dislikeCount: comment.dislikeCount });
 }

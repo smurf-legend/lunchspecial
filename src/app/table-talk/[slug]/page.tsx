@@ -1,4 +1,3 @@
-import { cache } from "react";
 import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
@@ -15,34 +14,9 @@ import { isScheduled, formatScheduled } from "@/lib/postStatus";
 import { blogPostSlug, idFromSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
 import { buildBlogPostingJsonLd, buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
-import { getRelatedSpecials } from "@/lib/relatedSpecials";
+import { getBlogPostCached, getBlogCommentsCached, getRelatedSpecialsCached } from "@/lib/cachedQueries";
 
-const authorSelect = {
-  select: {
-    name: true,
-    _count: { select: { specials: true, comments: true } },
-  },
-};
-
-// Shared between generateMetadata and the page body so the two don't issue
-// duplicate queries for the same post within one request.
-const getPost = cache(async (slugParam: string) => {
-  const id = idFromSlug(slugParam);
-  let post = await prisma.blogPost.findUnique({
-    where: { id },
-    include: { author: { select: { name: true } } },
-  });
-  // Links published before this id-based scheme are a plain slugified
-  // title with no id suffix — idFromSlug on those just grabs the last
-  // word, which won't match a real id, so fall back to the legacy column.
-  if (!post) {
-    post = await prisma.blogPost.findUnique({
-      where: { slug: slugParam },
-      include: { author: { select: { name: true } } },
-    });
-  }
-  return post;
-});
+const getPost = getBlogPostCached;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPost(params.slug);
@@ -90,15 +64,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   const canonical = blogPostSlug(post);
   if (params.slug !== canonical) redirect(`/table-talk/${canonical}`);
 
-  const flatComments = await prisma.blogComment.findMany({
-    where: { blogPostId: post.id },
-    include: { author: authorSelect },
-    orderBy: { createdAt: "asc" },
-  });
+  const flatComments = await getBlogCommentsCached(post.id);
   const commentTree = buildCommentTree(flatComments);
 
   const [relatedSpecials, favorites] = await Promise.all([
-    getRelatedSpecials(post.title),
+    getRelatedSpecialsCached(post.title),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));

@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { noProfanity, profanityMessage } from "@/lib/profanity";
 import { z } from "zod";
+import { bustBlogCache } from "@/lib/bustCache";
 
 const commentSchema = z.object({
   body: z.string().min(1).max(2000).refine(noProfanity, profanityMessage("Comment")),
@@ -37,5 +38,6 @@ export async function POST(
     include: { author: { select: { id: true, name: true } } },
   });
 
+  bustBlogCache();
   return NextResponse.json({ comment }, { status: 201 });
 }

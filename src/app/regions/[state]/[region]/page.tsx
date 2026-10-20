@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { Metadata } from "next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getRegionMatchCached, getRegionSpecialsCached, getRegionSuburbsCached } from "@/lib/cachedQueries";
 import SpecialCard from "@/components/SpecialCard";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -16,10 +17,7 @@ export async function generateMetadata({
   const stateParam = params.state.toUpperCase();
   if (!isValidStateCode(stateParam)) return {};
 
-  const regionMatch = await prisma.suburb.findFirst({
-    where: { state: stateParam, region: { equals: decodeURIComponent(params.region), mode: "insensitive" } },
-    select: { region: true },
-  });
+  const regionMatch = await getRegionMatchCached(stateParam, decodeURIComponent(params.region));
   if (!regionMatch) return {};
   const region = regionMatch.region;
   const name = stateName(stateParam);
@@ -41,10 +39,7 @@ export default async function RegionPage({ params }: { params: { state: string; 
 
   // Region names are freeform per state (seeded per rollout), so the valid
   // set is whatever's actually in the DB for this state, not a fixed list.
-  const regionMatch = await prisma.suburb.findFirst({
-    where: { state: stateParam, region: { equals: decodeURIComponent(params.region), mode: "insensitive" } },
-    select: { region: true },
-  });
+  const regionMatch = await getRegionMatchCached(stateParam, decodeURIComponent(params.region));
   if (!regionMatch) notFound();
   const region = regionMatch.region;
   const name = stateName(stateParam);
@@ -68,24 +63,8 @@ export default async function RegionPage({ params }: { params: { state: string; 
   const userId = (session?.user as any)?.id as string | undefined;
 
   const [specials, suburbs, favorites] = await Promise.all([
-    prisma.special.findMany({
-      where: {
-        hidden: false,
-        needsReview: false,
-        OR: [
-          { suburbs: { some: { suburb: { state: stateParam, region } } } },
-          { chainWide: true },
-        ],
-      },
-      orderBy: [{ score: "desc" }, { createdAt: "desc" }],
-      take: 20,
-      include: {
-        suburbs: { include: { suburb: true } },
-        categories: { include: { category: true } },
-        _count: { select: { comments: true } },
-      },
-    }),
-    prisma.suburb.findMany({ where: { state: stateParam, region }, orderBy: { name: "asc" } }),
+    getRegionSpecialsCached(stateParam, region),
+    getRegionSuburbsCached(stateParam, region),
     userId ? prisma.favorite.findMany({ where: { userId }, select: { specialId: true } }) : [],
   ]);
   const favoritedIds = new Set(favorites.map((f) => f.specialId));

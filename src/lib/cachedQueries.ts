@@ -18,6 +18,7 @@
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { idFromSlug } from "@/lib/slugify";
+import { getRelatedSpecials } from "@/lib/relatedSpecials";
 
 const REVALIDATE_SECONDS = 604800;
 const CATEGORIES_REVALIDATE_SECONDS = 604800;
@@ -192,4 +193,90 @@ export const getBlogPostForShareImageCached = unstable_cache(
   },
   ["blog-post-share-image"],
   { revalidate: REVALIDATE_SECONDS, tags: ["blog"] }
+);
+
+export const getLiveSuburbSlugsCached = unstable_cache(
+  async () => {
+    const rows = await prisma.suburb.findMany({
+      where: { specials: { some: { special: { hidden: false, needsReview: false } } } },
+      select: { slug: true },
+      orderBy: { slug: "asc" },
+    });
+    return rows.map((r) => r.slug);
+  },
+  ["live-suburb-slugs"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
+);
+
+export const getRegionMatchCached = unstable_cache(
+  (state: string, region: string) =>
+    prisma.suburb.findFirst({
+      where: { state, region: { equals: region, mode: "insensitive" } },
+      select: { region: true },
+    }),
+  ["region-match"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
+);
+
+export const getRegionSpecialsCached = unstable_cache(
+  (state: string, region: string) =>
+    prisma.special.findMany({
+      where: {
+        hidden: false,
+        needsReview: false,
+        OR: [{ suburbs: { some: { suburb: { state, region } } } }, { chainWide: true }],
+      },
+      orderBy: [{ score: "desc" }, { createdAt: "desc" }],
+      take: 20,
+      include: specialCardInclude,
+    }),
+  ["region-specials"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
+);
+
+export const getRegionSuburbsCached = unstable_cache(
+  (state: string, region: string) =>
+    prisma.suburb.findMany({ where: { state, region }, orderBy: { name: "asc" } }),
+  ["region-suburbs"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
+);
+
+// All visible posts including future-dated ones: the page filters on publishAt
+// at render time, so a scheduled article still appears on time.
+export const getBlogListCached = unstable_cache(
+  () =>
+    prisma.blogPost.findMany({
+      where: { hidden: false },
+      include: { author: { select: { name: true } }, _count: { select: { comments: true } } },
+    }),
+  ["blog-list"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["blog"] }
+);
+
+export const getBlogPostCached = unstable_cache(
+  async (slugParam: string) => {
+    const include = { author: { select: { name: true } } } as const;
+    const post = await prisma.blogPost.findUnique({ where: { id: idFromSlug(slugParam) }, include });
+    if (post) return post;
+    return prisma.blogPost.findUnique({ where: { slug: slugParam }, include });
+  },
+  ["blog-post"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["blog"] }
+);
+
+export const getBlogCommentsCached = unstable_cache(
+  (blogPostId: string) =>
+    prisma.blogComment.findMany({
+      where: { blogPostId },
+      include: { author: { select: { name: true, _count: { select: { specials: true, comments: true } } } } },
+      orderBy: { createdAt: "asc" },
+    }),
+  ["blog-comments"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["blog"] }
+);
+
+export const getRelatedSpecialsCached = unstable_cache(
+  (title: string) => getRelatedSpecials(title),
+  ["related-specials"],
+  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );

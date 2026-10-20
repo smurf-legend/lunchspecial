@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { getBlogListCached } from "@/lib/cachedQueries";
 import BlogCard from "@/components/BlogCard";
 
 // This page touches no dynamic API (no searchParams, no getServerSession),
@@ -9,13 +9,10 @@ import BlogCard from "@/components/BlogCard";
 export const dynamic = "force-dynamic";
 
 export default async function BlogPage() {
-  const posts = await prisma.blogPost.findMany({
-    where: { hidden: false, OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
-    include: {
-      author: { select: { name: true } },
-      _count: { select: { comments: true } },
-    },
-  });
+  const now = Date.now();
+  const posts = (await getBlogListCached()).filter(
+    (p) => !p.publishAt || new Date(p.publishAt).getTime() <= now
+  );
   // Sort by when a post actually went live, not when the row was created —
   // otherwise a post scheduled for next week sorts as if it were written
   // today the moment it finally appears. publishAt is null on posts
