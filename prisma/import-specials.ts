@@ -34,6 +34,7 @@ const specialImportSchema = z
     categorySlugs: z.array(z.string()).min(1),
     couponCode: z.string().optional(),
     greatValue: z.boolean().optional().default(false),
+    deliveryAvailable: z.boolean().optional().default(false),
   })
   .refine((d) => d.chainWide || d.suburbSlugs.length > 0, {
     message: "must have at least one suburbSlug, or chainWide: true",
@@ -169,6 +170,7 @@ async function main() {
         endTime: s.endTime,
         couponCode: s.couponCode,
         greatValue: s.greatValue,
+        deliveryAvailable: s.deliveryAvailable,
         chainWide: s.chainWide,
         authorId: author.id,
         suburbs: {
