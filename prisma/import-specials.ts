@@ -22,7 +22,10 @@ const specialImportSchema = z
     url: z.string().url().optional(),
     imageUrl: z.string().url().optional(),
     usualPrice: z.number().optional(),
-    specialPrice: z.number(),
+    specialPrice: z.number().optional(),
+    discountPercent: z.number().int().min(1).max(100).optional(),
+    priceRangeMin: z.number().optional(),
+    priceRangeMax: z.number().optional(),
     availableDays: z.string().optional(),
     startTime: z.string().optional(),
     endTime: z.string().optional(),
@@ -34,6 +37,17 @@ const specialImportSchema = z
   })
   .refine((d) => d.chainWide || d.suburbSlugs.length > 0, {
     message: "must have at least one suburbSlug, or chainWide: true",
+  })
+  // Exactly one pricing mode, mirroring the live API: fixed price, percent
+  // off, or a price range.
+  .refine(
+    (d) =>
+      [d.specialPrice != null, d.discountPercent != null, d.priceRangeMin != null && d.priceRangeMax != null].filter(Boolean)
+        .length === 1,
+    { message: "must set exactly one of specialPrice, discountPercent, or priceRangeMin+priceRangeMax" }
+  )
+  .refine((d) => d.priceRangeMin == null || d.priceRangeMax == null || d.priceRangeMax > d.priceRangeMin, {
+    message: "priceRangeMax must be greater than priceRangeMin",
   });
 
 type ParsedSpecial = z.infer<typeof specialImportSchema>;
@@ -146,6 +160,9 @@ async function main() {
         url: s.url,
         imageUrl: s.imageUrl,
         specialPrice: s.specialPrice,
+        discountPercent: s.discountPercent,
+        priceRangeMin: s.priceRangeMin,
+        priceRangeMax: s.priceRangeMax,
         usualPrice: s.usualPrice,
         availableDays: s.availableDays ?? "Mon,Tue,Wed,Thu,Fri",
         startTime: s.startTime,
