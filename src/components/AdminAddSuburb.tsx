@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AU_STATES } from "@/lib/auStates";
 
 export default function AdminAddSuburb() {
   const router = useRouter();
@@ -53,20 +52,6 @@ export default function AdminAddSuburb() {
           value={form.postcode}
           onChange={(e) => setForm({ ...form, postcode: e.target.value })}
         />
-      </div>
-      <div>
-        <label className="text-xs text-gray-500 block mb-1">State</label>
-        <select
-          className="border rounded px-2 py-1.5 text-sm"
-          value={form.state}
-          onChange={(e) => setForm({ ...form, state: e.target.value })}
-        >
-          {AU_STATES.map(({ code }) => (
-            <option key={code} value={code}>
-              {code}
-            </option>
-          ))}
-        </select>
       </div>
       <div>
         <label className="text-xs text-gray-500 block mb-1">Region</label>

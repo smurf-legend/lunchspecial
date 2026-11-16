@@ -1,13 +1,11 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { getServerSession } from "next-auth";
 import { Metadata } from "next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SpecialCard from "@/components/SpecialCard";
-import { stateCodeFromRegionName } from "@/lib/auStates";
 import { PRICE_TIER_LABELS } from "@/lib/priceTiers";
-import { getHomeSpecialsCached, getLiveStatesCached } from "@/lib/cachedQueries";
+import { getHomeSpecialsCached } from "@/lib/cachedQueries";
 
 // Each tier also matches range-priced specials (a whole specials menu
 // rather than one item) — "under" tiers check the range's low end (does
@@ -106,31 +104,9 @@ export default async function HomePage({
       })
     : [];
 
-  const liveStates = new Set(await getLiveStatesCached());
-
-  // No explicit filters at all means a fresh visit — try to default to the
-  // visitor's own state via Vercel's edge geolocation header, but only if
-  // that state is actually live (has real local specials), so nobody lands
-  // on an empty page just because we detected e.g. Queensland — suburbs are
-  // seeded nationwide already, but content isn't, so seeding alone isn't
-  // enough to auto-select a state.
-  const noExplicitFilter = !searchParams.state && !suburbSlug && !location && !categorySlug;
-  let detectedState: string | null = null;
-  if (noExplicitFilter) {
-    const regionHeader = headers().get("x-vercel-ip-country-region");
-    const candidate = stateCodeFromRegionName(regionHeader);
-    if (candidate && liveStates.has(candidate)) detectedState = candidate;
-  }
-  const stateFilter = (searchParams.state?.toUpperCase() && searchParams.state !== "all"
-    ? searchParams.state.toUpperCase()
-    : detectedState) as string | null;
-
   const and: any[] = [{ hidden: false, needsReview: false }];
   if (suburbSlug) {
     and.push({ OR: [{ suburbs: { some: { suburb: { slug: suburbSlug } } } }, { chainWide: true }] });
-  }
-  if (stateFilter) {
-    and.push({ OR: [{ suburbs: { some: { suburb: { state: stateFilter } } } }, { chainWide: true }] });
   }
   if (location) {
     and.push({
@@ -229,7 +205,6 @@ export default async function HomePage({
       price: priceTier,
       greatValue: greatValueOnly ? "1" : undefined,
       location,
-      state: searchParams.state,
       ...overrides,
     };
     Object.entries(merged).forEach(([k, v]) => {
@@ -245,13 +220,6 @@ export default async function HomePage({
           🥪 The best lunch deals in Sydney. Every listing is checked by hand, and you can add one you've spotted.
         </span>
       </div>
-
-      {/* State filter banner + state pills hidden while coverage is NSW-only
-          — no point announcing/offering a state switcher with nothing to
-          switch to yet. The underlying stateFilter/liveStates logic stays
-          intact (still drives geo-detection and ?state= filtering), this
-          just stops rendering the UI for it. Revisit once another state
-          actually has content. */}
 
       {location && (
         <div className="flex flex-wrap items-center gap-2 mt-2 text-xs">
@@ -297,7 +265,7 @@ export default async function HomePage({
         ))}
         {displaySpecials.length === 0 && (
           <p className="text-gray-500 text-center py-12">
-            {suburbSlug || categorySlug || location || priceTier || greatValueOnly || stateFilter || sort === "oldie" ? (
+            {suburbSlug || categorySlug || location || priceTier || greatValueOnly || sort === "oldie" ? (
               "No lunch specials match those filters yet."
             ) : (
               <>

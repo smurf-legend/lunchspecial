@@ -29,19 +29,6 @@ const specialCardInclude = {
   _count: { select: { comments: true } },
 } as const;
 
-export const getLiveStatesCached = unstable_cache(
-  async () => {
-    const rows = await prisma.suburb.findMany({
-      where: { specials: { some: { special: { hidden: false, needsReview: false } } } },
-      select: { state: true },
-      distinct: ["state"],
-    });
-    return rows.map((r) => r.state);
-  },
-  ["live-states"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
-);
-
 export const getSuburbBySlugCached = unstable_cache(
   (slug: string) => prisma.suburb.findUnique({ where: { slug } }),
   ["suburb-by-slug"],
@@ -73,28 +60,6 @@ export const getSuburbSpecialsCached = unstable_cache(
       include: specialCardInclude,
     }),
   ["suburb-specials"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
-);
-
-export const getStateSuburbsCached = unstable_cache(
-  (state: string) => prisma.suburb.findMany({ where: { state }, orderBy: { name: "asc" } }),
-  ["state-suburbs"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
-);
-
-export const getStateSpecialsCached = unstable_cache(
-  (state: string) =>
-    prisma.special.findMany({
-      where: {
-        hidden: false,
-        needsReview: false,
-        OR: [{ suburbs: { some: { suburb: { state } } } }, { chainWide: true }],
-      },
-      orderBy: [{ score: "desc" }, { createdAt: "desc" }],
-      take: 20,
-      include: specialCardInclude,
-    }),
-  ["state-specials"],
   { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 
@@ -205,39 +170,6 @@ export const getLiveSuburbSlugsCached = unstable_cache(
     return rows.map((r) => r.slug);
   },
   ["live-suburb-slugs"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
-);
-
-export const getRegionMatchCached = unstable_cache(
-  (state: string, region: string) =>
-    prisma.suburb.findFirst({
-      where: { state, region: { equals: region, mode: "insensitive" } },
-      select: { region: true },
-    }),
-  ["region-match"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
-);
-
-export const getRegionSpecialsCached = unstable_cache(
-  (state: string, region: string) =>
-    prisma.special.findMany({
-      where: {
-        hidden: false,
-        needsReview: false,
-        OR: [{ suburbs: { some: { suburb: { state, region } } } }, { chainWide: true }],
-      },
-      orderBy: [{ score: "desc" }, { createdAt: "desc" }],
-      take: 20,
-      include: specialCardInclude,
-    }),
-  ["region-specials"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
-);
-
-export const getRegionSuburbsCached = unstable_cache(
-  (state: string, region: string) =>
-    prisma.suburb.findMany({ where: { state, region }, orderBy: { name: "asc" } }),
-  ["region-suburbs"],
   { revalidate: REVALIDATE_SECONDS, tags: ["specials"] }
 );
 

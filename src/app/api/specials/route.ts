@@ -48,7 +48,7 @@ const specialSchema = z
     confirmDuplicate: z.boolean().optional(),
   })
   .refine((data) => data.chainWide || data.suburbSlugs.length > 0, {
-    message: "Select at least one suburb, or mark this as a nationwide chain",
+    message: "Select at least one suburb, or mark this as a chain-wide deal",
     path: ["suburbSlugs"],
   })
   .refine(

@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { AU_STATES } from "@/lib/auStates";
 
 type Suburb = { name: string; slug: string; postcode: string; state: string };
 
@@ -31,7 +30,7 @@ export default function SuburbAutocomplete({
   const [matches, setMatches] = useState<Suburb[]>([]);
   const [adding, setAdding] = useState(false);
   const [newPostcode, setNewPostcode] = useState("");
-  const [newState, setNewState] = useState<string>(AU_STATES[0].code);
+  const newState = "NSW";
   const [addError, setAddError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -149,17 +148,6 @@ export default function SuburbAutocomplete({
                   value={newPostcode}
                   onChange={(e) => setNewPostcode(e.target.value)}
                 />
-                <select
-                  className="border rounded px-2 py-1 text-sm"
-                  value={newState}
-                  onChange={(e) => setNewState(e.target.value)}
-                >
-                  {AU_STATES.map(({ code }) => (
-                    <option key={code} value={code}>
-                      {code}
-                    </option>
-                  ))}
-                </select>
               </div>
               {addError && <p className="text-red-600 text-xs">{addError}</p>}
               <div className="flex gap-2">

@@ -6,7 +6,6 @@ import SpecialCard from "@/components/SpecialCard";
 import { notFound } from "next/navigation";
 import { SITE_URL } from "@/lib/site";
 import { buildBreadcrumbJsonLd, safeJsonLd } from "@/lib/structuredData";
-import { stateName } from "@/lib/auStates";
 import { getSuburbBySlugCached, getSuburbHasLocalSpecialCached, getSuburbSpecialsCached } from "@/lib/cachedQueries";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -50,11 +49,6 @@ export default async function SuburbPage({ params }: { params: { slug: string } 
 
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: "Home", url: SITE_URL },
-    { name: stateName(suburb.state), url: `${SITE_URL}/${suburb.state.toLowerCase()}` },
-    {
-      name: suburb.region,
-      url: `${SITE_URL}/regions/${suburb.state.toLowerCase()}/${encodeURIComponent(suburb.region.toLowerCase())}`,
-    },
     { name: suburb.name, url: `${SITE_URL}/suburbs/${suburb.slug}` },
   ]);
 

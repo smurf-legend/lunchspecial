@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { specialSlug, blogPostSlug } from "@/lib/slugify";
 import { SITE_URL } from "@/lib/site";
-import { getLiveStates } from "@/lib/liveStates";
 
 // Without this, Next treats the route as static (no dynamic APIs are used
 // in it) and generates it once at build/deploy time — new specials/articles
@@ -48,7 +47,7 @@ function entryXml(e: Entry): string {
 }
 
 export async function GET() {
-  const [specials, posts, allStateRegions, liveStates] = await Promise.all([
+  const [specials, posts] = await Promise.all([
     prisma.special.findMany({
       where: { hidden: false, needsReview: false },
       select: { id: true, title: true, venueName: true, createdAt: true, imageUrl: true, extraImageUrls: true },
@@ -57,16 +56,7 @@ export async function GET() {
       where: { hidden: false },
       select: { id: true, title: true, updatedAt: true, imageUrl: true },
     }),
-    prisma.suburb.findMany({ select: { state: true, region: true }, distinct: ["state", "region"] }),
-    getLiveStates(),
   ]);
-
-  // Suburbs are seeded nationwide, but real local specials aren't — a state/
-  // region route with no live content renders the same generic "coming
-  // soon" body as every other one, same duplicate-content problem as the
-  // suburb-level fix above, just one level up. Only list what's actually
-  // indexable (matches the noindex decision in each page's generateMetadata).
-  const stateRegions = allStateRegions.filter((r) => liveStates.has(r.state));
 
   // A chain-wide special (e.g. a Rashays deal) shows up on every suburb page
   // regardless of that suburb's own specials, so a suburb with no locally-
@@ -101,19 +91,6 @@ export async function GET() {
     priority: 0.6,
   }));
 
-  const states = [...new Set(stateRegions.map((r) => r.state))];
-  const stateRoutes: Entry[] = states.map((state) => ({
-    url: `${SITE_URL}/${state.toLowerCase()}`,
-    changeFrequency: "daily",
-    priority: 0.65,
-  }));
-
-  const regionRoutes: Entry[] = stateRegions.map((r) => ({
-    url: `${SITE_URL}/regions/${r.state.toLowerCase()}/${encodeURIComponent(r.region.toLowerCase())}`,
-    changeFrequency: "daily",
-    priority: 0.6,
-  }));
-
   const blogRoutes: Entry[] = posts.map((p) => ({
     url: `${SITE_URL}/table-talk/${blogPostSlug(p)}`,
     lastModified: p.updatedAt,
@@ -122,7 +99,7 @@ export async function GET() {
     images: [p.imageUrl],
   }));
 
-  const allRoutes = [...staticRoutes, ...specialRoutes, ...suburbRoutes, ...stateRoutes, ...regionRoutes, ...blogRoutes];
+  const allRoutes = [...staticRoutes, ...specialRoutes, ...suburbRoutes, ...blogRoutes];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">

@@ -377,24 +377,35 @@ export default function NewSpecialPage() {
         <div>
           <p className="text-sm font-medium mb-2">Locations</p>
           <div className="flex flex-col gap-1.5 mb-2">
-            {[
-              { value: "single", label: "Single suburb" },
-              { value: "chain", label: "Multiple suburbs (select specific locations)" },
-              { value: "chainWide", label: "All Stores (nationwide chain, e.g. McDonald's)" },
-            ].map((opt) => (
-              <label key={opt.value} className="flex items-center gap-2 text-sm text-gray-600">
-                <input
-                  type="radio"
-                  name="locationMode"
-                  checked={locationMode === opt.value}
-                  onChange={() => {
-                    setLocationMode(opt.value as typeof locationMode);
-                    setSelectedSuburbs([]);
-                  }}
-                />
-                {opt.label}
-              </label>
-            ))}
+            {locationMode !== "chainWide" &&
+              [
+                { value: "single", label: "Single suburb" },
+                { value: "chain", label: "Multiple suburbs (select specific locations)" },
+              ].map((opt) => (
+                <label key={opt.value} className="flex items-center gap-2 text-sm text-gray-600">
+                  <input
+                    type="radio"
+                    name="locationMode"
+                    checked={locationMode === opt.value}
+                    onChange={() => {
+                      setLocationMode(opt.value as typeof locationMode);
+                      setSelectedSuburbs([]);
+                    }}
+                  />
+                  {opt.label}
+                </label>
+              ))}
+            <label className="flex items-center gap-2 text-sm text-gray-600">
+              <input
+                type="checkbox"
+                checked={locationMode === "chainWide"}
+                onChange={(e) => {
+                  setLocationMode(e.target.checked ? "chainWide" : "single");
+                  setSelectedSuburbs([]);
+                }}
+              />
+              Every store in the chain (e.g. McDonald's)
+            </label>
           </div>
 
           {locationMode === "chain" && (
@@ -412,8 +423,8 @@ export default function NewSpecialPage() {
           )}
           {locationMode === "chainWide" && (
             <p className="text-xs text-gray-500">
-              This deal will show up in every suburb search — only use this for genuinely
-              nationwide chains with consistent participation.
+              This deal will show up in every suburb search. Only use this for chains where every
+              store takes part.
             </p>
           )}
         </div>
