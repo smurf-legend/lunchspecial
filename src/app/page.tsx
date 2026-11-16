@@ -242,8 +242,7 @@ export default async function HomePage({
     <div>
       <div className="flex items-start gap-2 text-sm bg-blue-50 border border-blue-200 text-blue-900 rounded-lg px-3 py-2 mb-3">
         <span>
-          🇦🇺 The goal is to cover all of Australia — right now LunchSpecial is one person building this, starting
-          in Sydney/NSW. More states as it grows.
+          🥪 The best lunch deals in Sydney. Every listing is checked by hand, and you can add one you've spotted.
         </span>
       </div>
 

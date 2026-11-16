@@ -7,12 +7,12 @@ import LocationSearch from "@/components/LocationSearch";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { getCategoriesCached } from "@/lib/cachedQueries";
 
-const title = "LunchSpecial — Lunch specials near you, crowdsourced";
+const title = "LunchSpecial — The best lunch deals in Sydney";
 // Sydney-specific rather than generic "near you" — accurate now that
 // coverage is deliberately NSW-only (see liveStates.ts), and a more
 // specific description is also more likely to actually get used in search
 // results instead of Google substituting its own extracted snippet.
-const description = "Find and share the best lunch specials in Sydney, posted by the community.";
+const description = "Find the best lunch deals in Sydney: verified lunch specials, set menus and cheap eats across NSW, shared by the community.";
 
 export const metadata = {
   metadataBase: new URL("https://lunchspecial.com.au"),

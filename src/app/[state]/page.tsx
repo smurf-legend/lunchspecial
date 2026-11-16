@@ -34,17 +34,8 @@ export default async function StatePage({ params }: { params: { state: string } 
   const name = stateName(stateParam);
 
   const liveStates = await getLiveStatesCached();
-  if (!liveStates.includes(stateParam)) {
-    return (
-      <div>
-        <h1 className="text-xl font-bold mb-1">Lunch specials in {name}</h1>
-        <p className="text-gray-500 text-center py-12 max-w-md mx-auto">
-          🇦🇺 Not here yet — LunchSpecial is one person building this, starting in Sydney/NSW. {name} is on the map
-          for later, but there's nothing real to show yet, so this page is holding off for now.
-        </p>
-      </div>
-    );
-  }
+  // NSW-only: any state without real local specials is a 404, not a "coming soon" page.
+  if (!liveStates.includes(stateParam)) notFound();
 
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id as string | undefined;
