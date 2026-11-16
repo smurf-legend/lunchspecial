@@ -75,7 +75,6 @@ model Suburb {
   name     String
   postcode String
   state    String @default("NSW")
-  region   String @default("Central") // "Central" | "North" | "East" | "South" | "West"
   slug     String @unique // e.g. "surry-hills"
 
   // Backfilled from a public postcode/locality dataset, not user input —
@@ -90,7 +89,6 @@ model Suburb {
   usersPreferring User[]
 
   @@index([state])
-  @@index([region])
 }
 
 model Special {

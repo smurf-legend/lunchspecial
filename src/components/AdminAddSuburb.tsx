@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 export default function AdminAddSuburb() {
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", postcode: "", state: "NSW", region: "" });
+  const [form, setForm] = useState({ name: "", postcode: "", state: "NSW" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ export default function AdminAddSuburb() {
       return;
     }
 
-    setForm({ name: "", postcode: "", state: form.state, region: form.region });
+    setForm({ name: "", postcode: "", state: form.state });
     router.refresh();
   }
 
@@ -52,25 +52,6 @@ export default function AdminAddSuburb() {
           value={form.postcode}
           onChange={(e) => setForm({ ...form, postcode: e.target.value })}
         />
-      </div>
-      <div>
-        <label className="text-xs text-gray-500 block mb-1">Region</label>
-        <input
-          type="text"
-          required
-          list="region-suggestions"
-          placeholder="e.g. Inner West, Central Coast..."
-          className="border rounded px-2 py-1.5 text-sm"
-          value={form.region}
-          onChange={(e) => setForm({ ...form, region: e.target.value })}
-        />
-        <datalist id="region-suggestions">
-          <option value="Central" />
-          <option value="North" />
-          <option value="East" />
-          <option value="South" />
-          <option value="West" />
-        </datalist>
       </div>
       <button
         disabled={loading}

@@ -28,7 +28,7 @@ async function main() {
     await prisma.suburb.upsert({
       where: { slug: s.slug },
       update: {},
-      create: { slug: s.slug, name: s.name, postcode: s.postcode, region: s.region, state: "NSW" },
+      create: { slug: s.slug, name: s.name, postcode: s.postcode, state: "NSW" },
     });
   }
   const after = await prisma.suburb.count({ where: { state: "NSW" } });

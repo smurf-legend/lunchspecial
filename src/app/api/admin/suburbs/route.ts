@@ -9,7 +9,6 @@ const suburbSchema = z.object({
   name: z.string().min(1),
   postcode: z.string().min(4).max(4),
   state: z.string().min(2).max(3),
-  region: z.string().min(1).max(40),
 });
 
 function slugify(s: string) {
@@ -33,7 +32,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const { name, postcode, state, region } = parsed.data;
+  const { name, postcode, state } = parsed.data;
 
   // Suburb names repeat across states (Richmond, Windsor, Kingston...) — the
   // plain slug is used when free, and only suffixed with the state when a
@@ -44,7 +43,7 @@ export async function POST(req: NextRequest) {
   const slug = existing ? `${baseSlug}-${state.toLowerCase()}` : baseSlug;
 
   const suburb = await prisma.suburb.create({
-    data: { name, postcode, state, region, slug },
+    data: { name, postcode, state, slug },
   });
 
   bustSpecialsCache();

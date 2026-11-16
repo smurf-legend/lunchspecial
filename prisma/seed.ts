@@ -39,7 +39,7 @@ async function main() {
     await prisma.suburb.upsert({
       where: { slug: slugify(s.name) },
       update: {},
-      create: { name: s.name, postcode: s.postcode, state: "NSW", region: s.region, slug: slugify(s.name) },
+      create: { name: s.name, postcode: s.postcode, state: "NSW", slug: slugify(s.name) },
     });
   }
 

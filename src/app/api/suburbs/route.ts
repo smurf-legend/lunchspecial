@@ -44,13 +44,10 @@ export async function POST(req: NextRequest) {
 
   // If it already exists (e.g. someone else just added the same one),
   // just return it rather than erroring — smoother for concurrent posters.
-  // No region input from the poster — "region" is only used for browsing
-  // pages (/regions/[state]/[region]), not anything they see here, so a
-  // suburb they add ad hoc just lands in a catch-all bucket for that state.
   const suburb = await prisma.suburb.upsert({
     where: { slug },
     update: {},
-    create: { name: name.trim(), postcode, state: state.toUpperCase(), region: "Other", slug },
+    create: { name: name.trim(), postcode, state: state.toUpperCase(), slug },
   });
 
   bustSpecialsCache();
