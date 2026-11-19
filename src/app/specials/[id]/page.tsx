@@ -9,6 +9,7 @@ import Link from "next/link";
 import { isExpired, formatExpiry } from "@/lib/dealStatus";
 import { googleMapsUrl, isMapsLink } from "@/lib/mapsLink";
 import ContributorBadge from "@/components/ContributorBadge";
+import LinkifiedText from "@/components/LinkifiedText";
 import DeleteSpecialButton from "@/components/DeleteSpecialButton";
 import DuplicateSpecialButton from "@/components/DuplicateSpecialButton";
 import SpecialGallery from "@/components/SpecialGallery";
@@ -295,7 +296,7 @@ export default async function SpecialDetailPage({ params }: { params: { id: stri
             alt={special.title}
           />
 
-          <p className="mt-4 text-gray-800 whitespace-pre-line">{special.description}</p>
+          <p className="mt-4 text-gray-800 whitespace-pre-line"><LinkifiedText text={special.description} /></p>
 
           <div className="flex items-center gap-3 mt-4 text-sm flex-wrap">
             <span className="font-medium">{special.venueName}</span>
